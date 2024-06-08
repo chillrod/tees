@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import { emitter } from "@/services/mitt";
 
 export function Model() {
-  const { nodes, materials } = useGLTF("/test2.glb");
+  const { nodes, materials } = useGLTF("/tee-model.glb");
 
   const [color, setColor] = useState("#282828");
 
