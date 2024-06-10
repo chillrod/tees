@@ -11,30 +11,26 @@ import {
 
 import { TeeColorsList } from "./TeeColorsList";
 import { Card, CardContent, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import ColorInput from "./ui/color-input";
+import { Drawer } from "vaul";
+import { emitter } from "@/services/mitt";
 
 export const ControlsMenuBar = () => {
-  return (
-    <NavigationMenu orientation="horizontal">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>T-Shirt Colors</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 min-w-[50vw] md:min-w-[20vw]">
-              <CardTitle>Available Colors:</CardTitle>
-              <TeeColorsList />
-            </ul>
+  const stampColorChange = (color: string) => {
+    emitter.emit("stampColor", color);
+  };
 
-            {/* <div>
-              <Card>
-                <CardTitle>Lista Cores</CardTitle>
-                <CardContent>
-                  <TeeColorsList />
-                </CardContent>
-              </Card>
-            </div> */}
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+  const teeColorChange = (color: string) => {
+    emitter.emit("teeColor", color);
+  };
+
+  return (
+    <Card className="bg-transparent grid gap-6 p-6">
+      <CardTitle className="text-stone-200">Controls</CardTitle>
+      <ColorInput onChange={stampColorChange} />
+      <CardTitle className="text-stone-200">Shirt Colors</CardTitle>
+      <ColorInput onChange={teeColorChange} />
+    </Card>
   );
 };
