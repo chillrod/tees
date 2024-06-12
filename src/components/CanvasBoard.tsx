@@ -4,9 +4,14 @@ import { fabric } from "fabric";
 import { useEffect } from "react";
 import { CreateFabricItem } from "@/services/fabric-create";
 import { UpdateLevaControls } from "@/models/layer-models";
+import short from "short-uuid";
 
 export const CanvasBoard = () => {
   const { editor, onReady, selectedObjects } = useFabricJSEditor();
+
+  const updateTexture = () => {
+    emitter.emit("updateTexture", editor?.canvas.toDataURL());
+  };
 
   useEffect(() => {
     const layerControls = UpdateLevaControls(selectedObjects);
@@ -15,8 +20,20 @@ export const CanvasBoard = () => {
   }, [selectedObjects]);
 
   useEffect(() => {
+    editor?.canvas.on("object:modified", (event) => {
+      updateTexture();
+    });
+  }, [editor?.canvas]);
+
+  useEffect(() => {
+    updateTexture();
+  }, [selectedObjects]);
+
+  useEffect(() => {
     emitter.on("addCanvasItem", (item) => {
       const fabricObject = CreateFabricItem(item.type);
+      // @ts-ignore
+      fabricObject.id = short.generate();
 
       editor?.canvas?.add(fabricObject);
     });

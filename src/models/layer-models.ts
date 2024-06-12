@@ -31,7 +31,8 @@ export const UpdateLevaControls = (activeObjects?: fabric.Object[]) => {
 
     return {
       ...acc,
-      [`Layer ${index}`]: folder({
+      // @ts-ignore
+      [`Layer ${curr.id}`]: folder({
         ...(curr.type ? state[curr.type] : state.text),
       }),
     };

@@ -41,7 +41,7 @@ export const CanvasLayerControls = () => {
       <Leva
         flat
         titleBar={{
-          title: "Layer",
+          title: "Layers",
           drag: false,
         }}
       ></Leva>
