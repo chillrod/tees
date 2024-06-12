@@ -11,6 +11,7 @@ export const CanvasBoard = () => {
 
   const updateTexture = () => {
     emitter.emit("updateTexture", editor?.canvas.toDataURL());
+    editor?.canvas.requestRenderAll();
   };
 
   useEffect(() => {
