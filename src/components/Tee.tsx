@@ -1,35 +1,28 @@
 import { useEffect, useState } from "react";
-import {
-  Decal,
-  DragControls,
-  Svg,
-  useGLTF,
-  useTexture,
-} from "@react-three/drei";
+import { Decal, useGLTF, useTexture } from "@react-three/drei";
 import { emitter } from "@/services/mitt";
-
-const tigerImage = "./wordart.png";
-
+const react =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8xaUP78TR71TTzNgqAxVHnnydMPSsABD4zw&s";
 export function Model() {
   const { nodes, materials } = useGLTF("/tee-model.glb");
 
-  const texture = useTexture(tigerImage);
+  const [texture, setTexture] = useState(react);
+  const textureOnShirt = useTexture(texture);
 
   const [color, setColor] = useState("#282828");
-  const [stampColor, setStampColor] = useState("#2c74cc");
 
   useEffect(() => {
     emitter.on("teeColor", (color) => {
       setColor(color);
     });
 
-    emitter.on("stampColor", (color) => {
-      setStampColor(color);
+    emitter.on("updateTexture", (texture) => {
+      setTexture(texture);
     });
 
     return () => {
       emitter.off("teeColor");
-      emitter.off("stampColor");
+      emitter.off("updateTexture");
     };
   }, []);
 
@@ -46,16 +39,10 @@ export function Model() {
         scale={14.083}
         material-color={color}
       >
-        <Decal
-          debug
-          position={[0, 0, 0]}
-          scale={0.09}
-          rotation={[1.58, 0.052, 0.031]}
-        >
-          <meshBasicMaterial
-            map={texture}
+        <Decal position={[0, 0, 0]} scale={0.09} rotation={[-1.58, -0, 0]}>
+          <meshPhysicalMaterial
+            map={textureOnShirt}
             polygonOffset
-            color={stampColor}
             polygonOffsetFactor={-6}
             transparent
           />

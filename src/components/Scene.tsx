@@ -14,7 +14,7 @@ export const Scene = (props: Props) => {
   const [color, setColor] = useState("#8c8686");
 
   return (
-    <Canvas shadows className="bg-stone-950">
+    <Canvas shadows className="bg-stone-950 rounded-lg">
       <ambientLight intensity={5} />
 
       <SpotLight

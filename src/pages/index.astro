@@ -1,14 +1,24 @@
 ---
-import { Button } from "@/components/ui/button";
-import { Scene } from "../components/Scene";
+import UILayout from "@/components/UILayout.astro";
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import Controls from "@/components/Controls.astro";
+import { Scene } from "@/components/Scene";
+import { CanvasControls } from "@/components/CanvasControls";
+import { CanvasLayerControls } from "@/components/CanvasLayerControls";
 ---
 
 <Layout title="Welcome to Astro.">
-  <main class="h-[100vh] bg-stone-800 relative">
-    <Scene client:load />
-    <Controls />
+  <main class="h-[100vh] bg-stone-950 align-center p-6 gap-6 flex">
+    <UILayout>
+      <div slot="tee">
+        <Scene client:load />
+      </div>
+      <div slot="canvas">
+        <CanvasControls client:load />
+      </div>
+      <div slot="leva">
+        <CanvasLayerControls client:load />
+      </div>
+    </UILayout>
   </main>
 </Layout>

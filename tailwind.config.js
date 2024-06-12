@@ -10,6 +10,12 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+      backgroundSize: {
+        gridSize: "40px 40px",
+      },
+      backgroundImage: {
+        grid: "radial-gradient(circle, red 1px, rgba(0, 0, 0, 0) 1px)",
+      },
     },
     extend: {
       keyframes: {
