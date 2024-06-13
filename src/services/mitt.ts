@@ -7,16 +7,18 @@ export interface MenuItems {
   separator?: boolean;
   fn: () => void;
 }
+export interface AddCanvasItem {
+  type: "text" | "image";
+  text?: string;
+  image?: string;
+}
 
 type Events = {
   teeColor: string;
   stampColor: string;
   levaPanel?: any;
-  addCanvasItem: {
-    type: "text" | "image";
-    text?: string;
-    image?: string;
-  };
+  changeCursorType: string;
+  addCanvasItem: AddCanvasItem;
   levaControls: any;
   updateTexture: any;
   updateCanvasItem: { values: any; itemObject: fabric.Object };

@@ -1,6 +1,6 @@
 import { emitter } from "@/services/mitt";
 import { Leva, useControls } from "leva";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Controls = ({
   keyValue,
@@ -13,16 +13,14 @@ const Controls = ({
     ...objectValue.schema,
   });
 
-  emitter.emit("updateCanvasItem", {
-    values,
-    itemObject: objectValue.schema.itemObject,
+  useEffect(() => {
+    emitter.emit("updateCanvasItem", {
+      values,
+      itemObject: objectValue.schema.itemObject,
+    });
   });
 
-  return (
-    <div>
-      <pre>{JSON.stringify(values, null, "  ")}</pre>
-    </div>
-  );
+  return <></>;
 };
 
 export const CanvasLayerControls = () => {
@@ -34,16 +32,17 @@ export const CanvasLayerControls = () => {
     });
 
     return () => emitter.off("levaControls");
-  }, [controls]);
+  }, []);
 
   return (
     <div>
       <Leva
-        flat
         titleBar={{
           title: "Layers",
           drag: false,
         }}
+        neverHide
+        fill
       ></Leva>
       {Object.keys(controls).map((key) => (
         <Controls key={key} keyValue={key} objectValue={controls[key]} />

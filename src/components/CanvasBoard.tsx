@@ -2,53 +2,52 @@ import { emitter } from "@/services/mitt";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import { fabric } from "fabric";
 import { useEffect } from "react";
-import { CreateFabricItem } from "@/services/fabric-create";
+import {
+  FabricRerender,
+  HandleFabricItemAdd,
+  HandleFabricItemModified,
+} from "@/services/fabric-canvas";
+
 import { UpdateLevaControls } from "@/models/layer-models";
-import short from "short-uuid";
 
 export const CanvasBoard = () => {
   const { editor, onReady, selectedObjects } = useFabricJSEditor();
 
-  const updateTexture = () => {
-    emitter.emit("updateTexture", editor?.canvas.toDataURL());
-    editor?.canvas.requestRenderAll();
-  };
-
   useEffect(() => {
-    const layerControls = UpdateLevaControls(selectedObjects);
+    const layerControls = UpdateLevaControls(selectedObjects, editor);
 
     emitter.emit("levaControls", layerControls);
   }, [selectedObjects]);
 
   useEffect(() => {
-    editor?.canvas.on("object:modified", (event) => {
-      updateTexture();
-    });
+    HandleFabricItemModified(editor);
   }, [editor?.canvas]);
 
-  useEffect(() => {
-    updateTexture();
-  }, [selectedObjects]);
+  // useEffect(() => {
+  //   UpdateTexture(editor);
+  // }, [selectedObjects]);
 
   useEffect(() => {
-    emitter.on("addCanvasItem", (item) => {
-      const fabricObject = CreateFabricItem(item.type);
-      // @ts-ignore
-      fabricObject.id = short.generate();
-
-      editor?.canvas?.add(fabricObject);
+    emitter.on("addCanvasItem", async (item) => {
+      HandleFabricItemAdd(item, editor);
     });
 
-    return () => emitter.off("addCanvasItem");
+    return () => {
+      emitter.off("addCanvasItem");
+    };
   }, [editor, fabric]);
 
   useEffect(() => {
     emitter.on("updateCanvasItem", ({ values, itemObject }) => {
       itemObject.set(values);
 
-      editor?.canvas?.requestRenderAll();
+      FabricRerender(editor);
     });
+
+    return () => {
+      emitter.off("updateCanvasItem");
+    };
   }, []);
 
-  return <FabricJSCanvas onReady={onReady} className="w-full h-full" />;
+  return <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />;
 };

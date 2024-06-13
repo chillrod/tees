@@ -1,10 +1,14 @@
 ---
-
+import { Resizable } from "./Resizable";
 ---
 
 <!-- <div class="grid w-full gap-4"> -->
-<div class="grid lg:grid-cols-2 w-full gap-4">
-  <slot name="tee" />
-  <slot name="canvas" />
-  <slot name="leva" />
+<div class="grid w-full gap-4 relative max-h-[100vh]">
+  <!-- <slot name="tee" /> -->
+  <div>
+    <slot name="canvas" />
+  </div>
+  <div class="absolute right-0 bottom-0 bg-stone-950 h-[100%] overflow-auto min-w-[300px]">
+    <slot name="leva" />
+  </div>
 </div>
