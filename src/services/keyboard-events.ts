@@ -1,9 +1,10 @@
 export const keyboardEvents = (event: KeyboardEvent) => {
+  console.log("🚀 ~ keyboardEvents ~ event:", event);
   const state: { [key: string]: () => void } = {
-    [65]: () => {
-      console.log("A pressed");
+    ["Backspace"]: () => {
+      console.log("Delete pressed");
     },
   };
 
-  state[event.keyCode]();
+  state[event.key]();
 };

@@ -2,25 +2,33 @@ import { emitter } from "@/services/mitt";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import { fabric } from "fabric";
 import { useEffect } from "react";
-import {
-  FabricRerender,
-  HandleFabricItemAdd,
-  HandleFabricItemModified,
-} from "@/services/fabric-canvas";
+import { CanvasBoardService } from "@/services/canvas-board.service";
 
-import { UpdateLevaControls } from "@/models/layer-models";
+import { CanvasLayers } from "@/services/canvas-layers.service";
+import { keyboardEvents } from "@/services/keyboard-events";
+import { ContextMenu, ContextMenuTrigger } from "./ui/context-menu";
+import { ContextMenuItem } from "@radix-ui/react-context-menu";
+import { CanvasContextMenu } from "./CanvasContextMenu";
+import { CanvasControls } from "./CanvasControls";
+
+const gradient = "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
+const size = "40px 40px";
 
 export const CanvasBoard = () => {
   const { editor, onReady, selectedObjects } = useFabricJSEditor();
 
   useEffect(() => {
-    const layerControls = UpdateLevaControls(selectedObjects, editor);
+    CanvasBoardService.SetEditor(editor);
+  }, [editor]);
+
+  useEffect(() => {
+    const layerControls = CanvasLayers.UpdateLevaControls(selectedObjects);
 
     emitter.emit("levaControls", layerControls);
   }, [selectedObjects]);
 
   useEffect(() => {
-    HandleFabricItemModified(editor);
+    CanvasBoardService.HandleFabricItemModified();
   }, [editor?.canvas]);
 
   // useEffect(() => {
@@ -29,7 +37,7 @@ export const CanvasBoard = () => {
 
   useEffect(() => {
     emitter.on("addCanvasItem", async (item) => {
-      HandleFabricItemAdd(item, editor);
+      CanvasBoardService.HandleFabricItemAdd(item);
     });
 
     return () => {
@@ -41,7 +49,7 @@ export const CanvasBoard = () => {
     emitter.on("updateCanvasItem", ({ values, itemObject }) => {
       itemObject.set(values);
 
-      FabricRerender(editor);
+      CanvasBoardService.FabricRerender();
     });
 
     return () => {
@@ -49,5 +57,22 @@ export const CanvasBoard = () => {
     };
   }, []);
 
-  return <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />;
+  return (
+    <div
+      className="flex h-[95vh] w-full  bg-stone-950 relative"
+      style={{
+        backgroundImage: gradient,
+        backgroundSize: size,
+      }}
+    >
+      <div className="z-20">
+        <CanvasControls />
+      </div>
+      <div className="w-full h-full">
+        <CanvasContextMenu>
+          <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />;
+        </CanvasContextMenu>
+      </div>
+    </div>
+  );
 };
