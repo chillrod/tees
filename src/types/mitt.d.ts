@@ -9,7 +9,7 @@ interface MenuItems {
 interface AddCanvasItem {
   type: "text" | "image";
   text?: string;
-  image?: string;
+  image?: string | ArrayBuffer | null | undefined;
 }
 
 module.exports = {

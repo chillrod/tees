@@ -1,13 +1,12 @@
 interface TextModels {
-  fontFamily: string;
   fill: string;
   fontSize?: number;
-  charSpacing?: number;
+  _fontSizeMult: number;
   itemObject: fabric.Object;
 }
 
 interface ImageModels {
-  src: string;
+  image: string | undefined | ArrayBuffer | null;
 }
 
 interface CanvasItem {

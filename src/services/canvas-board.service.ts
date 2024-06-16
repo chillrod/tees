@@ -1,24 +1,29 @@
-import { CanvasLayers } from "@/services/canvas-layers.service";
 import { fabric } from "fabric";
 import type { FabricJSEditor } from "fabricjs-react";
 import short from "short-uuid";
+import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { emitter } from "./mitt";
 
-const createTextBox = (event: fabric.IEvent) => {
-  return new fabric.Textbox("New Text", {
-    top: event.pointer?.y,
-    left: event.pointer?.x,
-    fill: "#fff",
-    fontSize: 16,
-  });
-};
+// const createImage = (
+//   event: fabric.IEvent,
+//   src: string | ArrayBuffer | undefined | null
+// ) => {
+//   return new fabric.Image(
+//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1MndL-Xp1JcnqaB0YOqTp6zDjrwYyGKsPA&s",
+//     {}
+//   );
 
-const createImage = (event: fabric.IEvent, src: string) => {
-  return new fabric.Image(src, {
-    top: event.pointer?.y,
-    left: event.pointer?.x,
-  });
-};
+//   // fabric.Image.fromURL(src as string, (img) => {
+//   //   image.setElement(img.getElement());
+
+//   //   image.set({
+//   //     top: event.pointer?.y,
+//   //     left: event.pointer?.x,
+//   //     scaleX: 0.2,
+//   //     scaleY: 0.2,
+//   //   });
+//   // });
+// };
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
@@ -28,30 +33,8 @@ export const CanvasBoardService = {
     this.editor = editor;
   },
 
-  SetSelectedObjects(objects: fabric.Object[]) {
+  SetSelectedObjects(objects: ExtendedFabricObject[]) {
     this.selectedObjects = objects;
-  },
-
-  UpdateItemControls(item: fabric.Object): fabric.Object {
-    item.set("cornerStyle", "circle");
-    item.set("cornerSize", 10);
-
-    emitter.emit("resetDrawControls");
-
-    return item;
-  },
-
-  CreateFabricItem(
-    item: string,
-    event: fabric.IEvent,
-    options?: { url: string }
-  ) {
-    const state: { [key: string]: fabric.Object } = {
-      text: createTextBox(event),
-      image: createImage(event, options?.url || ""),
-    };
-
-    return this.UpdateItemControls(state[item]);
   },
 
   CancelFabricItemAdd() {
@@ -61,37 +44,44 @@ export const CanvasBoardService = {
     this.editor?.canvas.setCursor("default");
   },
 
-  HandleFabricItemAdd(item: AddCanvasItem) {
+  HandleFabricItemAdd(item: ExtendedFabricObject) {
+    console.log("🚀 ~ HandleFabricItemAdd ~ item:", item);
     this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
-      this.editor?.canvas.setCursor(item.type);
+      this.editor?.canvas.setCursor(item?.type || "default");
     });
 
-    this.editor?.canvas.on(FabricEvents.MouseDown, (event: fabric.IEvent) => {
-      const fabricObject = this.CreateFabricItem(item.type, event);
-      // @ts-ignore
-      fabricObject.id = short.generate();
+    this.editor?.canvas?.on(FabricEvents.MouseDown, (event: fabric.IEvent) => {
+      item.set("left", event.pointer?.x);
+      item.set("top", event.pointer?.y);
+      item.set("id", short.generate());
 
-      this.editor?.canvas?.add(fabricObject);
+      item.set("cornerStyle", "circle");
+      item.set("cornerSize", 10);
 
-      this.editor?.canvas.off(FabricEvents.MouseMove);
-      this.editor?.canvas.off(FabricEvents.MouseDown);
+      this.editor?.canvas?.add(item);
 
-      this.editor?.canvas.setCursor("default");
+      this.editor?.canvas?.off(FabricEvents.MouseMove);
+      this.editor?.canvas?.off(FabricEvents.MouseDown);
+
+      this.editor?.canvas?.setCursor("default");
+
+      this.FabricRerender();
+
+      emitter.emit("resetDrawControls");
     });
   },
 
-  FabricItemDelete(item: fabric.Object) {
+  FabricItemDelete(item: ExtendedFabricObject) {
     this.editor?.canvas.remove(item);
-    // @ts-ignore
     item.selectable = false;
 
     this.FabricRerender();
 
-    const layerControls = CanvasLayers.UpdateLevaControls(
-      this.editor?.canvas.getActiveObjects()
-    );
+    // const layerControls = CanvasLayers.UpdateLevaControls(
+    //   this.editor?.canvas.getActiveObjects()
+    // );
 
-    emitter.emit("levaControls", layerControls);
+    // emitter.emit("levaControls", layerControls);
   },
 
   FabricDeleteSelectedObjects() {
@@ -101,7 +91,7 @@ export const CanvasBoardService = {
 
     this.editor?.canvas.discardActiveObject();
 
-    emitter.emit("levaControls", {});
+    // emitter.emit("levaControls", {});
 
     this.FabricRerender();
   },
@@ -115,7 +105,7 @@ export const CanvasBoardService = {
   },
 
   UpdateTexture() {
-    emitter.emit("updateTexture", this.editor?.canvas.toDataURL());
+    // emitter.emit("updateTexture", this.editor?.canvas.toDataURL());
 
     this.FabricRerender();
   },

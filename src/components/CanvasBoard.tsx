@@ -5,11 +5,7 @@ import { useEffect } from "react";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 
 import { CanvasLayers } from "@/services/canvas-layers.service";
-import { keyboardEvents } from "@/services/keyboard-events";
-import { ContextMenu, ContextMenuTrigger } from "./ui/context-menu";
-import { ContextMenuItem } from "@radix-ui/react-context-menu";
 import { CanvasContextMenu } from "./CanvasContextMenu";
-import { CanvasControls } from "./CanvasControls";
 
 const gradient = "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
 const size = "40px 40px";
@@ -37,7 +33,7 @@ export const CanvasBoard = () => {
 
   useEffect(() => {
     emitter.on("addCanvasItem", async (item) => {
-      CanvasBoardService.HandleFabricItemAdd(item);
+      // CanvasBoardService.HandleFabricItemAdd(item);
     });
 
     return () => {
@@ -65,9 +61,6 @@ export const CanvasBoard = () => {
         backgroundSize: size,
       }}
     >
-      <div className="z-20">
-        <CanvasControls />
-      </div>
       <div className="w-full h-full">
         <CanvasContextMenu>
           <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />;

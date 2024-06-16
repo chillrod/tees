@@ -1,34 +1,15 @@
 import { CanvasBoardService } from "@/services/canvas-board.service";
+import type { ExtendedFabricObject } from "@/types/fabric";
 import { buttonGroup, folder } from "leva";
+import { createLayerText } from "./layers/layers-text";
+import { createImageModel } from "./layers/layers-image";
 
 export const CanvasLayers = {
-  createTextModel(item: fabric.Object) {
-    const textModel: TextModels = {
-      // @ts-ignore
-      fontFamily: item.get("fontFamily"),
-      // @ts-ignore
-      charSpacing: item.get("charSpacing"),
-      fill: "#fff",
-      itemObject: item,
-    };
-
-    return textModel;
-  },
-
-  createImageModel(item: fabric.Object) {
-    const imageModel: ImageModels = {
-      // @ts-ignore
-      image: item.get("src"),
-    };
-
-    return imageModel;
-  },
-
-  UpdateLevaControls(activeObjects?: fabric.Object[]) {
+  UpdateLevaControls(activeObjects?: ExtendedFabricObject[]) {
     return activeObjects?.reduce((acc, curr) => {
       const state: { [key: string]: any } = {
-        textbox: this.createTextModel(curr),
-        image: this.createImageModel(curr),
+        textbox: createLayerText(curr),
+        image: createImageModel(curr),
       };
 
       return {

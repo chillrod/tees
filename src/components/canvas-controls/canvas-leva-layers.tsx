@@ -22,7 +22,7 @@ const Controls = ({
   return <></>;
 };
 
-export const CanvasLayerControls = () => {
+export const CanvasLevaLayers = () => {
   const [controls, setControls] = useState<any>({});
 
   useEffect(() => {

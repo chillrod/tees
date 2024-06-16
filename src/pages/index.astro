@@ -3,10 +3,12 @@ import UILayout from "@/components/UILayout.astro";
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import { Scene } from "@/components/Scene";
-import { CanvasControls } from "@/components/CanvasControls";
-import { CanvasLayerControls } from "@/components/CanvasLayerControls";
 import { CanvasBoard } from "@/components/CanvasBoard";
-import { MenubarLabel } from "@/components/ui/menubar";
+import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
+import { CanvasLevaLayers} from '@/components/canvas-controls/canvas-leva-layers';
+import { MenuText } from "@/components/canvas-controls/menu-text";
+import type { Children } from "react";
+import { UploadedImagesContainer } from "@/components/UploadedImagesContainer";
 ---
 
 <Layout title="Welcome to Astro.">
@@ -19,10 +21,10 @@ import { MenubarLabel } from "@/components/ui/menubar";
         <CanvasBoard client:load />
       </div>
       <div slot="leva">
-        <CanvasLayerControls client:load />
+        <CanvasLevaLayers client:load />
       </div>
-      <div slot="controls">
-        <CanvasControls client:load />
+      <div slot="controls" class="h-full">
+        <CanvasControlsMenu client:load />
       </div>
     </UILayout>
   </main>
