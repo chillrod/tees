@@ -1,0 +1,23 @@
+---
+
+---
+
+<div class="h-full w-full grid grid-cols-5">
+  <div class="h-full w-full grid col-span-2">
+    <h2 class="absolute text-stone-200 z-30 p-4 font-bold tracking-tighter">
+      Studio Estampar <mark class="p-0 m-0 ml-2">Vectee</mark>
+    </h2>
+    <slot name="tee" />
+  </div>
+  <div class="relative col-span-3">
+    <div>
+      <slot name="canvas" />
+    </div>
+    <div class="absolute top-0 p-4 h-full">
+      <slot name="controls" />
+    </div>
+    <div class="absolute right-0 top-0">
+      <slot name="leva" />
+    </div>
+  </div>
+</div>

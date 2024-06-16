@@ -4,10 +4,7 @@ import type { MenuChildrenProps } from "./menu";
 import * as Menubar from "@radix-ui/react-menubar";
 import { createRef, type Dispatch, type SetStateAction } from "react";
 import { Input } from "../ui/input";
-import { UploadedImagesContainer } from "../UploadedImagesContainer";
-import { emitter } from "@/services/mitt";
 import { createFabricImage } from "@/services/canvas/text/fabric-image";
-import { Canvas } from "@react-three/fiber";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 
 interface Props extends MenuChildrenProps {

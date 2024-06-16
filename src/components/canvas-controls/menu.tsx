@@ -47,7 +47,7 @@ export const CanvasControlsMenu = () => {
   }, []);
 
   return (
-    <Menubar.Root className="bg-stone-900 p-2 rounded-lg flex flex-col gap-2 h-full">
+    <Menubar.Root className=" p-2 rounded-lg flex flex-col gap-2 h-full">
       <Menubar.Menu>
         <Menubar.Trigger>
           <MenuText

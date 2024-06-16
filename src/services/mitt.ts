@@ -1,3 +1,4 @@
+import type { ExtendedFabricObject } from "@/types/fabric";
 import mitt from "mitt";
 
 type Events = {
@@ -7,7 +8,7 @@ type Events = {
   resetDrawControls: void;
   levaControls: any;
   updateTexture: any;
-  updateCanvasItem: { values: any; itemObject: fabric.Object };
+  updateCanvasItem: { values: any; keyValue: string };
   imageUpload: HTMLImageElement;
   setActiveMenuItem: number;
 };

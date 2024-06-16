@@ -1,18 +1,15 @@
 ---
-import UILayout from "@/components/UILayout.astro";
+import UILayout from "@/components/ui-layout.astro";
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { Scene } from "@/components/Scene";
-import { CanvasBoard } from "@/components/CanvasBoard";
+import { Scene } from "@/components/scene";
+import { CanvasBoard } from "@/components/canvas-board";
 import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
-import { CanvasLevaLayers} from '@/components/canvas-controls/canvas-leva-layers';
-import { MenuText } from "@/components/canvas-controls/menu-text";
-import type { Children } from "react";
-import { UploadedImagesContainer } from "@/components/UploadedImagesContainer";
+import { CanvasLevaLayers } from "@/components/canvas-controls/canvas-leva-layers";
 ---
 
-<Layout title="Welcome to Astro.">
-  <main class="bg-stone-950 align-center py-6 px-4 gap-6 flex">
+<Layout title="Studio Estampar Vectee.">
+  <main class="bg-stone-950 align-center py-6 px-4 gap-6 flex h-[100vh]">
     <UILayout>
       <div slot="tee">
         <Scene client:load />

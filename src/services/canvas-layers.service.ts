@@ -4,19 +4,18 @@ import { buttonGroup, folder } from "leva";
 import { createLayerText } from "./layers/layers-text";
 import { createImageModel } from "./layers/layers-image";
 
-export const CanvasLayers = {
-  UpdateLevaControls(activeObjects?: ExtendedFabricObject[]) {
-    return activeObjects?.reduce((acc, curr) => {
+export const CanvasLayersService = {
+  UpdateLevaControls(items?: ExtendedFabricObject[]) {
+    return items?.reduce((acc, curr) => {
       const state: { [key: string]: any } = {
-        textbox: createLayerText(curr),
-        image: createImageModel(curr),
+        text: () => createLayerText(curr),
+        image: () => createImageModel(curr),
       };
 
       return {
         ...acc,
-        // @ts-ignore
         [`Layer ${curr.id}`]: folder({
-          ...(curr.type ? state[curr.type] : state.textbox),
+          ...(curr.type ? state[curr.type]?.() : state.textbox()),
           " ": buttonGroup({
             delete: () => CanvasBoardService.FabricItemDelete(curr),
           }),

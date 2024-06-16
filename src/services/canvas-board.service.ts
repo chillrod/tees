@@ -3,38 +3,27 @@ import type { FabricJSEditor } from "fabricjs-react";
 import short from "short-uuid";
 import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { emitter } from "./mitt";
-
-// const createImage = (
-//   event: fabric.IEvent,
-//   src: string | ArrayBuffer | undefined | null
-// ) => {
-//   return new fabric.Image(
-//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1MndL-Xp1JcnqaB0YOqTp6zDjrwYyGKsPA&s",
-//     {}
-//   );
-
-//   // fabric.Image.fromURL(src as string, (img) => {
-//   //   image.setElement(img.getElement());
-
-//   //   image.set({
-//   //     top: event.pointer?.y,
-//   //     left: event.pointer?.x,
-//   //     scaleX: 0.2,
-//   //     scaleY: 0.2,
-//   //   });
-//   // });
-// };
+import { CanvasLayersService } from "./canvas-layers.service";
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
-  selectedObjects: [] as fabric.Object[] | [],
+  canvasObjects: [] as ExtendedFabricObject[],
 
   SetEditor(editor?: FabricJSEditor) {
     this.editor = editor;
   },
 
-  SetSelectedObjects(objects: ExtendedFabricObject[]) {
-    this.selectedObjects = objects;
+  UpdateCanvasObjects() {
+    this.FabricRerender();
+
+    this.canvasObjects =
+      this.editor?.canvas.getObjects() as ExtendedFabricObject[];
+
+    const layerControls = CanvasLayersService.UpdateLevaControls(
+      this.canvasObjects
+    );
+
+    emitter.emit("levaControls", layerControls);
   },
 
   CancelFabricItemAdd() {
@@ -45,7 +34,6 @@ export const CanvasBoardService = {
   },
 
   HandleFabricItemAdd(item: ExtendedFabricObject) {
-    console.log("🚀 ~ HandleFabricItemAdd ~ item:", item);
     this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
       this.editor?.canvas.setCursor(item?.type || "default");
     });
@@ -65,9 +53,9 @@ export const CanvasBoardService = {
 
       this.editor?.canvas?.setCursor("default");
 
-      this.FabricRerender();
-
       emitter.emit("resetDrawControls");
+
+      this.UpdateCanvasObjects();
     });
   },
 
@@ -75,13 +63,9 @@ export const CanvasBoardService = {
     this.editor?.canvas.remove(item);
     item.selectable = false;
 
-    this.FabricRerender();
+    this.UpdateCanvasObjects();
 
-    // const layerControls = CanvasLayers.UpdateLevaControls(
-    //   this.editor?.canvas.getActiveObjects()
-    // );
-
-    // emitter.emit("levaControls", layerControls);
+    this.UpdateTexture();
   },
 
   FabricDeleteSelectedObjects() {
@@ -91,9 +75,9 @@ export const CanvasBoardService = {
 
     this.editor?.canvas.discardActiveObject();
 
-    // emitter.emit("levaControls", {});
+    this.UpdateCanvasObjects();
 
-    this.FabricRerender();
+    this.UpdateTexture();
   },
 
   HandleFabricItemModified(editor?: FabricJSEditor) {
@@ -105,8 +89,7 @@ export const CanvasBoardService = {
   },
 
   UpdateTexture() {
-    // emitter.emit("updateTexture", this.editor?.canvas.toDataURL());
-
+    emitter.emit("updateTexture", this.editor?.canvas.toDataURL());
     this.FabricRerender();
   },
 
