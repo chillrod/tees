@@ -5,13 +5,10 @@ import {
   Stage,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Model } from "./tee";
-import { Suspense, useState } from "react";
+import { Model } from "./tee.tsx";
 import { ThreeControlsLevaInput } from "./three-controls/leva-input";
 
-interface Props {}
-
-export const Scene = (props: Props) => {
+export const Scene = () => {
   return (
     <div className="h-full w-full relative">
       <Canvas shadows className="bg-stone-950 rounded-lg h-full w-full">
