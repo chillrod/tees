@@ -14,5 +14,5 @@ export interface ExtendedFabricObject extends fabric.Object {
   fontFamily?: string;
   textAlign?: string;
   lineHeight?: number;
-  getSrc: () => string;
+  getSrc?: () => string;
 }
