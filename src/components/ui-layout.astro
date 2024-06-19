@@ -1,12 +1,17 @@
 ---
-
+import { Image } from "astro:assets";
+import studio from "../assets/studio.svg";
 ---
 
-<div class="h-full w-full grid grid-cols-5">
+<div class="h-full w-full grid grid-cols-5 gap-4">
   <div class="h-full w-full grid col-span-2">
-    <h2 class="absolute text-stone-200 z-30 p-4 font-bold tracking-tighter">
-      Studio Estampar <mark class="p-0 m-0 ml-2">Vectee</mark>
-    </h2>
+    <div class="absolute text-stone-200 z-30 p-5 flex gap-4">
+      <img src="./Asset 1.svg" alt="hi" width="65" height="65" />
+      <div>
+        <h2 class="font-bold text-4xl">DIY</h2>
+        <span class="font-bold text-lg">T-Shirts</span>
+      </div>
+    </div>
     <slot name="tee" />
   </div>
   <div class="relative col-span-3">

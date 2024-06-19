@@ -2,7 +2,7 @@ import type { ExtendedFabricObject } from "@/types/fabric";
 import mitt from "mitt";
 
 type Events = {
-  teeColor: string;
+  teeColor: { color: string, taglessColor: string };
   changeCursorType: string;
   addCanvasItem: AddCanvasItem;
   resetDrawControls: void;
