@@ -1,9 +1,8 @@
+import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { fabric } from "fabric";
 import type { FabricJSEditor } from "fabricjs-react";
 import short from "short-uuid";
-import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { emitter } from "./mitt";
-import { CanvasLayersService } from "./canvas-layers.service";
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
@@ -18,12 +17,6 @@ export const CanvasBoardService = {
 
     this.canvasObjects =
       this.editor?.canvas.getObjects() as ExtendedFabricObject[];
-
-    const layerControls = CanvasLayersService.UpdateLevaControls(
-      this.canvasObjects
-    );
-
-    emitter.emit("levaControls", layerControls);
   },
 
   CancelFabricItemAdd() {
@@ -68,12 +61,18 @@ export const CanvasBoardService = {
     this.UpdateTexture();
   },
 
+  CanvasDiscardActiveObject() {
+    this.editor?.canvas.discardActiveObject();
+
+    this.UpdateCanvasObjects();
+  },
+
   FabricDeleteSelectedObjects() {
     this.editor?.canvas.getActiveObjects().forEach((object) => {
       this.editor?.canvas.remove(object);
     });
 
-    this.editor?.canvas.discardActiveObject();
+    this.CanvasDiscardActiveObject();
 
     this.UpdateCanvasObjects();
 

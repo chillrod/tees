@@ -1,15 +1,16 @@
+import { CanvasBoardService } from "@/services/canvas-board.service";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import { useEffect } from "react";
-import { CanvasBoardService } from "@/services/canvas-board.service";
 
-import { CanvasContextMenu } from "./canvas-context-menu";
 import { emitter } from "@/services/mitt";
-import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
+import { FabricEvents } from "@/types/fabric";
+import { CanvasContextMenu } from "./canvas-context-menu";
 
 const gradient = "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
 const size = "40px 40px";
 
 export const CanvasBoard = () => {
+  const rulers = [0, 5, 10, 15, 20, 25, 30];
   const { editor, onReady } = useFabricJSEditor();
 
   useEffect(() => {
@@ -27,17 +28,8 @@ export const CanvasBoard = () => {
   });
 
   useEffect(() => {
-    emitter.on("updateCanvasItem", ({ values, keyValue }) => {
-      const items =
-        CanvasBoardService.editor?.canvas.getObjects() as ExtendedFabricObject[];
-
-      const getItem = items.find(
-        (item) => item.id === keyValue.replace("Layer ", "")
-      );
-
-      if (!getItem) return;
-
-      getItem.set({ ...values });
+    emitter.on("updateCanvasItem", ({ formData, item }) => {
+      item.set({ ...formData });
 
       CanvasBoardService.FabricRerender();
       CanvasBoardService.UpdateTexture();
@@ -49,18 +41,28 @@ export const CanvasBoard = () => {
   }, []);
 
   return (
-    <div
-      className="flex h-[95vh] w-full  bg-stone-950 relative"
-      style={{
-        backgroundImage: gradient,
-        backgroundSize: size,
-      }}
-    >
-      <div className="w-full h-full">
-        <CanvasContextMenu>
-          <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />
-        </CanvasContextMenu>
+    <>
+      <div className="w-full justify-around flex border-b-[1px] border-dashed border-b-stone-950">
+        {rulers.map((ruler, key) => (
+          <span key={key} className="text-stone-950 text-sm text-right mb-2">
+            {ruler} cm
+          </span>
+        ))}
       </div>
-    </div>
+
+      <div
+        className="flex h-[90vh] w-full  dark:bg-stone-950 relative"
+        style={{
+          backgroundImage: gradient,
+          backgroundSize: size,
+        }}
+      >
+        <div className="w-full h-full">
+          <CanvasContextMenu>
+            <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />
+          </CanvasContextMenu>
+        </div>
+      </div>
+    </>
   );
 };

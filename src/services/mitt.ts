@@ -2,13 +2,14 @@ import type { ExtendedFabricObject } from "@/types/fabric";
 import mitt from "mitt";
 
 type Events = {
-  teeColor: { color: string, taglessColor: string };
+  teeColor: { color: string; taglessColor: string };
   changeCursorType: string;
   addCanvasItem: AddCanvasItem;
   resetDrawControls: void;
+  canvasLayerItem?: ExtendedFabricObject;
   levaControls: any;
   updateTexture: any;
-  updateCanvasItem: { values: any; keyValue: string };
+  updateCanvasItem: { formData: {}; item: ExtendedFabricObject };
   imageUpload: HTMLImageElement;
   setActiveMenuItem: number;
 };

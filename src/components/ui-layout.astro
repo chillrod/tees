@@ -1,28 +1,43 @@
 ---
-import { Image } from "astro:assets";
-import studio from "../assets/studio.svg";
+import { ModeToggle } from "./ui/mode-toggle";
 ---
 
-<div class="h-full w-full grid grid-cols-5 gap-4">
-  <div class="h-full w-full grid col-span-2">
-    <div class="absolute text-stone-200 z-30 p-5 flex gap-4">
-      <img src="./Asset 1.svg" alt="hi" width="65" height="65" />
-      <div>
-        <h2 class="font-bold text-4xl">DIY</h2>
-        <span class="font-bold text-lg">T-Shirts</span>
+<main class="grid w-full bg-stone-100 dark:bg-stone-950 p-6 py-6">
+  <!-- <nav class="flex items-center justify-between p-2">
+    <h2 class="font-bold">Studio Estampar</h2>
+    <ModeToggle client:load />
+  </nav> -->
+  <div class="h-full w-full grid grid-cols-5 gap-4">
+    <div class="h-full w-full grid col-span-2">
+      <div
+        class="absolute
+    text-stone-950
+    dark:text-stone-200 z-30 p-5 flex gap-4"
+      >
+        <img
+          class="dark:invert-[1]"
+          src="./Asset 1.svg"
+          alt="hi"
+          width="65"
+          height="65"
+        />
+        <div>
+          <h2 class="font-bold text-4xl">DIY</h2>
+          <span class="font-bold text-lg bg-yellow-300"> T-shirts </span>
+        </div>
+      </div>
+      <slot name="tee" />
+    </div>
+    <div class="relative col-span-3 grid h-full">
+      <div class="h-full w-full">
+        <slot name="canvas" />
+      </div>
+      <div class="absolute top-5 p-4 h-full">
+        <slot name="controls" />
+      </div>
+      <div class="absolute right-0 top-10">
+        <slot name="layer" />
       </div>
     </div>
-    <slot name="tee" />
   </div>
-  <div class="relative col-span-3">
-    <div>
-      <slot name="canvas" />
-    </div>
-    <div class="absolute top-0 p-4 h-full">
-      <slot name="controls" />
-    </div>
-    <div class="absolute right-0 top-0">
-      <slot name="leva" />
-    </div>
-  </div>
-</div>
+</main>
