@@ -1,7 +1,4 @@
 import { emitter } from "@/services/mitt";
-import { MenubarLabel } from "@radix-ui/react-menubar";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { useEffect } from "react";
 import { TooltipUI } from "../tooltip";
 
 export const colors = [
@@ -46,9 +43,11 @@ export const ThreeColors = () => {
   };
 
   return (
-    <div className="max-w-[450px] overflow-auto grid p-6 gap-1 text-stone-950 dark:text-stone-200">
+    <div className="max-w-[450px] overflow-auto grid py-6 gap-1 text-stone-950 dark:text-stone-200">
       <div>
-        <h2 className="font-bold text-lg">Studio <span className="bg-yellow-300">Colors</span></h2>
+        <h2 className="font-bold text-lg">
+          Studio <span className="bg-yellow-300">Colors</span>
+        </h2>
         <span className="text-sm font-normal">
           Escolha a cor da sua camiseta
         </span>

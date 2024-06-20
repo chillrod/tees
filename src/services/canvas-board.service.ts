@@ -13,10 +13,12 @@ export const CanvasBoardService = {
   },
 
   UpdateCanvasObjects() {
-    this.FabricRerender();
-
     this.canvasObjects =
       this.editor?.canvas.getObjects() as ExtendedFabricObject[];
+
+    this.FabricRerender();
+
+    this.UpdateTexture();
   },
 
   CancelFabricItemAdd() {
@@ -60,8 +62,6 @@ export const CanvasBoardService = {
     item.selectable = false;
 
     this.UpdateCanvasObjects();
-
-    this.UpdateTexture();
   },
 
   CanvasDiscardActiveObject() {
@@ -78,16 +78,12 @@ export const CanvasBoardService = {
     this.CanvasDiscardActiveObject();
 
     this.UpdateCanvasObjects();
-
-    this.UpdateTexture();
   },
 
   FabricDeleteAllObjects() {
     this.editor?.canvas.clear();
 
     this.UpdateCanvasObjects();
-
-    this.UpdateTexture();
   },
 
   FabricItemCentralize(item?: ExtendedFabricObject) {

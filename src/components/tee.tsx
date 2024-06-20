@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Decal, Wireframe, useGLTF, useTexture } from "@react-three/drei";
+import { Decal, useGLTF, useTexture } from "@react-three/drei";
 import { emitter } from "@/services/mitt";
 import { colors } from "./three-controls/colors";
 import * as THREE from "three";
@@ -14,8 +14,8 @@ export function Model() {
   const textureOnShirt = useTexture(texture);
 
   const [color, setColor] = useState({
-    color: colors[0].color,
-    taglessColor: colors[0].taglessColor,
+    color: colors[1].color,
+    taglessColor: colors[1].taglessColor,
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function Model() {
     });
 
     emitter.on("updateTexture", (texture) => {
-      console.log("🚀 ~ emitter.on ~ texture:", texture)
+      console.log("🚀 ~ emitter.on ~ texture:", texture);
       setTexture(texture);
     });
 
@@ -45,11 +45,37 @@ export function Model() {
         rotation={[Math.PI / 2, 0, -0.146]}
         material-color={color.color}
       >
-        {/* <Decal debug position={[1, 0.5, -40]} scale={30} rotation={[4.67, 5, 0]}>
-          <meshBasicMaterial
-            transparent
-            depthWrite={false}
+        <Decal
+          // rotation={[0, 0, 0]} // Ensure this rotation is appropriate for the decal
+          rotation={[-5, 9.4, 9.41]}
+          position={[0, 5, -40]}
+          scale={30}
+        >
+          <meshPhysicalMaterial
             map={textureOnShirt}
+            transparent
+            side={THREE.FrontSide}
+          />
+        </Decal>
+      </mesh>
+
+      <mesh
+        castShadow
+        geometry={(nodes.Costas as any).geometry}
+        material={materials["Material.002"]}
+        position={[0.101, 0, -0.1]}
+        rotation={[Math.PI / 2, 0, -0.146]}
+        material-color={color.color}
+      >
+        {/* <Decal
+          // rotation={[0, 0, 0]} // Ensure this rotation is appropriate for the decal
+          rotation={[-4.7, 12.5, 9.4]}
+          position={[0, 5, -56]}
+          scale={45}
+        >
+          <meshPhysicalMaterial
+            map={textureOnShirt}
+            transparent
             side={THREE.FrontSide}
           />
         </Decal> */}
