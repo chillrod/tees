@@ -1,43 +1,98 @@
 ---
-import { ModeToggle } from "./ui/mode-toggle";
+import { Button } from "./ui/button";
+import { ShirtIcon, BrushIcon } from "lucide-react";
 ---
 
-<main class="grid w-full bg-stone-100 dark:bg-stone-950 p-6 py-6">
-  <!-- <nav class="flex items-center justify-between p-2">
-    <h2 class="font-bold">Studio Estampar</h2>
-    <ModeToggle client:load />
-  </nav> -->
-  <div class="h-full w-full grid grid-cols-5 gap-4">
-    <div class="h-full w-full grid col-span-2">
-      <div
-        class="absolute
-    text-stone-950
-    dark:text-stone-200 z-30 p-5 flex gap-4"
-      >
-        <img
-          class="dark:invert-[1]"
-          src="./Asset 1.svg"
-          alt="hi"
-          width="65"
-          height="65"
-        />
-        <div>
-          <h2 class="font-bold text-4xl">DIY</h2>
-          <span class="font-bold text-lg bg-yellow-300"> T-shirts </span>
-        </div>
+<main class="md:hidden flex flex-col w-full h-[100vh] bg-stone-100">
+  <div class="absolute bottom-0 flex gap-2 w-full pt-5 z-30">
+    <Button className="w-full flex gap-2" variant="outline" id="teeButton">
+      <ShirtIcon size="20" />
+      Camiseta
+    </Button>
+    <Button className="w-full flex gap-2" variant="outline" id="canvasButton">
+      <BrushIcon size="20" />
+      Canvas
+    </Button>
+  </div>
+  <div class="relative h-full p-4" id="tee">
+    <div class="absolute z-30 flex items-center gap-6">
+      <img
+        class="dark:invert-[1]"
+        src="./Asset 1.svg"
+        alt="hi"
+        width="65"
+        height="65"
+      />
+      <div>
+        <h2 class="font-bold text-4xl">DIY</h2>
+        <span class="font-bold text-lg bg-yellow-300"> T-shirts </span>
       </div>
-      <slot name="tee" />
     </div>
-    <div class="relative col-span-3 grid h-full">
+    <slot name="tee" />
+  </div>
+
+  <div id="canvas" class="hidden h-full w-full">
+    <div class="relative">
       <div class="h-full w-full">
         <slot name="canvas" />
       </div>
-      <div class="absolute top-5 p-4 h-full">
+      <div class="absolute top-0">
         <slot name="controls" />
       </div>
-      <div class="absolute right-0 top-10">
+      <div class="absolute top-12 right-1/2 translate-x-1/2">
         <slot name="layer" />
       </div>
     </div>
   </div>
 </main>
+
+<main class="h-full w-full md:grid grid-cols-5 gap-6 sm:hidden">
+  <div class="h-full w-full grid col-span-2">
+    <div
+      class="absolute
+    text-stone-950
+    dark:text-stone-200 z-30 p-5 flex gap-4"
+    >
+      <img
+        class="dark:invert-[1]"
+        src="./Asset 1.svg"
+        alt="hi"
+        width="65"
+        height="65"
+      />
+      <div>
+        <h2 class="font-bold text-4xl">DIY</h2>
+        <span class="font-bold text-lg bg-yellow-300"> T-shirts </span>
+      </div>
+    </div>
+    <slot name="tee" />
+  </div>
+  <div class="relative col-span-3 grid h-full">
+    <div class="rounded-lg shadow-xl p-4">
+      <slot name="canvas" />
+    </div>
+    <div class="absolute top-5 p-4 h-full">
+      <slot name="controls" />
+    </div>
+    <div class="absolute right-0 top-10">
+      <slot name="layer" />
+    </div>
+  </div>
+</main>
+
+<script>
+  const teeButton = document.getElementById("teeButton");
+  const canvasButton = document.getElementById("canvasButton");
+  const tee = document.getElementById("tee");
+  const canvas = document.getElementById("canvas");
+
+  teeButton?.addEventListener("click", () => {
+    tee?.classList.remove("hidden");
+    canvas?.classList.add("hidden");
+  });
+
+  canvasButton?.addEventListener("click", () => {
+    tee?.classList.add("hidden");
+    canvas?.classList.remove("hidden");
+  });
+</script>

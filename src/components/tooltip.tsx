@@ -14,7 +14,7 @@ export const TooltipUI = ({
 }) => {
   return (
     <TooltipProvider>
-      <Tooltip >
+      <Tooltip>
         <TooltipTrigger>{children}</TooltipTrigger>
         <TooltipContent>
           <p>{text}</p>

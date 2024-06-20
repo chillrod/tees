@@ -7,6 +7,7 @@ import { CircleX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { CanvasLayerText } from "./canvas-layer-text";
+import { CanvasLayerImage } from "./canvas-layer-image";
 
 export const CanvasLayer = () => {
   const divContainer = useRef<HTMLDivElement>(null);
@@ -23,6 +24,7 @@ export const CanvasLayer = () => {
 
   useEffect(() => {
     emitter.on("canvasLayerItem", (item) => {
+      console.log("🚀 ~ emitter.on ~ item:", item)
       if (!item) {
         setIsFormOpen(false);
         setForm(undefined);
@@ -77,6 +79,25 @@ export const CanvasLayer = () => {
                 item={form}
               />
             )}
+            {form && form.type === "image" && (
+              <CanvasLayerImage
+                setFormOpen={setIsFormOpen}
+                formSubmit={formSubmit}
+                item={form}
+              />
+            )}
+            <div className="flex justify-end">
+              <Button
+                onClick={() => [
+                  CanvasBoardService.FabricItemDelete(form),
+                  handleClose(),
+                ]}
+                variant="link"
+                className="p-0 m-0 text-sm"
+              >
+                Deletar
+              </Button>
+            </div>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>

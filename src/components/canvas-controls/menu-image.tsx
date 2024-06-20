@@ -60,14 +60,14 @@ export const MenuImage = (props: Props) => {
       {props.activeButton === 1 && (
         <Menubar.Portal>
           <Menubar.Content
-            className="bg-stone-800 p-2 rouded-lg ml-3 w-48 text-stone-200"
+            className="bg-stone-100 p-4 rouded-lg ml-3 w-48 shadow-2xl rounded-lg "
             side="right"
             onEscapeKeyDown={() => props.setActiveBtn(null)}
             onInteractOutside={() => props.setActiveBtn(null)}
           >
             <Menubar.Label className="mb-2">Images Options</Menubar.Label>
             <Menubar.Item
-              className="cursor-pointer hover:bg-stone-700 p-2 flex justify-between items-center"
+              className="cursor-pointer flex p-2 justify-between items-center rounded-lg shadow-xl"
               onClick={() => handleUploadImage()}
             >
               Upload

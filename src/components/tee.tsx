@@ -24,6 +24,7 @@ export function Model() {
     });
 
     emitter.on("updateTexture", (texture) => {
+      console.log("🚀 ~ emitter.on ~ texture:", texture)
       setTexture(texture);
     });
 
@@ -44,14 +45,14 @@ export function Model() {
         rotation={[Math.PI / 2, 0, -0.146]}
         material-color={color.color}
       >
-        <Decal debug position={[0.101, 0, -0.09]}>
+        {/* <Decal debug position={[1, 0.5, -40]} scale={30} rotation={[4.67, 5, 0]}>
           <meshBasicMaterial
             transparent
             depthWrite={false}
             map={textureOnShirt}
             side={THREE.FrontSide}
           />
-        </Decal>
+        </Decal> */}
       </mesh>
 
       <mesh

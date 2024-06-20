@@ -42,14 +42,6 @@ export const CanvasBoard = () => {
 
   return (
     <>
-      <div className="w-full justify-around flex border-b-[1px] border-dashed border-b-stone-950">
-        {rulers.map((ruler, key) => (
-          <span key={key} className="text-stone-950 text-sm text-right mb-2">
-            {ruler} cm
-          </span>
-        ))}
-      </div>
-
       <div
         className="flex h-[90vh] w-full  dark:bg-stone-950 relative"
         style={{
@@ -62,6 +54,13 @@ export const CanvasBoard = () => {
             <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />
           </CanvasContextMenu>
         </div>
+      </div>
+      <div className="w-full justify-around flex border-t-[1px] border-dashed border-t-stone-950">
+        {rulers.map((ruler, key) => (
+          <span key={key} className="text-stone-950 text-sm text-right mb-2">
+            {ruler} cm
+          </span>
+        ))}
       </div>
     </>
   );

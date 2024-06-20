@@ -40,6 +40,7 @@ export const CanvasBoardService = {
       item.set("cornerSize", 10);
 
       this.editor?.canvas?.add(item);
+      this.editor?.canvas?.setActiveObject(item);
 
       this.editor?.canvas?.off(FabricEvents.MouseMove);
       this.editor?.canvas?.off(FabricEvents.MouseDown);
@@ -52,7 +53,9 @@ export const CanvasBoardService = {
     });
   },
 
-  FabricItemDelete(item: ExtendedFabricObject) {
+  FabricItemDelete(item?: ExtendedFabricObject) {
+    if (!item) return;
+
     this.editor?.canvas.remove(item);
     item.selectable = false;
 
@@ -75,6 +78,22 @@ export const CanvasBoardService = {
     this.CanvasDiscardActiveObject();
 
     this.UpdateCanvasObjects();
+
+    this.UpdateTexture();
+  },
+
+  FabricDeleteAllObjects() {
+    this.editor?.canvas.clear();
+
+    this.UpdateCanvasObjects();
+
+    this.UpdateTexture();
+  },
+
+  FabricItemCentralize(item?: ExtendedFabricObject) {
+    if (!item) return;
+
+    item.center();
 
     this.UpdateTexture();
   },
