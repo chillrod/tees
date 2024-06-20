@@ -1,7 +1,5 @@
 import { emitter } from "@/services/mitt";
-import { MenubarLabel } from "@radix-ui/react-menubar";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { useEffect } from "react";
+import { TooltipUI } from "../tooltip";
 
 export const colors = [
   {
@@ -45,27 +43,34 @@ export const ThreeColors = () => {
   };
 
   return (
-    <div className="max-w-[450px] overflow-auto grid p-6 gap-2 ">
-      <h2 className="font-bold text-lg">T-Shirt Color</h2>
-      <div className="flex gap-4 w-full h-full">
+    <div className="max-w-[450px] overflow-auto grid py-6 gap-1 text-stone-950 dark:text-stone-200">
+      <div>
+        <h2 className="font-bold text-lg">
+          Studio <span className="bg-yellow-300">Colors</span>
+        </h2>
+        <span className="text-sm font-normal">
+          Escolha a cor da sua camiseta
+        </span>
+      </div>
+      <div className="flex gap-2 w-full h-full">
         {colors.map((color, index) => (
-          <div
-            key={index}
-            className="flex flex-col justify-center gap-2 cursor-pointer hover:opacity-75 ease-in-out duration-200"
-          >
-            <div
-              onClick={() =>
-                handleColorChange({
-                  taglessColor: color.taglessColor,
-                  color: color.color,
-                })
-              }
-              className="w-8 h-8 rounded-full"
-              style={{
-                backgroundColor: color.color,
-              }}
-            ></div>
-            <span className="text-sm text-center">{color.name}</span>
+          <div key={index}>
+            <TooltipUI text={color.name}>
+              <div
+                onClick={() =>
+                  handleColorChange({
+                    taglessColor: color.taglessColor,
+                    color: color.color,
+                  })
+                }
+                className="w-8 h-8 rounded-lg border-2 border-stone-200"
+                style={{
+                  backgroundColor: color.color,
+                }}
+              ></div>
+            </TooltipUI>
+
+            {/* <span className="text-sm text-center">{color.name}</span> */}
           </div>
         ))}
       </div>

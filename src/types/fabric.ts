@@ -2,6 +2,7 @@ export enum FabricEvents {
   MouseDown = "mouse:down",
   MouseMove = "mouse:move",
   ObjectModified = "object:modified",
+  ObjectSelected = "selection:created",
 }
 
 // fabric-extensions.d.ts

@@ -1,28 +1,76 @@
 ---
-import { Image } from "astro:assets";
-import studio from "../assets/studio.svg";
+import { Button } from "./ui/button";
+import { ShirtIcon, BrushIcon } from "lucide-react";
 ---
 
-<div class="h-full w-full grid grid-cols-5 gap-4">
-  <div class="h-full w-full grid col-span-2">
-    <div class="absolute text-stone-200 z-30 p-5 flex gap-4">
-      <img src="./Asset 1.svg" alt="hi" width="65" height="65" />
+<div class="absolute bottom-0 flex gap-2 w-full pt-5 z-30 md:hidden p-2">
+  <Button className="flex w-full gap-2" variant="default" id="teeButton">
+    <ShirtIcon size="20" />
+    Camiseta
+  </Button>
+  <Button className="flex gap-2 w-full" variant="default" id="canvasButton">
+    <BrushIcon size="20" />
+    Canvas
+  </Button>
+</div>
+<main class="flex flex-1 h-[100vh] p-6 relative">
+  <div class="h-full bg-stone-100 w-full rounded-lg p-4 flex flex-col">
+    <nav class="flex items-center gap-6">
+      <img
+        class="dark:invert-[1]"
+        src="./Asset 1.svg"
+        alt="hi"
+        width="65"
+        height="65"
+      />
       <div>
         <h2 class="font-bold text-4xl">DIY</h2>
-        <span class="font-bold text-lg">T-Shirts</span>
+        <span class="font-bold text-lg bg-yellow-300"> T-shirts </span>
       </div>
-    </div>
-    <slot name="tee" />
+      <div class="absolute bottom-12 md:bottom-5 z-40" id="tee">
+        <slot name="colors" />
+      </div>
+    </nav>
+    <section
+      class="h-full w-full flex justify-center md:grid md:grid-cols-2 md:px-12 gap-12 rounded-lg"
+    >
+      <div id="tee">
+        <slot name="tee" />
+      </div>
+      <div class="relative hidden md:block w-full" id="canvas">
+        <div class="absolute top-0 z-30">
+          <slot name="controls" />
+        </div>
+        <div class="w-full h-full">
+          <slot name="canvas" />
+        </div>
+      </div>
+      <div class="absolute right-12 top-12">
+        <slot name="layer" />
+      </div>
+    </section>
+    <!-- <div class="grid justify-end">
+      <div class="flex gap-2">
+        <Button variant="link">Salvar Pedido</Button>
+        <Button>Enviar Pedido</Button>
+      </div>
+    </div> -->
   </div>
-  <div class="relative col-span-3">
-    <div>
-      <slot name="canvas" />
-    </div>
-    <div class="absolute top-0 p-4 h-full">
-      <slot name="controls" />
-    </div>
-    <div class="absolute right-0 top-0">
-      <slot name="leva" />
-    </div>
-  </div>
-</div>
+</main>
+
+<script>
+  const teeButton = document.getElementById("teeButton");
+  const canvasButton = document.getElementById("canvasButton");
+  const tee = document.querySelectorAll("#tee");
+  const canvas = document.getElementById("canvas");
+
+  teeButton?.addEventListener("click", () => {
+    tee?.forEach((tee: any) => tee.classList.remove("hidden"));
+    canvas?.classList.add("hidden");
+  });
+
+  canvasButton?.addEventListener("click", () => {
+    tee?.forEach((tee: any) => tee.classList.add("hidden"));
+    canvas?.classList.remove("hidden");
+  });
+</script>

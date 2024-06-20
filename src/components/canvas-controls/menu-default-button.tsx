@@ -1,4 +1,3 @@
-import { Icon } from "lucide-react";
 import { Button } from "../ui/button";
 import type { MenuChildrenProps } from "./menu";
 

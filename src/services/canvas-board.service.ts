@@ -1,9 +1,8 @@
+import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { fabric } from "fabric";
 import type { FabricJSEditor } from "fabricjs-react";
 import short from "short-uuid";
-import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { emitter } from "./mitt";
-import { CanvasLayersService } from "./canvas-layers.service";
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
@@ -14,16 +13,12 @@ export const CanvasBoardService = {
   },
 
   UpdateCanvasObjects() {
-    this.FabricRerender();
-
     this.canvasObjects =
       this.editor?.canvas.getObjects() as ExtendedFabricObject[];
 
-    const layerControls = CanvasLayersService.UpdateLevaControls(
-      this.canvasObjects
-    );
+    this.FabricRerender();
 
-    emitter.emit("levaControls", layerControls);
+    this.UpdateTexture();
   },
 
   CancelFabricItemAdd() {
@@ -47,6 +42,7 @@ export const CanvasBoardService = {
       item.set("cornerSize", 10);
 
       this.editor?.canvas?.add(item);
+      this.editor?.canvas?.setActiveObject(item);
 
       this.editor?.canvas?.off(FabricEvents.MouseMove);
       this.editor?.canvas?.off(FabricEvents.MouseDown);
@@ -59,13 +55,19 @@ export const CanvasBoardService = {
     });
   },
 
-  FabricItemDelete(item: ExtendedFabricObject) {
+  FabricItemDelete(item?: ExtendedFabricObject) {
+    if (!item) return;
+
     this.editor?.canvas.remove(item);
     item.selectable = false;
 
     this.UpdateCanvasObjects();
+  },
 
-    this.UpdateTexture();
+  CanvasDiscardActiveObject() {
+    this.editor?.canvas.discardActiveObject();
+
+    this.UpdateCanvasObjects();
   },
 
   FabricDeleteSelectedObjects() {
@@ -73,9 +75,21 @@ export const CanvasBoardService = {
       this.editor?.canvas.remove(object);
     });
 
-    this.editor?.canvas.discardActiveObject();
+    this.CanvasDiscardActiveObject();
 
     this.UpdateCanvasObjects();
+  },
+
+  FabricDeleteAllObjects() {
+    this.editor?.canvas.clear();
+
+    this.UpdateCanvasObjects();
+  },
+
+  FabricItemCentralize(item?: ExtendedFabricObject) {
+    if (!item) return;
+
+    item.center();
 
     this.UpdateTexture();
   },

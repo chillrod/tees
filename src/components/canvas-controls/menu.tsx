@@ -4,7 +4,6 @@ import { MenuText } from "./menu-text";
 
 import * as Menubar from "@radix-ui/react-menubar";
 import { MenuImage } from "./menu-image";
-import { keyboardEvents } from "@/services/keyboard-events";
 
 export interface MenuChildrenProps {
   activeButton: number | null;
