@@ -39,6 +39,9 @@
     "clsx": "^2.1.1",
     "fabric": "^5.3.0",
     "fabricjs-react": "^1.2.2",
+    "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.390.0",
     "mitt": "^3.0.1",
     "react": "^18.3.1",
@@ -49,10 +52,12 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.165.0",
     "typescript": "^5.4.5",
-    "vaul": "^0.9.1"
+    "vaul": "^0.9.1",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/fabric": "^5.3.7",
+    "@types/js-cookie": "^3.0.6",
     "@types/react-resizable": "^3.0.7"
   }
 }

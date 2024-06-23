@@ -12,6 +12,7 @@ type Events = {
   updateCanvasItem: { formData: {}; item: ExtendedFabricObject };
   imageUpload: HTMLImageElement;
   setActiveMenuItem: number;
+  setUserIdentifier: string;
 };
 
 export const emitter = mitt<Events>(); // inferred as Emitter<Events>
