@@ -10,6 +10,8 @@ import { ThreeColors } from "@/components/three-controls/colors";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { NavBarMenu } from "@/components/navbar-menu";
+import type { PedidoForm } from "@/services/interfaces";
+import { Button } from "@/components/ui/button";
 
 const auth = getAuth(app);
 

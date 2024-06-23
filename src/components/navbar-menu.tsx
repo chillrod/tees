@@ -10,11 +10,13 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 
-import * as Form from "@radix-ui/react-form";
-import { Input } from "./ui/input";
-import { useEffect, useState } from "react";
-import type { UserIdentifier, UserRecord } from "firebase-admin/auth";
+import type { PedidoForm } from "@/services/interfaces";
 import { userStore } from "@/stone/user";
+import * as Form from "@radix-ui/react-form";
+import type { UserRecord } from "firebase-admin/auth";
+import { useEffect, useRef, useState } from "react";
+import { Input } from "./ui/input";
+import { useToast } from "./ui/use-toast";
 
 interface Props {
   user: UserRecord;
@@ -22,33 +24,113 @@ interface Props {
 
 export const NavBarMenu = (props: Props) => {
   const userState = userStore();
-  const [form, setForm] = useState({
-    pp: 0,
-    p: 0,
-    m: 0,
-    g: 0,
-    gg: 0,
-    xg: 0,
+  const { toast } = useToast();
+
+  const whatsappInput = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [form, setForm] = useState<PedidoForm>({
+    nome: props.user.displayName,
+    email: props.user.email,
+    whatsapp: "",
+    tamanhos: {
+      pp: 0,
+      p: 0,
+      m: 0,
+      g: 0,
+      gg: 0,
+      xg: 0,
+    },
   });
 
-  const updateForm = (
+  const updateTamanhoForm = (
     key: string,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     event.preventDefault();
 
-    setForm((prev) => ({ ...prev, [key]: parseInt(event.target.value) }));
+    setForm((prev) => ({
+      ...prev,
+      tamanhos: {
+        ...prev.tamanhos,
+        [key]: +event.target.value,
+      },
+    }));
   };
 
-  const total = Object.values(form).reduce((acc, curr) => acc + +curr, 0);
+  const total = Object.values(form.tamanhos).reduce(
+    (acc, curr) => acc + +curr,
+    0
+  );
 
-  const formSubmit = (formData: {}) => {
-    console.log(formData);
+  const formSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    formData: PedidoForm
+  ) => {
+    event.preventDefault();
+
+    if (!formData.whatsapp?.length) {
+      whatsappInput?.current?.focus();
+
+      return toast({
+        title: "Ops!",
+        description:
+          "O campo whatsapp é necessário para a gente entrar em contato com você.",
+      });
+    }
+
+    if (Object.values(formData.tamanhos).every((tamanho) => tamanho === 0)) {
+      toast({
+        title: "Ops!",
+        description: "Você precisa escolher pelo menos um tamanho.",
+      });
+    }
+
+    try {
+      setIsLoading(true);
+
+      await fetch("/api/pedidos/enviar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      toast({
+        title: "Pedido enviado!",
+        description: "Seu pedido foi enviado com sucesso.",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+
+      formRef.current?.submit();
+
+      toast({
+        title: "Ops!",
+        description: "Houve um erro ao enviar o pedido, tente novamente",
+      });
+    } finally {
+      setIsLoading(false);
+
+      setForm({
+        ...form,
+        tamanhos: {
+          pp: 0,
+          p: 0,
+          m: 0,
+          g: 0,
+          gg: 0,
+          xg: 0,
+        },
+      });
+    }
   };
 
   useEffect(() => {
     if (props.user) {
-      console.log("🚀 ~ useEffect ~ props.user:", props.user)
       userState.updateUser(props.user);
     }
   }, [props.user]);
@@ -70,15 +152,29 @@ export const NavBarMenu = (props: Props) => {
                 Escreva mais detalhes sobre o seu pedido
               </DrawerDescription>
             </div>
-            <DrawerDescription>Quantidade por Tamanho</DrawerDescription>
-            <Form.Root className="grid grid-cols-2 items-center gap-6">
+            <Form.Root
+              className="grid grid-cols-2 items-center gap-6"
+              onSubmit={async (event) => formSubmit(event, form)}
+            >
+              <Form.Field name="whatsapp">
+                <Form.Label>Whatsapp *</Form.Label>
+                <Input
+                  required
+                  ref={whatsappInput}
+                  placeholder="Whatsapp"
+                  value={form.whatsapp}
+                  onChange={(event) =>
+                    setForm({ ...form, whatsapp: event.target.value })
+                  }
+                />
+              </Form.Field>
               <Form.Field name="pp">
                 <Form.Label>PP</Form.Label>
                 <Input
                   type="number"
                   placeholder="PP"
-                  value={form.pp}
-                  onChange={(event) => updateForm("pp", event)}
+                  value={form.tamanhos.pp}
+                  onChange={(event) => updateTamanhoForm("pp", event)}
                 />
               </Form.Field>
               <Form.Field name="p">
@@ -86,8 +182,8 @@ export const NavBarMenu = (props: Props) => {
                 <Input
                   type="number"
                   placeholder="P"
-                  value={form.p}
-                  onChange={(event) => updateForm("p", event)}
+                  value={form.tamanhos.p}
+                  onChange={(event) => updateTamanhoForm("p", event)}
                 />
               </Form.Field>
               <Form.Field name="m">
@@ -95,8 +191,8 @@ export const NavBarMenu = (props: Props) => {
                 <Input
                   type="number"
                   placeholder="M"
-                  value={form.m}
-                  onChange={(event) => updateForm("m", event)}
+                  value={form.tamanhos.m}
+                  onChange={(event) => updateTamanhoForm("m", event)}
                 />
               </Form.Field>
               <Form.Field name="g">
@@ -104,8 +200,8 @@ export const NavBarMenu = (props: Props) => {
                 <Input
                   type="number"
                   placeholder="G"
-                  value={form.g}
-                  onChange={(event) => updateForm("g", event)}
+                  value={form.tamanhos.g}
+                  onChange={(event) => updateTamanhoForm("g", event)}
                 />
               </Form.Field>
               <Form.Field name="gg">
@@ -113,8 +209,8 @@ export const NavBarMenu = (props: Props) => {
                 <Input
                   type="number"
                   placeholder="GG"
-                  value={form.gg}
-                  onChange={(event) => updateForm("gg", event)}
+                  value={form.tamanhos.gg}
+                  onChange={(event) => updateTamanhoForm("gg", event)}
                 />
               </Form.Field>
               <Form.Field name="xg">
@@ -122,8 +218,8 @@ export const NavBarMenu = (props: Props) => {
                 <Input
                   type="number"
                   placeholder="XG"
-                  value={form.xg}
-                  onChange={(event) => updateForm("xg", event)}
+                  value={form.tamanhos.xg}
+                  onChange={(event) => updateTamanhoForm("xg", event)}
                 />
               </Form.Field>
               <Form.Field name="total">
@@ -135,21 +231,29 @@ export const NavBarMenu = (props: Props) => {
                   value={total}
                 ></Input>
               </Form.Field>
+              <Form.Submit className="grid w-full col-span-2">
+                <Button className="w-full" disabled={isLoading}>
+                  Enviar
+                </Button>
+              </Form.Submit>
             </Form.Root>
           </DrawerHeader>
           <DrawerFooter>
-            <Button onClick={() => formSubmit(form)}>Enviar</Button>
             <DrawerClose>
               <Button
                 variant="outline"
+                disabled={isLoading}
                 onClick={() =>
                   setForm({
-                    pp: 0,
-                    p: 0,
-                    m: 0,
-                    g: 0,
-                    gg: 0,
-                    xg: 0,
+                    ...form,
+                    tamanhos: {
+                      pp: 0,
+                      p: 0,
+                      m: 0,
+                      g: 0,
+                      gg: 0,
+                      xg: 0,
+                    },
                   })
                 }
               >

@@ -30,7 +30,9 @@ export const CanvasBoardService = {
 
   HandleFabricItemAdd(item: ExtendedFabricObject) {
     this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
-      this.editor?.canvas.setCursor(item?.type || "default");
+      this.editor?.canvas.setCursor(
+        item?.cursorStyle || item?.type || "default"
+      );
     });
 
     this.editor?.canvas?.on(FabricEvents.MouseDown, (event: fabric.IEvent) => {

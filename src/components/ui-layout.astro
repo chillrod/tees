@@ -3,8 +3,9 @@ import { gradient } from "./canvas-board";
 import StudioLogo from "./studio-logo.astro";
 import { Button } from "./ui/button";
 import { ShirtIcon, BrushIcon } from "lucide-react";
+import { Toaster } from "./ui/toaster";
 ---
-
+<Toaster client:load/>
 <div class="absolute bottom-0 flex gap-2 w-full pt-5 z-30 md:hidden p-2">
   <Button className="flex w-full gap-2" variant="default" id="teeButton">
     <ShirtIcon size="20" />

@@ -55,27 +55,9 @@ export const MenuImage = (props: Props) => {
     <>
       <MenuDefaultButton
         icon={<ImagePlusIcon />}
+        onClick={() => handleUploadImage()}
         {...props}
       ></MenuDefaultButton>
-      {props.activeButton === 1 && (
-        <Menubar.Portal>
-          <Menubar.Content
-            className="bg-stone-100 p-4 rouded-lg ml-3 w-48 shadow-2xl rounded-lg "
-            side="right"
-            onEscapeKeyDown={() => props.setActiveBtn(null)}
-            onInteractOutside={() => props.setActiveBtn(null)}
-          >
-            <Menubar.Label className="mb-2">Images Options</Menubar.Label>
-            <Menubar.Item
-              className="cursor-pointer flex p-2 justify-between items-center rounded-lg shadow-xl"
-              onClick={() => handleUploadImage()}
-            >
-              Upload
-              <ImageUpIcon size={16}></ImageUpIcon>
-            </Menubar.Item>
-          </Menubar.Content>
-        </Menubar.Portal>
-      )}
 
       <Input
         accept="image/*"
