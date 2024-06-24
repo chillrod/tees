@@ -7,10 +7,10 @@ import { Suspense } from "react";
 export const Scene = () => {
   return (
     <div className="h-full w-full rounded-lg">
-      <Canvas shadows className="rounded-lg">
+      <Canvas shadows className="rounded-lg" >
         <hemisphereLight args={[0xffffbb, 0x080820, 1]} />
 
-        <Stage intensity={1} shadows="contact">
+        <Stage intensity={0.5}>
           <Suspense
             fallback={
               <Html>

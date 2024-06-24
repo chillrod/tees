@@ -10,6 +10,7 @@ export enum FabricEvents {
 export interface ExtendedFabricObject extends fabric.Object {
   id?: string;
   type?: string;
+  cursorStyle?: string;
   src?: string;
   charSpacing?: number;
   fontFamily?: string;

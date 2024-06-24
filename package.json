@@ -13,6 +13,7 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.5.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/vercel": "^7.7.2",
     "@fontsource/anton": "^5.0.20",
     "@fontsource/dm-serif-text": "^5.0.20",
     "@fontsource/fira-mono": "^5.0.13",
@@ -28,6 +29,7 @@
     "@radix-ui/react-slider": "^1.1.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.8",
@@ -39,6 +41,9 @@
     "clsx": "^2.1.1",
     "fabric": "^5.3.0",
     "fabricjs-react": "^1.2.2",
+    "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.390.0",
     "mitt": "^3.0.1",
     "react": "^18.3.1",
@@ -49,10 +54,12 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.165.0",
     "typescript": "^5.4.5",
-    "vaul": "^0.9.1"
+    "vaul": "^0.9.1",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/fabric": "^5.3.7",
+    "@types/js-cookie": "^3.0.6",
     "@types/react-resizable": "^3.0.7"
   }
 }
