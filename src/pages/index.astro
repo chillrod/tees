@@ -13,7 +13,6 @@ import { NavBarMenu } from "@/components/navbar-menu";
 import type { PedidoForm } from "@/services/interfaces";
 
 const auth = getAuth(app);
-export const prerender = true;
 
 /* Check current session */
 if (!Astro.cookies.has("__session")) {
