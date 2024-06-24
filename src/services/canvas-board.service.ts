@@ -112,7 +112,7 @@ export const CanvasBoardService = {
     emitter.emit("updateCanvasRef", this.editor?.canvas);
     emitter.emit(
       "updateTexture",
-      this.editor?.canvas.toDataURL({ multiplier: 3 })
+      this.editor?.canvas.toDataURL({ multiplier: 2.7 })
     );
     this.FabricRerender();
   },

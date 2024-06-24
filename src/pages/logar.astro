@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import { Button } from "@/components/ui/button";
 import { gradient, size } from "@/components/canvas-board";
 import StudioLogo from "@/components/studio-logo.astro";
+export const prerender = true;
 
 /* Check if the user is authenticated */
 const auth = getAuth(app);
