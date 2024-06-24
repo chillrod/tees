@@ -4,7 +4,7 @@ import { TooltipUI } from "../tooltip";
 export const colors = [
   {
     name: "Preto",
-    color: "#000000",
+    color: "#1c1c1c",
     taglessColor: "#ffffff",
   },
   {
@@ -19,7 +19,7 @@ export const colors = [
   },
   {
     name: "Verde",
-    color: "#194519",
+    color: "#0f700f",
     taglessColor: "#ffffff",
   },
   {

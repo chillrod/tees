@@ -1,6 +1,6 @@
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { emitter } from "@/services/mitt";
 import { FabricEvents } from "@/types/fabric";
@@ -20,6 +20,10 @@ export const CanvasBoard = () => {
 
   useEffect(() => {
     editor?.canvas.on(FabricEvents.ObjectModified, () => {
+      CanvasBoardService.UpdateTexture();
+    });
+
+    editor?.canvas.on("object:rotating", () => {
       CanvasBoardService.UpdateTexture();
     });
 

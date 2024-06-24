@@ -13,6 +13,7 @@ type Events = {
   imageUpload: HTMLImageElement;
   setActiveMenuItem: number;
   setUserIdentifier: string;
+  updateCanvasRef: any;
 };
 
 export const emitter = mitt<Events>(); // inferred as Emitter<Events>

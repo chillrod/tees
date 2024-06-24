@@ -57,6 +57,10 @@ export const CanvasBoardService = {
     });
   },
 
+  GetCanvasImage() {
+    return this.editor?.canvas.toDataURL({ multiplier: 4 });
+  },
+
   FabricItemDelete(item?: ExtendedFabricObject) {
     if (!item) return;
 
@@ -105,7 +109,11 @@ export const CanvasBoardService = {
   },
 
   UpdateTexture() {
-    emitter.emit("updateTexture", this.editor?.canvas.toDataURL());
+    emitter.emit("updateCanvasRef", this.editor?.canvas);
+    emitter.emit(
+      "updateTexture",
+      this.editor?.canvas.toDataURL({ multiplier: 3 })
+    );
     this.FabricRerender();
   },
 

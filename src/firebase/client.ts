@@ -2,14 +2,15 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDkbrpYUyP6Yy5FBZ5osyy-VFho2z7ukyA",
-  authDomain: "studiocanvas-d24ec.firebaseapp.com",
-  projectId: "studiocanvas-d24ec",
-  storageBucket: "studiocanvas-d24ec.appspot.com",
-  messagingSenderId: "956015152278",
-  appId: "1:956015152278:web:d48ddd6030d5cbcb3b06b7",
-  measurementId: "G-DGY115H0VF",
+  apiKey: "AIzaSyCsf2NntJwZ452R2dNbvTrizhIXAUH7UUc",
+  authDomain: "studioestamparcanvas.firebaseapp.com",
+  projectId: "studioestamparcanvas",
+  storageBucket: "studioestamparcanvas.appspot.com",
+  messagingSenderId: "493173877593",
+  appId: "1:493173877593:web:2b33b34644acc60126fa48",
+  measurementId: "G-6DF9QM3Z69"
 };
+
 
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);

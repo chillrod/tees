@@ -1,4 +1,5 @@
 import { Button } from "./ui/button";
+
 import {
   Drawer,
   DrawerClose,
@@ -17,6 +18,7 @@ import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
+import { CanvasBoardService } from "@/services/canvas-board.service";
 
 interface Props {
   user: UserRecord;
@@ -27,14 +29,15 @@ export const NavBarMenu = (props: Props) => {
   const { toast } = useToast();
 
   const whatsappInput = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const [form, setForm] = useState<PedidoForm>({
     nome: props.user.displayName,
     email: props.user.email,
     whatsapp: "",
+    canvas: "",
     tamanhos: {
       pp: 0,
       p: 0,
@@ -65,20 +68,17 @@ export const NavBarMenu = (props: Props) => {
     0
   );
 
-  const formSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-    formData: PedidoForm
-  ) => {
-    event.preventDefault();
-
+  const applyValidations = (formData: PedidoForm) => {
     if (!formData.whatsapp?.length) {
       whatsappInput?.current?.focus();
 
-      return toast({
+      toast({
         title: "Ops!",
         description:
           "O campo whatsapp é necessário para a gente entrar em contato com você.",
       });
+
+      return false;
     }
 
     if (Object.values(formData.tamanhos).every((tamanho) => tamanho === 0)) {
@@ -86,37 +86,51 @@ export const NavBarMenu = (props: Props) => {
         title: "Ops!",
         description: "Você precisa escolher pelo menos um tamanho.",
       });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const formSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    formData: PedidoForm
+  ) => {
+    event.preventDefault();
+
+    const hasSucessedValidations = applyValidations(formData);
+
+    if (!hasSucessedValidations) {
+      return;
     }
 
     try {
       setIsLoading(true);
+      const canvas = CanvasBoardService.GetCanvasImage();
 
-      await fetch("/api/pedidos/enviar", {
+      const res = await fetch("/api/pedidos/enviar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          canvas,
+        }),
       });
 
-      toast({
-        title: "Pedido enviado!",
-        description: "Seu pedido foi enviado com sucesso.",
-      });
-    } catch (error) {
-      console.error("Error:", error);
-
-      formRef.current?.submit();
-
-      toast({
-        title: "Ops!",
-        description: "Houve um erro ao enviar o pedido, tente novamente",
-      });
-    } finally {
-      setIsLoading(false);
+      if (res.status !== 200) {
+        return toast({
+          title: "Ops!",
+          description: "Ocorreu um erro ao enviar seu pedido.",
+        });
+      }
 
       setForm({
         ...form,
+        whatsapp: "",
+        canvas: "",
         tamanhos: {
           pp: 0,
           p: 0,
@@ -126,6 +140,15 @@ export const NavBarMenu = (props: Props) => {
           xg: 0,
         },
       });
+
+      toast({
+        title: "Pedido enviado!",
+        description: "Seu pedido foi enviado com sucesso.",
+      });
+
+      setOpenDrawer(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -140,9 +163,11 @@ export const NavBarMenu = (props: Props) => {
       <Button variant="link" disabled>
         Seus pedidos
       </Button>
-      <Drawer>
+      <Drawer open={openDrawer}>
         <DrawerTrigger>
-          <Button variant="link">Enviar pedido</Button>
+          <Button variant="link" onClick={() => setOpenDrawer(true)}>
+            Enviar pedido
+          </Button>
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader className="flex flex-col gap-4">
@@ -243,19 +268,7 @@ export const NavBarMenu = (props: Props) => {
               <Button
                 variant="outline"
                 disabled={isLoading}
-                onClick={() =>
-                  setForm({
-                    ...form,
-                    tamanhos: {
-                      pp: 0,
-                      p: 0,
-                      m: 0,
-                      g: 0,
-                      gg: 0,
-                      xg: 0,
-                    },
-                  })
-                }
+                onClick={() => [setOpenDrawer(false)]}
               >
                 Cancelar
               </Button>

@@ -1,10 +1,7 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
-import { getAuth } from "firebase-admin/auth";
+import { app, auth } from "../../../firebase/server";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const auth = getAuth(app);
-
   /* Get token from request headers */
   const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
   if (!idToken) {
@@ -25,8 +22,8 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   });
 
   cookies.set("__session", sessionCookie, {
-    path: "/apresentacao",
+    path: "/",
   });
 
-  return redirect("/");
+  return redirect("/apresentacao");
 };
