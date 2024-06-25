@@ -7,34 +7,41 @@ import { NavBarMenuForm } from "./navbar-menu-orcamento-form";
 import { NavBarMenuOptions } from "./navbar-menu-options";
 
 interface Props {
-  user: UserRecord;
+  user?: UserRecord;
 }
 
-export const NavBarMenu = (props: Props) => {
+export const NavBarMenu = ({ user }: Props) => {
   const userState = userStore();
 
   useEffect(() => {
-    if (props.user) {
-      userState.updateUser(props.user);
+    console.log("🚀 ~ useEffect ~ user:", user);
+    if (user) {
+      userState.updateUser(user);
     }
-  }, [props.user]);
+  }, [user]);
 
   return (
-    <div className="gap-4 hidden md:flex">
-      <div>
-        <a
-          href="
+    <>
+      {user ? (
+        <div className="gap-4 hidden md:flex">
+          <a
+            href="
         /"
-        >
-          <Button variant="link">Criar</Button>
-        </a>
-      </div>
-      <div>
-        <NavBarMenuForm user={props.user}></NavBarMenuForm>
-      </div>
-      <div>
-        <NavBarMenuOptions user={props.user}></NavBarMenuOptions>
-      </div>
-    </div>
+          >
+            <Button variant="link">Criar</Button>
+          </a>
+          <div>
+            <NavBarMenuForm user={user}></NavBarMenuForm>
+          </div>
+          <div>
+            <NavBarMenuOptions user={user}></NavBarMenuOptions>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div>Erro</div>
+        </>
+      )}
+    </>
   );
 };

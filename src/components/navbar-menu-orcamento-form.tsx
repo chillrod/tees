@@ -19,7 +19,7 @@ import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 
 interface Props {
-  user: UserRecord;
+  user?: UserRecord;
 }
 export const NavBarMenuForm = (props: Props) => {
   const { toast } = useToast();
@@ -30,8 +30,8 @@ export const NavBarMenuForm = (props: Props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [form, setForm] = useState<PedidoForm>({
-    nome: props.user.displayName || '',
-    email: props.user.email || '',
+    nome: props?.user?.displayName || "",
+    email: props?.user?.email || "",
     whatsapp: "",
     canvas: "",
     sobre: "",
@@ -117,7 +117,8 @@ export const NavBarMenuForm = (props: Props) => {
           <div>
             <DrawerTitle>Solicitar orçamento</DrawerTitle>
             <DrawerDescription>
-              Preencha o formulário abaixo para solicitar um orçamento, entraremos em contato com você o mais rápido possível.
+              Preencha o formulário abaixo para solicitar um orçamento,
+              entraremos em contato com você o mais rápido possível.
             </DrawerDescription>
           </div>
           <Form.Root
