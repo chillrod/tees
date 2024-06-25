@@ -83,7 +83,7 @@ export const NavBarMenuForm = (props: Props) => {
       if (res.status !== 200) {
         return toast({
           title: "Ops!",
-          description: "Ocorreu um erro ao enviar seu pedido.",
+          description: "Ocorreu um erro ao enviar seu orçamento.",
         });
       }
 
@@ -95,8 +95,8 @@ export const NavBarMenuForm = (props: Props) => {
       });
 
       toast({
-        title: "Pedido enviado!",
-        description: "Seu pedido foi enviado com sucesso.",
+        title: "Orçamento enviado!",
+        description: "Seu orçamento foi enviado com sucesso.",
       });
 
       setOpenDrawer(false);
@@ -115,9 +115,9 @@ export const NavBarMenuForm = (props: Props) => {
       <DrawerContent>
         <DrawerHeader className="flex flex-col gap-4">
           <div>
-            <DrawerTitle>Enviar pedido</DrawerTitle>
+            <DrawerTitle>Solicitar orçamento</DrawerTitle>
             <DrawerDescription>
-              Escreva mais detalhes sobre o seu pedido
+              Preencha o formulário abaixo para solicitar um orçamento, entraremos em contato com você o mais rápido possível.
             </DrawerDescription>
           </div>
           <Form.Root
@@ -139,7 +139,7 @@ export const NavBarMenuForm = (props: Props) => {
             <Form.Field name="about">
               <Form.Label>Sobre o pedido</Form.Label>
               <Textarea
-                placeholder="Sobre o pedido"
+                placeholder="Sobre a sua criação..."
                 value={form.sobre}
                 onChange={(event) =>
                   setForm({
