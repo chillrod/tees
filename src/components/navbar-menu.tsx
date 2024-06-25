@@ -22,6 +22,14 @@ export const NavBarMenu = (props: Props) => {
   return (
     <div className="gap-4 hidden md:flex">
       <div>
+        <a
+          href="
+        /"
+        >
+          <Button variant="link">Criar</Button>
+        </a>
+      </div>
+      <div>
         <NavBarMenuForm user={props.user}></NavBarMenuForm>
       </div>
       <div>
