@@ -1,5 +1,6 @@
 import { emitter } from "@/services/mitt";
 import { TooltipUI } from "../tooltip";
+import { Button } from "../ui/button";
 
 export const colors = [
   {
@@ -34,7 +35,7 @@ export const colors = [
   },
 ];
 
-export const ThreeColors = () => {
+export const ThreeControls = () => {
   const handleColorChange = (params: {
     taglessColor: string;
     color: string;
@@ -43,7 +44,20 @@ export const ThreeColors = () => {
   };
 
   return (
-    <div className="max-w-[450px] overflow-auto grid py-6 gap-1 text-stone-950 dark:text-stone-200">
+    <div className="max-w-[450px] overflow-auto grid py-6 gap-6 text-stone-950 dark:text-stone-200 m-6">
+      <button
+        className="hover:bg-stone-200 flex flex-col justify-center p-3 w-24 rounded-lg cursor:pointer ease-in-out duration-200"
+        onClick={() => emitter.emit("centerShirt")}
+      >
+        <img
+          className="mx-auto"
+          src="./icon-centralizar.svg"
+          alt="Centralizar"
+          width={40}
+          height={40}
+        />
+        <span className="text-center">Centralizar</span>
+      </button>
       <div>
         <h2 className="font-bold text-lg">
           Studio <span className="bg-yellow-300">Colors</span>
@@ -69,8 +83,6 @@ export const ThreeColors = () => {
                 }}
               ></div>
             </TooltipUI>
-
-            {/* <span className="text-sm text-center">{color.name}</span> */}
           </div>
         ))}
       </div>

@@ -14,6 +14,8 @@ type Events = {
   setActiveMenuItem: number;
   setUserIdentifier: string;
   updateCanvasRef: any;
+  centerShirt: void;
+  toggleEditButton: ExtendedFabricObject[];
 };
 
 export const emitter = mitt<Events>(); // inferred as Emitter<Events>
