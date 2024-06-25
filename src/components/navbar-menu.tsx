@@ -14,6 +14,7 @@ export const NavBarMenu = ({ user }: Props) => {
   const userState = userStore();
 
   useEffect(() => {
+    console.log("🚀 ~ useEffect ~ user:", user);
     if (user) {
       userState.updateUser(user);
     }
