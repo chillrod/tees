@@ -3,6 +3,7 @@ import StudioLogo from "./studio-logo.astro";
 import { Button } from "./ui/button";
 import { ShirtIcon, BrushIcon } from "lucide-react";
 import { Toaster } from "./ui/toaster";
+import Base from "@/layouts/Base.astro";
 ---
 
 <Toaster client:load />
@@ -17,17 +18,11 @@ import { Toaster } from "./ui/toaster";
   </Button>
 </div>
 
-<main class="flex flex-1 h-[100vh] p-4 relative">
-  <div class="h-full bg-stone-100 w-full rounded-lg p-4 flex flex-col">
-    <nav class="flex items-center gap-6 justify-between">
-      <StudioLogo />
-      <div class="absolute bottom-12 md:bottom-5 z-40" id="tee">
-        <slot name="colors" />
-      </div>
-      <div class="justify-end">
-        <slot name="actions" />
-      </div>
-    </nav>
+<Base>
+  <div slot="content">
+    <div class="absolute bottom-12 md:bottom-5 z-40" id="tee">
+      <slot name="colors" />
+    </div>
     <section
       class="h-full w-full flex justify-center md:grid md:grid-cols-2 gap-2 rounded-lg"
     >
@@ -45,22 +40,22 @@ import { Toaster } from "./ui/toaster";
         </div>
       </div>
     </section>
-
-    <script>
-      const teeButton = document.getElementById("teeButton");
-      const canvasButton = document.getElementById("canvasButton");
-      const tee = document.querySelectorAll("#tee");
-      const canvas = document.getElementById("canvas");
-
-      teeButton?.addEventListener("click", () => {
-        tee?.forEach((tee: any) => tee.classList.remove("hidden"));
-        canvas?.classList.add("hidden");
-      });
-
-      canvasButton?.addEventListener("click", () => {
-        tee?.forEach((tee: any) => tee.classList.add("hidden"));
-        canvas?.classList.remove("hidden");
-      });
-    </script>
   </div>
-</main>
+</Base>
+
+<script>
+  const teeButton = document.getElementById("teeButton");
+  const canvasButton = document.getElementById("canvasButton");
+  const tee = document.querySelectorAll("#tee");
+  const canvas = document.getElementById("canvas");
+
+  teeButton?.addEventListener("click", () => {
+    tee?.forEach((tee: any) => tee.classList.remove("hidden"));
+    canvas?.classList.add("hidden");
+  });
+
+  canvasButton?.addEventListener("click", () => {
+    tee?.forEach((tee: any) => tee.classList.add("hidden"));
+    canvas?.classList.remove("hidden");
+  });
+</script>

@@ -9,6 +9,26 @@ import "@fontsource/dm-serif-text";
 import "@fontsource/anton";
 import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
+import StudioLogo from "@/components/studio-logo.astro";
+import { NavBarMenu } from "@/components/navbar-menu";
+
+import { getAuth } from "firebase-admin/auth";
+import { app } from "@/firebase/server";
+
+const auth = getAuth(app);
+
+/* Check current session */
+if (!Astro.cookies.has("__session")) {
+  return Astro.redirect("/logar");
+}
+// @ts-ignore
+const sessionCookie = Astro.cookies.get("__session").value;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+  return Astro.redirect("/logar");
+}
 ---
 
 <!doctype html>
@@ -25,22 +45,27 @@ import { ViewTransitions } from "astro:transitions";
     <title>{title}</title>
   </head>
   <body>
+    <nav class="flex items-center justify-between p-4 m-0">
+      <StudioLogo />
+      <NavBarMenu client:load user={user} />
+    </nav>
     <slot />
-  </body><style is:global>
-    :root {
-      --accent: 136, 58, 234;
-      --accent-light: 224, 204, 250;
-      --accent-dark: 49, 10, 101;
-      --accent-gradient: linear-gradient(
-        45deg,
-        rgb(var(--accent)),
-        rgb(var(--accent-light)) 30%,
-        white 60%
-      );
-    }
-    html {
-      font-family: system-ui, sans-serif;
-      background-size: 224px;
-    }
-  </style>
+    <style is:global>
+      :root {
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(
+          45deg,
+          rgb(var(--accent)),
+          rgb(var(--accent-light)) 30%,
+          white 60%
+        );
+      }
+      html {
+        font-family: system-ui, sans-serif;
+        background-size: 224px;
+      }
+    </style>
+  </body>
 </html>
