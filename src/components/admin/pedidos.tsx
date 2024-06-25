@@ -17,6 +17,8 @@ import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import { useToast } from "../ui/use-toast";
 import type { PedidoForm } from "@/services/interfaces";
+import { PhoneIcon } from "lucide-react";
+import { Input } from "../ui/input";
 
 export const AdminPedidos = () => {
   const userState = userStore();
@@ -28,6 +30,11 @@ export const AdminPedidos = () => {
   const [pedidosCadastrados, setPedidosCadastrados] = useState<PedidoForm[]>(
     []
   );
+
+  const [pedidosFiltradosValue, setPedidosFiltradosValue] = useState("");
+
+  const [pedidosFiltrados, setPedidosFiltrados] =
+    useState<PedidoForm[]>(pedidosCadastrados);
 
   const handleIdPedidoReplace = (email: string, imagePath?: string) => {
     if (imagePath) {
@@ -69,6 +76,29 @@ export const AdminPedidos = () => {
     }
   };
 
+  useEffect(() => {
+    filtrarPedidos(pedidosFiltradosValue);
+  }, [pedidosFiltradosValue]);
+
+  const filtrarPedidos = (value: string) => {
+    if (value.length === 0) {
+      return setPedidosFiltrados(pedidosCadastrados);
+    } else {
+      const keysToFilter = ["nome", "email", "whatsapp"];
+
+      const pedidosFiltrados = pedidosCadastrados.filter((pedido) => {
+        return keysToFilter.some((key) => {
+          // @ts-ignore
+          return pedido[key]
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase());
+        });
+      });
+
+      setPedidosFiltrados(pedidosFiltrados);
+    }
+  };
+
   const baixarPedidos = async () => {
     try {
       setLoading(true);
@@ -83,6 +113,7 @@ export const AdminPedidos = () => {
       const pedidos = await response.json();
 
       setPedidosCadastrados(pedidos);
+      setPedidosFiltrados(pedidos);
     } catch (error) {
       toast({
         title: "Erro ao baixar usuários",
@@ -112,6 +143,12 @@ export const AdminPedidos = () => {
         </div>
       ) : (
         <>
+          <Input
+            className="w-1/2 mb-6"
+            placeholder="Buscar pedidos (id, nome, whatsapp, email)"
+            value={pedidosFiltradosValue}
+            onChange={(event) => setPedidosFiltradosValue(event.target.value)}
+          />
           <Table>
             <TableCaption>Lista de orçamentos cadastrados</TableCaption>
             <TableHeader>
@@ -119,21 +156,40 @@ export const AdminPedidos = () => {
                 <TableHead>Id Pedido</TableHead>
                 <TableHead className="w-[100px]">Nome</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Whatsapp</TableHead>
+                <TableHead className="text-center">Whatsapp</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pedidosCadastrados.map((pedido, index) => (
+              {pedidosFiltrados.map((pedido, index) => (
                 <TableRow key={index}>
                   <TableCell>
                     {handleIdPedidoReplace(pedido.email, pedido.imagePath)}
                   </TableCell>
                   <TableCell>{pedido.nome}</TableCell>
                   <TableCell>{pedido.email}</TableCell>
-                  <TableCell>{pedido.whatsapp}</TableCell>
+                  <TableCell>
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=${
+                        pedido.whatsapp
+                      }&text=Olá, tudo bem?, vimos seu orçamento de ${handleIdPedidoReplace(
+                        pedido.email,
+                        pedido.imagePath
+                      )} e gostaríamos de te enviar algumas ideias para vc produzir conosco.`}
+                      target="_blank"
+                    >
+                      <Button
+                        className="w-full flex items-center gap-2"
+                        variant="link"
+                      >
+                        <PhoneIcon />
+                        {pedido.whatsapp}
+                      </Button>
+                    </a>
+                  </TableCell>
                   <TableCell className="text-right">
                     <Button
+                      variant="link"
                       onClick={() =>
                         handleVisualizarOrcamento(
                           pedido.email,

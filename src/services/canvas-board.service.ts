@@ -29,36 +29,60 @@ export const CanvasBoardService = {
   },
 
   HandleFabricItemAdd(item: ExtendedFabricObject) {
-    this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
-      this.editor?.canvas.setCursor(
-        item?.cursorStyle || item?.type || "default"
-      );
-    });
+    item.set("cornerStyle", "circle");
+    item.set("cornerSize", 40);
+    item.set("padding", 40);
+    item.set("cornerColor", "#000000");
+    item.set("cornerStrokeColor", "#000000");
+    item.set("borderColor", "#000000");
+    item.set("rotatingPointOffset", 1000);
 
-    this.editor?.canvas?.on(FabricEvents.MouseDown, (event: fabric.IEvent) => {
-      item.set("left", event.pointer?.x);
-      item.set("top", event.pointer?.y);
-      item.set("id", short.generate());
+    item.set("id", short.generate());
 
-      item.set("cornerStyle", "circle");
-      item.set("cornerSize", 10);
-
+    const addItem = () => {
       this.editor?.canvas?.add(item);
       this.editor?.canvas?.setActiveObject(item);
+    };
 
-      this.editor?.canvas?.off(FabricEvents.MouseMove);
-      this.editor?.canvas?.off(FabricEvents.MouseDown);
+    if (item.type === "image") {
+      item.set("left", 1080);
+      item.set("top", 1080);
 
-      this.editor?.canvas?.setCursor("default");
+      addItem();
 
       emitter.emit("resetDrawControls");
 
       this.UpdateCanvasObjects();
-    });
+    } else {
+      this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
+        this.editor?.canvas.setCursor(
+          item?.cursorStyle || item?.type || "default"
+        );
+      });
+
+      this.editor?.canvas?.on(
+        FabricEvents.MouseDown,
+        (event: fabric.IEvent) => {
+          item.set("left", event.pointer?.x);
+          item.set("top", event.pointer?.y);
+
+          addItem();
+
+          this.editor?.canvas?.off(FabricEvents.MouseMove);
+          this.editor?.canvas?.off(FabricEvents.MouseDown);
+
+          this.editor?.canvas?.setCursor("default");
+
+          emitter.emit("resetDrawControls");
+
+          this.UpdateCanvasObjects();
+        }
+      );
+    }
   },
 
   GetCanvasImage() {
-    return this.editor?.canvas.toDataURL({ multiplier: 4 });
+    return this.editor?.canvas.toDataURL({ multiplier: 1 });
   },
 
   FabricItemDelete(item?: ExtendedFabricObject) {
@@ -112,7 +136,7 @@ export const CanvasBoardService = {
     emitter.emit("updateCanvasRef", this.editor?.canvas);
     emitter.emit(
       "updateTexture",
-      this.editor?.canvas.toDataURL({ multiplier: 2.7 })
+      this.editor?.canvas.toDataURL({ multiplier: 1 })
     );
     this.FabricRerender();
   },

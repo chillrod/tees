@@ -5,17 +5,27 @@ import { useEffect, useRef } from "react";
 import { emitter } from "@/services/mitt";
 import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { CanvasContextMenu } from "./canvas-context-menu";
+import { fabric } from "fabric";
 
 export const gradient =
   "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
 export const size = "40px 40px";
 
 export const CanvasBoard = () => {
-  const rulers = [0, 5, 10, 15, 20, 25, 30];
   const { editor, onReady } = useFabricJSEditor();
 
   useEffect(() => {
     CanvasBoardService.SetEditor(editor);
+
+    editor?.canvas.setDimensions(
+      {
+        width: 2160,
+        height: 2160,
+      },
+      {
+        backstoreOnly: true,
+      }
+    );
   }, [editor]);
 
   useEffect(() => {
@@ -60,7 +70,7 @@ export const CanvasBoard = () => {
   return (
     <>
       <div
-        className="flex h-[70vh] p-12"
+        className="flex h-[75vh] p-12"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,
@@ -70,7 +80,6 @@ export const CanvasBoard = () => {
           className="w-full h-full"
           style={{
             backgroundImage: "url('/t-shirt-canvas.svg')",
-            backgroundSize: "contain",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}

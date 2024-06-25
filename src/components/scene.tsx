@@ -49,7 +49,7 @@ export const Scene = () => {
           </Suspense>
         </Stage>
         {/* @ts-ignore */}
-        <OrbitControls ref={orbitRef} />
+        <OrbitControls ref={orbitRef} enableZoom={false} enablePan={false} />
       </Canvas>
     </div>
   );
