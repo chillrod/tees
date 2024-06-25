@@ -14,7 +14,7 @@ import { Card } from "./ui/card";
 import { useEffect } from "react";
 
 interface Props {
-  user: UserRecord;
+  user?: UserRecord;
 }
 
 export const NavBarMenuOptions = (props: Props) => {
@@ -35,20 +35,20 @@ export const NavBarMenuOptions = (props: Props) => {
         <NavigationMenuTrigger className="hover:bg-stone-200 ease-in-out duration-200 rounded-lg ">
           <div className="flex gap-2 items-center">
             <img
-              src={props.user.photoURL}
+              src={props?.user?.photoURL || ""}
               alt=""
               className="rounded-full"
               width={40}
               height={40}
             />
-            {props.user.displayName && props.user.displayName.length > 13
+            {props?.user?.displayName && props.user.displayName.length > 13
               ? props.user.displayName?.slice(0, 13) + "..."
-              : props.user.displayName}
+              : props?.user?.displayName || ""}
           </div>
         </NavigationMenuTrigger>
         <NavigationMenuContent className="z-30 absolute">
           <Card className="bg-stone-100 p-2">
-            {props.user.customClaims?.admin && (
+            {props?.user?.customClaims?.admin && (
               <Link href="/admin">
                 <Button variant="link">Administrador</Button>
               </Link>

@@ -11,24 +11,15 @@ import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
 import StudioLogo from "@/components/studio-logo.astro";
 import { NavBarMenu } from "@/components/navbar-menu";
+import type { UserRecord } from "firebase-admin/auth";
 
-import { getAuth } from "firebase-admin/auth";
-import { app } from "@/firebase/server";
-
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/logar");
+interface Props {
+  user?: UserRecord;
 }
-// @ts-ignore
-const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
 
-if (!user) {
-  return Astro.redirect("/logar");
-}
+const { user } = Astro.props;
+
+const { pathname } = Astro.url;
 ---
 
 <!doctype html>
@@ -46,8 +37,14 @@ if (!user) {
   </head>
   <body>
     <nav class="flex items-center justify-between p-4 m-0">
-      <StudioLogo />
-      <NavBarMenu client:load user={user} />
+      {
+        pathname !== "/logar" && pathname !== '/apresentacao' && (
+          <div class="contents">
+            <StudioLogo />
+            <NavBarMenu client:load user={user} />
+          </div>
+        )
+      }
     </nav>
     <slot />
     <style is:global>
