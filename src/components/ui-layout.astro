@@ -1,11 +1,11 @@
 ---
-import { gradient } from "./canvas-board";
 import StudioLogo from "./studio-logo.astro";
 import { Button } from "./ui/button";
 import { ShirtIcon, BrushIcon } from "lucide-react";
 import { Toaster } from "./ui/toaster";
 ---
-<Toaster client:load/>
+
+<Toaster client:load />
 <div class="absolute bottom-0 flex gap-2 w-full pt-5 z-30 md:hidden p-2">
   <Button className="flex w-full gap-2" variant="default" id="teeButton">
     <ShirtIcon size="20" />
@@ -17,13 +17,7 @@ import { Toaster } from "./ui/toaster";
   </Button>
 </div>
 
-<main
-  class="flex flex-1 h-[100vh] p-4 relative"
-  style={{
-    backgroundImage: gradient,
-    backgroundSize: "40px 40px",
-  }}
->
+<main class="flex flex-1 h-[100vh] p-4 relative">
   <div class="h-full bg-stone-100 w-full rounded-lg p-4 flex flex-col">
     <nav class="flex items-center gap-6 justify-between">
       <StudioLogo />
@@ -40,34 +34,33 @@ import { Toaster } from "./ui/toaster";
       <div id="tee">
         <slot name="tee" />
       </div>
-      <div class="relative hidden md:block w-full" id="canvas">
-        <div class="absolute top-0 z-30">
+      <div class="relative hidden md:block w-full h-full" id="canvas">
+        <div>
+          <slot name="canvas" />
           <slot name="controls" />
         </div>
-        <div class="w-full h-full">
-          <slot name="canvas" />
+
+        <div class="absolute right-12 top-12">
+          <slot name="layer" />
         </div>
       </div>
-      <div class="absolute right-12 top-12">
-        <slot name="layer" />
-      </div>
     </section>
+
+    <script>
+      const teeButton = document.getElementById("teeButton");
+      const canvasButton = document.getElementById("canvasButton");
+      const tee = document.querySelectorAll("#tee");
+      const canvas = document.getElementById("canvas");
+
+      teeButton?.addEventListener("click", () => {
+        tee?.forEach((tee: any) => tee.classList.remove("hidden"));
+        canvas?.classList.add("hidden");
+      });
+
+      canvasButton?.addEventListener("click", () => {
+        tee?.forEach((tee: any) => tee.classList.add("hidden"));
+        canvas?.classList.remove("hidden");
+      });
+    </script>
   </div>
-
-  <script>
-    const teeButton = document.getElementById("teeButton");
-    const canvasButton = document.getElementById("canvasButton");
-    const tee = document.querySelectorAll("#tee");
-    const canvas = document.getElementById("canvas");
-
-    teeButton?.addEventListener("click", () => {
-      tee?.forEach((tee: any) => tee.classList.remove("hidden"));
-      canvas?.classList.add("hidden");
-    });
-
-    canvasButton?.addEventListener("click", () => {
-      tee?.forEach((tee: any) => tee.classList.add("hidden"));
-      canvas?.classList.remove("hidden");
-    });
-  </script>
 </main>

@@ -19,6 +19,9 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
 import { CanvasBoardService } from "@/services/canvas-board.service";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
+import { Textarea } from "./ui/textarea";
 
 interface Props {
   user: UserRecord;
@@ -38,35 +41,19 @@ export const NavBarMenu = (props: Props) => {
     email: props.user.email,
     whatsapp: "",
     canvas: "",
-    tamanhos: {
-      pp: 0,
-      p: 0,
-      m: 0,
-      g: 0,
-      gg: 0,
-      xg: 0,
-    },
+    sobre: "",
   });
 
-  const updateTamanhoForm = (
-    key: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    event.preventDefault();
+  const firstLettersAvatarFallback = (name?: string) => {
+    if (!name) {
+      return "SE";
+    }
 
-    setForm((prev) => ({
-      ...prev,
-      tamanhos: {
-        ...prev.tamanhos,
-        [key]: +event.target.value,
-      },
-    }));
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
   };
-
-  const total = Object.values(form.tamanhos).reduce(
-    (acc, curr) => acc + +curr,
-    0
-  );
 
   const applyValidations = (formData: PedidoForm) => {
     if (!formData.whatsapp?.length) {
@@ -76,15 +63,6 @@ export const NavBarMenu = (props: Props) => {
         title: "Ops!",
         description:
           "O campo whatsapp é necessário para a gente entrar em contato com você.",
-      });
-
-      return false;
-    }
-
-    if (Object.values(formData.tamanhos).every((tamanho) => tamanho === 0)) {
-      toast({
-        title: "Ops!",
-        description: "Você precisa escolher pelo menos um tamanho.",
       });
 
       return false;
@@ -131,14 +109,7 @@ export const NavBarMenu = (props: Props) => {
         ...form,
         whatsapp: "",
         canvas: "",
-        tamanhos: {
-          pp: 0,
-          p: 0,
-          m: 0,
-          g: 0,
-          gg: 0,
-          xg: 0,
-        },
+        sobre: "",
       });
 
       toast({
@@ -159,14 +130,15 @@ export const NavBarMenu = (props: Props) => {
   }, [props.user]);
 
   return (
-    <div className="gap-4 flex">
+    <div className="gap-2 hidden md:flex">
       <Button variant="link" disabled>
         Seus pedidos
       </Button>
+
       <Drawer open={openDrawer}>
         <DrawerTrigger>
           <Button variant="link" onClick={() => setOpenDrawer(true)}>
-            Enviar pedido
+            Fazer orçamento
           </Button>
         </DrawerTrigger>
         <DrawerContent>
@@ -178,7 +150,7 @@ export const NavBarMenu = (props: Props) => {
               </DrawerDescription>
             </div>
             <Form.Root
-              className="grid grid-cols-2 items-center gap-6"
+              className="flex flex-col gap-6"
               onSubmit={async (event) => formSubmit(event, form)}
             >
               <Form.Field name="whatsapp">
@@ -193,69 +165,20 @@ export const NavBarMenu = (props: Props) => {
                   }
                 />
               </Form.Field>
-              <Form.Field name="pp">
-                <Form.Label>PP</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="PP"
-                  value={form.tamanhos.pp}
-                  onChange={(event) => updateTamanhoForm("pp", event)}
+              <Form.Field name="about">
+                <Form.Label>Sobre o pedido</Form.Label>
+                <Textarea
+                  placeholder="Sobre o pedido"
+                  value={form.sobre}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      sobre: event.target.value,
+                    })
+                  }
                 />
               </Form.Field>
-              <Form.Field name="p">
-                <Form.Label>P</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="P"
-                  value={form.tamanhos.p}
-                  onChange={(event) => updateTamanhoForm("p", event)}
-                />
-              </Form.Field>
-              <Form.Field name="m">
-                <Form.Label>M</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="M"
-                  value={form.tamanhos.m}
-                  onChange={(event) => updateTamanhoForm("m", event)}
-                />
-              </Form.Field>
-              <Form.Field name="g">
-                <Form.Label>G</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="G"
-                  value={form.tamanhos.g}
-                  onChange={(event) => updateTamanhoForm("g", event)}
-                />
-              </Form.Field>
-              <Form.Field name="gg">
-                <Form.Label>GG</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="GG"
-                  value={form.tamanhos.gg}
-                  onChange={(event) => updateTamanhoForm("gg", event)}
-                />
-              </Form.Field>
-              <Form.Field name="xg">
-                <Form.Label>XG</Form.Label>
-                <Input
-                  type="number"
-                  placeholder="XG"
-                  value={form.tamanhos.xg}
-                  onChange={(event) => updateTamanhoForm("xg", event)}
-                />
-              </Form.Field>
-              <Form.Field name="total">
-                <Form.Label>Total</Form.Label>
-                <Input
-                  readOnly
-                  type="number"
-                  placeholder="Total"
-                  value={total}
-                ></Input>
-              </Form.Field>
+
               <Form.Submit className="grid w-full col-span-2">
                 <Button className="w-full" disabled={isLoading}>
                   Enviar
@@ -276,6 +199,19 @@ export const NavBarMenu = (props: Props) => {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
+      <div className="flex gap-2 items-center">
+        <Avatar>
+          <AvatarImage
+            src={props.user.photoURL}
+            alt={props.user.displayName}
+          ></AvatarImage>
+          <AvatarFallback className="bg-red-500 w-full text-center grid place-items-center">
+            {firstLettersAvatarFallback(props.user.displayName)}
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-sm">{props.user.displayName}</span>
+      </div>
     </div>
   );
 };

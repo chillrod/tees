@@ -5,25 +5,35 @@ interface Props extends MenuChildrenProps {
   icon: React.ReactNode;
   onClick?: () => void;
   children?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export const MenuDefaultButton = (props: Props) => {
   return (
-    <div>
+    <div className="grid text-center place-items-center">
       <Button
-        asChild
         size="icon"
-        variant={props.activeButton === props?.index ? "outline" : "default"}
+        variant={
+          props.activeButton === props?.index
+            ? "outline"
+            : props.disabled
+            ? "ghost"
+            : "default"
+        }
+        disabled={props.disabled}
         onClick={() =>
-          props?.handleActiveClick(
-            props.index,
-            props.activeButton,
-            props.onClick
-          )
+          props.handleActiveClick
+            ? props?.handleActiveClick(
+                props?.index,
+                props.activeButton ?? null,
+                props.onClick
+              )
+            : props.onClick?.()
         }
       >
         <div>{props.icon}</div>
       </Button>
+      {props.label}
       {props.children}
     </div>
   );

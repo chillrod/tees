@@ -3,7 +3,7 @@ import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import { useEffect, useRef } from "react";
 
 import { emitter } from "@/services/mitt";
-import { FabricEvents } from "@/types/fabric";
+import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import { CanvasContextMenu } from "./canvas-context-menu";
 
 export const gradient =
@@ -23,12 +23,24 @@ export const CanvasBoard = () => {
       CanvasBoardService.UpdateTexture();
     });
 
+    editor?.canvas.on("selection:created", (event) => {
+      emitter.emit(
+        "toggleEditButton",
+        event.selected as ExtendedFabricObject[]
+      );
+    });
+
+    editor?.canvas.on("selection:cleared", () => {
+      emitter.emit("toggleEditButton", []);
+    });
+
     editor?.canvas.on("object:rotating", () => {
       CanvasBoardService.UpdateTexture();
     });
 
     return () => {
       editor?.canvas.off(FabricEvents.ObjectModified);
+      editor?.canvas.off("selection:created");
     };
   });
 
@@ -65,13 +77,6 @@ export const CanvasBoard = () => {
         >
           <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />
         </div>
-      </div>
-      <div className="w-full justify-around flex border-t-[1px] border-dashed border-t-stone-950">
-        {rulers.map((ruler, key) => (
-          <span key={key} className="text-stone-950 text-sm text-right mb-2">
-            {ruler} cm
-          </span>
-        ))}
       </div>
     </>
   );

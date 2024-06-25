@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import { emitter } from "@/services/mitt";
-import { colors } from "./three-controls/colors";
+import { colors } from "./three-controls/controls";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -23,6 +23,7 @@ type GLTFResult = GLTF & {
     ["T-shirt sew_1"]: THREE.MeshPhysicalMaterial;
   };
 };
+
 export function Model() {
   const { nodes, materials } = useGLTF("/output3.glb") as GLTFResult;
 
@@ -46,14 +47,11 @@ export function Model() {
   const stoneWash = useTexture("./stonee.png");
   stoneWash.flipY = false;
   stoneWash.anisotropy = 16;
-  stoneWash.needsUpdate = true;
   stoneWash.generateMipmaps = false;
 
   const textureOnShirt = useTexture(texture);
-
-  textureOnShirt.needsUpdate = true;
   textureOnShirt.flipY = false;
-  textureOnShirt.offset.set(0.035, -0.2);
+  textureOnShirt.offset.set(0.040, -0.2);
   textureOnShirt.anisotropy = 16;
 
   useEffect(() => {
@@ -77,7 +75,7 @@ export function Model() {
         <group
           name="T-shirt_base"
           position={[0.004, 0.5, -0.023]}
-          rotation={[Math.PI / 2, 0, 0]}
+          rotation={[Math.PI / 1.9, 0, 0]}
           scale={0.07}
         >
           <group position={[0.439, 2.443, 2.111]} scale={35.77}>
@@ -95,20 +93,7 @@ export function Model() {
                 normalMap={normalTexture}
               ></meshStandardMaterial>
             </mesh>
-            <mesh
-              name="T-shirt_base002"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002"].geometry}
-              material={materials["T-shirt_main_tex"]}
-              material-color={color.color}
-            >
-              <meshStandardMaterial
-                transparent
-                attach="material"
-                map={textureOnShirt}
-              ></meshStandardMaterial>
-            </mesh>
+
             <mesh
               name="T-shirt_base002"
               castShadow
@@ -125,6 +110,21 @@ export function Model() {
                 blending={2}
               ></meshStandardMaterial>
             </mesh>
+
+            <mesh
+              name="T-shirt_base002"
+              castShadow
+              receiveShadow
+              geometry={nodes["T-shirt_base002"].geometry}
+              material={materials["T-shirt_main_tex"]}
+            >
+              <meshPhysicalMaterial
+                transparent
+                attach="material"
+                map={textureOnShirt}
+              ></meshPhysicalMaterial>
+            </mesh>
+
             <mesh
               name="T-shirt_base002_1"
               castShadow
@@ -139,6 +139,7 @@ export function Model() {
                 normalMap={normalTexture}
               ></meshStandardMaterial>
             </mesh>
+
             <mesh
               name="T-shirt_base002_1"
               castShadow

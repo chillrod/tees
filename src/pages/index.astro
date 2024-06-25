@@ -5,12 +5,11 @@ import { Scene } from "@/components/scene";
 import { CanvasBoard } from "@/components/canvas-board";
 import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
 import { CanvasLayer } from "@/components/canvas-controls/canvas-layer";
-import { ThreeColors } from "@/components/three-controls/colors";
+import { ThreeControls } from "@/components/three-controls/controls";
 
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { NavBarMenu } from "@/components/navbar-menu";
-import type { PedidoForm } from "@/services/interfaces";
 
 const auth = getAuth(app);
 
@@ -34,7 +33,7 @@ if (!user) {
       <Scene client:load />
     </div>
     <div slot="colors">
-      <ThreeColors client:load />
+      <ThreeControls client:load />
     </div>
     <div slot="canvas">
       <CanvasBoard client:load />
