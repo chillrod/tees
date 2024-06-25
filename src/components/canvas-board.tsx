@@ -60,7 +60,7 @@ export const CanvasBoard = () => {
   return (
     <>
       <div
-        className="grid h-[70vh]"
+        className="flex h-[70vh] p-12"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,

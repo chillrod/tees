@@ -51,8 +51,9 @@ export function Model() {
 
   const textureOnShirt = useTexture(texture);
   textureOnShirt.flipY = false;
-  textureOnShirt.offset.set(0.040, -0.2);
+  textureOnShirt.offset.set(0.04, -0.2);
   textureOnShirt.anisotropy = 16;
+  
 
   useEffect(() => {
     emitter.on("teeColor", (color) => {
