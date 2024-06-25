@@ -26,7 +26,7 @@ type GLTFResult = GLTF & {
 };
 
 export function Model() {
-  const { nodes, materials } = useGLTF("/output3.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/output2.glb") as GLTFResult;
 
   const [color, setColor] = useState({
     color: colors[1].color,
@@ -41,13 +41,9 @@ export function Model() {
   baseTexture.flipY = false;
   baseTexture.anisotropy = 16;
 
-  console.log(baseTexture.image.width, baseTexture.image.height);
-
   const normalTexture = useTexture("./T-shirt_main_FRONT_2617_Normal.1001.png");
   normalTexture.flipY = false;
   normalTexture.anisotropy = 16;
-
-  console.log(normalTexture.image.width, normalTexture.image.height)
 
   const stoneWash = useTexture("./stonee.png");
   stoneWash.flipY = false;
@@ -179,14 +175,14 @@ export function Model() {
               material={materials["T-shirt sew_1"]}
               material-color={color.color}
             />
-            <mesh
+            {/* <mesh
               name="T-shirt_base002_4"
               castShadow
               receiveShadow
               geometry={nodes["T-shirt_base002_4"].geometry}
               material={materials["T-shirt sew_1"]}
               material-color={color.color}
-            />
+            /> */}
           </group>
         </group>
       </group>
@@ -194,4 +190,4 @@ export function Model() {
   );
 }
 
-useGLTF.preload("/output3.glb");
+useGLTF.preload("/output2.glb");

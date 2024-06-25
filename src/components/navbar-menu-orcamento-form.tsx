@@ -101,7 +101,6 @@ export const NavBarMenuForm = (props: Props) => {
         }),
       });
 
-      console.log("🚀 ~ NavBarMenuForm ~ res:", res);
       if (res.status !== 200) {
         return toast({
           title: "Ops!",

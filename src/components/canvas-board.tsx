@@ -1,11 +1,9 @@
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { emitter } from "@/services/mitt";
 import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
-import { CanvasContextMenu } from "./canvas-context-menu";
-import { fabric } from "fabric";
 
 export const gradient =
   "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";

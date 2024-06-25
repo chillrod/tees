@@ -40,7 +40,7 @@ export const Scene = () => {
 
   return (
     <div className="h-full w-full rounded-lg relative">
-      <Canvas shadows className="rounded-lg">
+      <Canvas shadows className="rounded-lg" performance={{ min: 0.5 }}>
         <hemisphereLight args={[0xffffbb, 0x080820, 1]} />
 
         <Stage intensity={0.5}>
