@@ -20,14 +20,13 @@ export const NavBarMenu = (props: Props) => {
   }, [props.user]);
 
   return (
-    <div className="gap-2 hidden md:flex">
-      <Button variant="link" disabled>
-        Seus pedidos
-      </Button>
-
-      <NavBarMenuForm user={props.user}></NavBarMenuForm>
-
-      <NavBarMenuOptions user={props.user}></NavBarMenuOptions>
+    <div className="gap-4 hidden md:flex">
+      <div>
+        <NavBarMenuForm user={props.user}></NavBarMenuForm>
+      </div>
+      <div>
+        <NavBarMenuOptions user={props.user}></NavBarMenuOptions>
+      </div>
     </div>
   );
 };
