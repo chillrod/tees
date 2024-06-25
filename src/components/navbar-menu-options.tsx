@@ -1,4 +1,5 @@
 import {
+  Link,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -48,9 +49,9 @@ export const NavBarMenuOptions = (props: Props) => {
         <NavigationMenuContent className="z-30 absolute">
           <Card className="bg-stone-100 p-2">
             {props.user.customClaims?.admin && (
-              <Button variant="link" disabled>
-                Administrador
-              </Button>
+              <Link href="/admin">
+                <Button variant="link">Administrador</Button>
+              </Link>
             )}
             <Button variant="link" disabled>
               Suas criações

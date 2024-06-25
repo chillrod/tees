@@ -6,25 +6,6 @@ import { CanvasBoard } from "@/components/canvas-board";
 import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
 import { CanvasLayer } from "@/components/canvas-controls/canvas-layer";
 import { ThreeControls } from "@/components/three-controls/controls";
-
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
-import { NavBarMenu } from "@/components/navbar-menu";
-
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/logar");
-}
-// @ts-ignore
-const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
-
-if (!user) {
-  return Astro.redirect("/logar");
-}
 ---
 
 <Layout title="Studio Estampar Canvas">
@@ -43,9 +24,6 @@ if (!user) {
     </div>
     <div slot="controls" class="h-full">
       <CanvasControlsMenu client:load />
-    </div>
-    <div slot="actions">
-      <NavBarMenu client:load user={user} />
     </div>
   </UILayout>
 </Layout>

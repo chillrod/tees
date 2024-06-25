@@ -1,7 +1,8 @@
 export interface PedidoForm {
-  nome?: string;
-  email?: string;
+  nome: string;
+  email: string;
   whatsapp?: string;
   canvas?: string;
   sobre: string;
+  imagePath?: string;
 }

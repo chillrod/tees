@@ -37,3 +37,4 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
 
   return redirect("/");
 };
+

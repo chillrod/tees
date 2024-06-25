@@ -30,8 +30,8 @@ export const NavBarMenuForm = (props: Props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [form, setForm] = useState<PedidoForm>({
-    nome: props.user.displayName,
-    email: props.user.email,
+    nome: props.user.displayName || '',
+    email: props.user.email || '',
     whatsapp: "",
     canvas: "",
     sobre: "",
