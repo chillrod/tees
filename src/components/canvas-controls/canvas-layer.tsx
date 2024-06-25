@@ -24,7 +24,6 @@ export const CanvasLayer = () => {
 
   useEffect(() => {
     emitter.on("canvasLayerItem", (item) => {
-      console.log("🚀 ~ emitter.on ~ item:", item)
       if (!item) {
         setIsFormOpen(false);
         setForm(undefined);

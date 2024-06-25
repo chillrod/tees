@@ -25,8 +25,6 @@ export const MenuImage = (props: Props) => {
   ) => {
     const file = event.target.files?.[0];
 
-    console.log(file);
-
     if (file) {
       const reader = new FileReader();
 

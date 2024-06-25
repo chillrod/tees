@@ -3,7 +3,7 @@ import { fabric } from "fabric";
 
 export const createTextBox = () => {
   const text = new fabric.Textbox("New Text", {
-    fontSize: 16,
+    fontSize: 120,
     lineHeight: 0.8,
     type: "text",
   });

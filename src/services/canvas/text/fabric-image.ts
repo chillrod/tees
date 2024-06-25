@@ -4,8 +4,8 @@ import { fabric } from "fabric";
 export const createFabricImage = (image?: string) => {
   if (image) {
     const fabricImage = new fabric.Image("", {
-      scaleX: 0.1,
-      scaleY: 0.1,
+      scaleX: 0.2,
+      scaleY: 0.2,
       type: "crosshair",
     });
 

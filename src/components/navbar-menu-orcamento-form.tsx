@@ -18,6 +18,8 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 
+import validator from "validator";
+
 interface Props {
   user?: UserRecord;
 }
@@ -37,6 +39,14 @@ export const NavBarMenuForm = (props: Props) => {
     sobre: "",
   });
 
+  const validatePhoneNumbers = (value?: string) => {
+    if (!value) return false;
+
+    const isValid = validator.isMobilePhone(value, "pt-BR");
+
+    return isValid;
+  };
+
   const applyValidations = (formData: PedidoForm) => {
     if (!formData.whatsapp?.length) {
       whatsappInput?.current?.focus();
@@ -45,6 +55,17 @@ export const NavBarMenuForm = (props: Props) => {
         title: "Ops!",
         description:
           "O campo whatsapp é necessário para a gente entrar em contato com você.",
+      });
+
+      return false;
+    }
+
+    const validatedPhone = validatePhoneNumbers(formData.whatsapp);
+
+    if (!validatedPhone) {
+      toast({
+        title: "Ops!",
+        description: "Digite um número de whatsapp válido.",
       });
 
       return false;
@@ -69,7 +90,7 @@ export const NavBarMenuForm = (props: Props) => {
       setIsLoading(true);
       const canvas = CanvasBoardService.GetCanvasImage();
 
-      const res = await fetch("/api/pedidos/enviar", {
+      const res = await fetch("/api/orcamento/enviar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -127,15 +148,17 @@ export const NavBarMenuForm = (props: Props) => {
           >
             <Form.Field name="whatsapp">
               <Form.Label>Whatsapp *</Form.Label>
-              <Input
-                required
-                ref={whatsappInput}
-                placeholder="Whatsapp"
-                value={form.whatsapp}
-                onChange={(event) =>
-                  setForm({ ...form, whatsapp: event.target.value })
-                }
-              />
+              <Form.Control asChild>
+                <Input
+                  required
+                  ref={whatsappInput}
+                  placeholder="Whatsapp"
+                  value={form.whatsapp}
+                  onChange={(event) =>
+                    setForm({ ...form, whatsapp: event.target.value })
+                  }
+                />
+              </Form.Control>
             </Form.Field>
             <Form.Field name="about">
               <Form.Label>Sobre o pedido</Form.Label>
