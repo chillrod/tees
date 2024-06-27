@@ -6,7 +6,7 @@ interface Props {
 const { left } = Astro.props;
 ---
 
-<div class=`flex items-center gap-4`>
+<div class=`flex items-center gap-4 dark:text-stone-200`>
   <img src="./studio.svg" alt="Studio Logo" width="50px" height="50px" />
   <div class=`flex flex-col w-full ${left ? '' : 'text-center'}`>
     <h2 class="font-black text-4xl uppercase -tracking-wide leading-7">
@@ -14,5 +14,5 @@ const { left } = Astro.props;
     </h2>
     <span class=`uppercase ${left ? 'text-md' : ''}`>Studio Estampar</span>
   </div>
-  <span class="font-bold bg-yellow-400">Beta</span>
+  <span class="font-bold bg-yellow-400 dark:text-stone-900">Beta</span>
 </div>

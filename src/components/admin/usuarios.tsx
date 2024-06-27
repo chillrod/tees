@@ -84,7 +84,7 @@ export const AdminUsuarios = () => {
   }, [userState.user]);
 
   return (
-    <div>
+    <div className="dark:text-stone-200">
       {loading ? (
         <div className="grid gap-2">
           <Skeleton className="h-[40px] w-full  bg-stone-200" />
@@ -95,7 +95,7 @@ export const AdminUsuarios = () => {
           <Skeleton className="h-[50px] w-full  bg-stone-200" />
         </div>
       ) : (
-        <>
+        <div>
           <Table>
             <TableCaption>Lista de usuários cadastrados</TableCaption>
             <TableHeader>
@@ -125,7 +125,7 @@ export const AdminUsuarios = () => {
               ))}
             </TableBody>
           </Table>
-        </>
+        </div>
       )}
     </div>
   );

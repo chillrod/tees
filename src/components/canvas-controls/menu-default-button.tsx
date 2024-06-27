@@ -12,7 +12,7 @@ export const MenuDefaultButton = (props: Props) => {
   return (
     <div className="grid text-center place-items-center">
       <Button
-      className="w-8 h-8"
+        className="w-8 h-8"
         size="icon"
         variant={
           props.activeButton === props?.index
@@ -34,7 +34,7 @@ export const MenuDefaultButton = (props: Props) => {
       >
         <div>{props.icon}</div>
       </Button>
-      {props.label}
+      <span className="dark:text-stone-200">{props.label}</span>
       {props.children}
     </div>
   );
