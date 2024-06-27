@@ -4,6 +4,7 @@ import { Model } from "./tee.tsx";
 import { Suspense, useEffect, useRef } from "react";
 import { emitter } from "@/services/mitt.ts";
 import StudioLogo from "./studio-logo.astro";
+import { Skeleton } from "./ui/skeleton.tsx";
 
 function Loader() {
   const { progress } = useProgress();
@@ -11,6 +12,7 @@ function Loader() {
   return (
     <Html center>
       <span className="flex flex-col justify-center text-center">
+        <Skeleton className="aspect-square  bg-stone-200" />
         {progress}% Carregando...
       </span>
     </Html>
@@ -39,11 +41,9 @@ export const Scene = () => {
   }, []);
 
   return (
-    <div className="h-full w-full rounded-lg relative">
-      <Canvas shadows className="rounded-lg" performance={{ min: 0.5 }}>
-        <hemisphereLight args={[0xffffbb, 0x080820, 1]} />
-
-        <Stage intensity={0.5}>
+    <div className="aspect-square rounded-lg">
+      <Canvas>
+        <Stage intensity={4}>
           <Suspense fallback={<Loader />}>
             <Model />
           </Suspense>

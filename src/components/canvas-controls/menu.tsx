@@ -69,7 +69,7 @@ export const CanvasControlsMenu = () => {
   }, []);
 
   return (
-    <div className="flex gap-12 items-center justify-center p-2">
+    <div className="flex gap-12 items-center justify-center p-2 relative z-30">
       <MenuText
         label="Texto"
         activeButton={activeButton}

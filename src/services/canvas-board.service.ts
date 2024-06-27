@@ -1,23 +1,16 @@
 import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
-import { fabric } from "fabric";
 import type { FabricJSEditor } from "fabricjs-react";
 import short from "short-uuid";
 import { emitter } from "./mitt";
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
-  canvasObjects: [] as ExtendedFabricObject[],
 
   SetEditor(editor?: FabricJSEditor) {
     this.editor = editor;
   },
 
   UpdateCanvasObjects() {
-    this.canvasObjects =
-      this.editor?.canvas.getObjects() as ExtendedFabricObject[];
-
-    this.FabricRerender();
-
     this.UpdateTexture();
   },
 
@@ -30,55 +23,24 @@ export const CanvasBoardService = {
 
   HandleFabricItemAdd(item: ExtendedFabricObject) {
     item.set("cornerStyle", "circle");
-    item.set("cornerSize", 40);
-    item.set("padding", 40);
+    item.set("cornerSize", 16);
+    item.set("padding", 16);
     item.set("cornerColor", "#000000");
     item.set("cornerStrokeColor", "#000000");
     item.set("borderColor", "#000000");
-    item.set("rotatingPointOffset", 1000);
+    item.set("rotatingPointOffset", 50);
 
     item.set("id", short.generate());
 
     const addItem = () => {
       this.editor?.canvas?.add(item);
       this.editor?.canvas?.setActiveObject(item);
+      this.FabricRerender();
     };
 
-    if (item.type === "image") {
-      item.set("left", 1080);
-      item.set("top", 1080);
+    addItem();
 
-      addItem();
-
-      emitter.emit("resetDrawControls");
-
-      this.UpdateCanvasObjects();
-    } else {
-      this.editor?.canvas?.on(FabricEvents.MouseMove, () => {
-        this.editor?.canvas.setCursor(
-          item?.cursorStyle || item?.type || "default"
-        );
-      });
-
-      this.editor?.canvas?.on(
-        FabricEvents.MouseDown,
-        (event: fabric.IEvent) => {
-          item.set("left", event.pointer?.x);
-          item.set("top", event.pointer?.y);
-
-          addItem();
-
-          this.editor?.canvas?.off(FabricEvents.MouseMove);
-          this.editor?.canvas?.off(FabricEvents.MouseDown);
-
-          this.editor?.canvas?.setCursor("default");
-
-          emitter.emit("resetDrawControls");
-
-          this.UpdateCanvasObjects();
-        }
-      );
-    }
+    item.center();
   },
 
   GetCanvasImage() {
@@ -124,6 +86,14 @@ export const CanvasBoardService = {
     this.UpdateTexture();
   },
 
+  FabricItemsCentralize() {
+    this.editor?.canvas.getObjects().forEach((item) => {
+      item.center();
+    });
+
+    this.UpdateTexture();
+  },
+
   HandleFabricItemModified(editor?: FabricJSEditor) {
     editor?.canvas.on(FabricEvents.ObjectModified, () => {
       this.UpdateTexture();
@@ -133,15 +103,15 @@ export const CanvasBoardService = {
   },
 
   UpdateTexture() {
-    emitter.emit("updateCanvasRef", this.editor?.canvas);
     emitter.emit(
       "updateTexture",
-      this.editor?.canvas.toDataURL({ multiplier: 1 })
+      this.editor?.canvas.toDataURL({ multiplier: 2 })
     );
+
     this.FabricRerender();
   },
 
   FabricRerender() {
-    this.editor?.canvas.requestRenderAll();
+    this.editor?.canvas.renderAll();
   },
 };

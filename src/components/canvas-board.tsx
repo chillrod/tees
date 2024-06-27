@@ -12,13 +12,25 @@ export const size = "40px 40px";
 export const CanvasBoard = () => {
   const { editor, onReady } = useFabricJSEditor();
 
+  const getResponsiveValue = () => {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth >= 1536) {
+      return 2080;
+    } else if (windowWidth >= 1280) {
+      return 1680;
+    } else {
+      return 1080;
+    }
+  };
+
   useEffect(() => {
     CanvasBoardService.SetEditor(editor);
 
     editor?.canvas.setDimensions(
       {
-        width: 2160,
-        height: 2160,
+        width: getResponsiveValue(),
+        height: getResponsiveValue(),
       },
       {
         backstoreOnly: true,
@@ -82,7 +94,7 @@ export const CanvasBoard = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <FabricJSCanvas onReady={onReady} className={`w-full h-full`} />
+          <FabricJSCanvas onReady={onReady} className={`aspect-square`} />
         </div>
       </div>
     </>

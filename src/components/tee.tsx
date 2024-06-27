@@ -52,10 +52,8 @@ export function Model() {
 
   const textureOnShirt = useTexture(texture);
   textureOnShirt.flipY = false;
-  textureOnShirt.offset.set(0.045, -0.2);
+  textureOnShirt.offset.set(0.045, -0.25);
   textureOnShirt.anisotropy = 16;
-
-  textureOnShirt.wrapS = textureOnShirt.wrapT = THREE.ClampToEdgeWrapping;
 
   useEffect(() => {
     emitter.on("teeColor", (color) => {
@@ -74,117 +72,105 @@ export function Model() {
 
   return (
     <group dispose={null}>
-      <group name="Scene">
-        <group
-          name="T-shirt_base"
-          position={[0.004, 0.5, -0.023]}
-          rotation={[Math.PI / 1.9, 0, 0]}
-          scale={0.06}
+      <group
+        name="T-shirt_base"
+        position={[0.004, 0.5, -0.023]}
+        rotation={[Math.PI / 1.9, 0, 0]}
+        scale={2.2}
+      >
+        <mesh
+          name="T-shirt_base002"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002"].geometry}
+          material={materials["T-shirt_main_tex"]}
+          material-color={color.color}
         >
-          <group position={[0.439, 2.443, 2.111]} scale={35.77}>
-            <mesh
-              name="T-shirt_base002"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002"].geometry}
-              material={materials["T-shirt_main_tex"]}
-              material-color={color.color}
-            >
-              <meshStandardMaterial
-                attach="material"
-                map={baseTexture}
-                normalMap={normalTexture}
-              ></meshStandardMaterial>
-            </mesh>
+          <meshStandardMaterial
+            attach="material"
+            map={baseTexture}
+            normalMap={normalTexture}
+          ></meshStandardMaterial>
+        </mesh>
 
-            <mesh
-              name="T-shirt_base002"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002"].geometry}
-              material={materials["T-shirt_main_tex"]}
-              material-color={color.color}
-            >
-              <meshStandardMaterial
-                map={stoneWash}
-                attach="material"
-                opacity={1}
-                blendColor={color.color}
-                blending={2}
-              ></meshStandardMaterial>
-            </mesh>
+        <mesh
+          name="T-shirt_base002"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002"].geometry}
+          material={materials["T-shirt_main_tex"]}
+          material-color={color.color}
+        >
+          <meshStandardMaterial
+            map={stoneWash}
+            attach="material"
+            opacity={1}
+            blendColor={color.color}
+            blending={2}
+          ></meshStandardMaterial>
+        </mesh>
 
-            <mesh
-              name="T-shirt_base002"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002"].geometry}
-              material={materials["T-shirt_main_tex"]}
-            >
-              <meshPhysicalMaterial
-                transparent
-                attach="material"
-                map={textureOnShirt}
-                side={THREE.DoubleSide}
-              ></meshPhysicalMaterial>
-            </mesh>
+        <mesh
+          name="T-shirt_base002"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002"].geometry}
+          material={materials["T-shirt_main_tex"]}
+        >
+          <meshPhysicalMaterial
+            transparent
+            attach="material"
+            map={textureOnShirt}
+            side={THREE.DoubleSide}
+          ></meshPhysicalMaterial>
+        </mesh>
 
-            <mesh
-              name="T-shirt_base002_1"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002_1"].geometry}
-              material={materials["T-shirt_collar_tex"]}
-              material-color={color.color}
-            >
-              <meshStandardMaterial
-                attach="material"
-                map={baseTexture}
-                normalMap={normalTexture}
-              ></meshStandardMaterial>
-            </mesh>
+        <mesh
+          name="T-shirt_base002_1"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002_1"].geometry}
+          material={materials["T-shirt_collar_tex"]}
+          material-color={color.color}
+        >
+          <meshStandardMaterial
+            attach="material"
+            map={baseTexture}
+            normalMap={normalTexture}
+          ></meshStandardMaterial>
+        </mesh>
 
-            <mesh
-              name="T-shirt_base002_1"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002_1"].geometry}
-              material={materials["T-shirt_collar_tex"]}
-              material-color={color.color}
-            >
-              <meshStandardMaterial
-                map={stoneWash}
-                attach="material"
-                opacity={1}
-                blending={2}
-              ></meshStandardMaterial>
-            </mesh>
-            <mesh
-              name="T-shirt_base002_2"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002_2"].geometry}
-              material={materials["T-shirt_collar_color_line_inside"]}
-              material-color={color.color}
-            />
-            <mesh
-              name="T-shirt_base002_3"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002_3"].geometry}
-              material={materials["T-shirt sew_1"]}
-              material-color={color.color}
-            />
-            {/* <mesh
-              name="T-shirt_base002_4"
-              castShadow
-              receiveShadow
-              geometry={nodes["T-shirt_base002_4"].geometry}
-              material={materials["T-shirt sew_1"]}
-              material-color={color.color}
-            /> */}
-          </group>
-        </group>
+        <mesh
+          name="T-shirt_base002_1"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002_1"].geometry}
+          material={materials["T-shirt_collar_tex"]}
+          material-color={color.color}
+        >
+          <meshStandardMaterial
+            map={stoneWash}
+            attach="material"
+            opacity={1}
+            blending={2}
+          ></meshStandardMaterial>
+        </mesh>
+        <mesh
+          name="T-shirt_base002_2"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002_2"].geometry}
+          material={materials["T-shirt_collar_color_line_inside"]}
+          material-color={color.color}
+        />
+        <mesh
+          name="T-shirt_base002_3"
+          castShadow
+          receiveShadow
+          geometry={nodes["T-shirt_base002_3"].geometry}
+          material={materials["T-shirt sew_1"]}
+          material-color={color.color}
+        />
       </group>
     </group>
   );
