@@ -90,13 +90,13 @@ export const CanvasControlsMenu = () => {
         activeButton={activeButton}
         index={2}
       />
-
+{/* 
       <MenuDefaultButton
         onClick={() => CanvasBoardService.FabricDeleteAllObjects()}
         icon={<UndoIcon />}
         index={3}
         label="Refazer"
-      ></MenuDefaultButton>
+      ></MenuDefaultButton> */}
 
       <MenuDefaultButton
         onClick={() => CanvasBoardService.FabricDeleteAllObjects()}
