@@ -8,7 +8,7 @@ import { Skeleton } from "./ui/skeleton.tsx";
 
 export const Scene = () => {
   const orbitRef = useRef();
-  const { progress, active } = useProgress();
+  const { progress } = useProgress();
 
   const resetOrbit = () => {
     if (!orbitRef.current) return;
@@ -25,10 +25,6 @@ export const Scene = () => {
       emitter.off("centerShirt");
     };
   }, []);
-
-  useEffect(() => {
-    resetOrbit();
-  }, [active]);
 
   return (
     <div className="aspect-square rounded-lg">
