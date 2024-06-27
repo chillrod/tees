@@ -12,13 +12,14 @@ export const MenuDefaultButton = (props: Props) => {
   return (
     <div className="grid text-center place-items-center">
       <Button
+      className="w-8 h-8"
         size="icon"
         variant={
           props.activeButton === props?.index
             ? "outline"
             : props.disabled
             ? "ghost"
-            : "default"
+            : "secondary"
         }
         disabled={props.disabled}
         onClick={() =>

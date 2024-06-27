@@ -5,14 +5,3 @@ interface MenuItems {
   separator?: boolean;
   fn: () => void;
 }
-
-interface AddCanvasItem {
-  type: "text" | "image";
-  text?: string;
-  image?: string | ArrayBuffer | null | undefined;
-}
-
-module.exports = {
-  MenuItems,
-  AddCanvasItem,
-};

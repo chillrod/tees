@@ -1,6 +1,8 @@
 import { emitter } from "@/services/mitt";
 import { TooltipUI } from "../tooltip";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { useState } from "react";
 
 export const colors = [
   {
@@ -36,11 +38,14 @@ export const colors = [
 ];
 
 export const ThreeControls = () => {
+  const [currentColor, setCurrentColor] = useState(colors[1].color);
+
   const handleColorChange = (params: {
     taglessColor: string;
     color: string;
   }) => {
     emitter.emit("teeColor", params);
+    setCurrentColor(params.color);
   };
 
   return (
@@ -85,6 +90,15 @@ export const ThreeControls = () => {
             </TooltipUI>
           </div>
         ))}
+        <Input
+          onChange={(event) =>
+            handleColorChange({ taglessColor: "", color: event.target.value })
+          }
+          value={currentColor}
+          placeholder="Dinamico"
+          type="color"
+          className="w-12 h-8 rounded-lg border-2 border-stone-200 cursor-pointer"
+        />
       </div>
     </div>
   );

@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { emitter } from "@/services/mitt";
 import { MenuText } from "./menu-text";
 
-import * as Menubar from "@radix-ui/react-menubar";
 import { MenuImage } from "./menu-image";
 import { MenuEdit } from "./menu-edit";
 import { MenuDefaultButton } from "./menu-default-button";
-import { DeleteIcon, TrashIcon } from "lucide-react";
-import { CanvasBoard } from "../canvas-board";
+import { EraserIcon, SaveIcon } from "lucide-react";
 import { CanvasBoardService } from "@/services/canvas-board.service";
-import { NavigationMenu } from "@radix-ui/react-navigation-menu";
+import { useToast } from "../ui/use-toast";
 
 export interface MenuChildrenProps {
   activeButton?: number | null;
@@ -26,6 +24,7 @@ export interface MenuChildrenProps {
 export const CanvasControlsMenu = () => {
   const [activeButton, setActiveBtn] = useState<number | null>(null);
   const [editDisabled, setEditDisabled] = useState<boolean>(true);
+  const { toast } = useToast();
 
   const handleActiveClick = (
     index: number,
@@ -69,7 +68,7 @@ export const CanvasControlsMenu = () => {
   }, []);
 
   return (
-    <div className="flex gap-12 items-center justify-center p-2">
+    <div className="flex gap-6 items-center justify-center p-2 relative z-30">
       <MenuText
         label="Texto"
         activeButton={activeButton}
@@ -94,9 +93,22 @@ export const CanvasControlsMenu = () => {
 
       <MenuDefaultButton
         onClick={() => CanvasBoardService.FabricDeleteAllObjects()}
-        icon={<TrashIcon />}
-        index={2}
-        label="Limpar Desenhos"
+        icon={<EraserIcon />}
+        index={3}
+        label="Limpar"
+      ></MenuDefaultButton>
+
+      <MenuDefaultButton
+        onClick={() => [
+          CanvasBoardService.SaveCanvasSerialization(),
+          toast({
+            title: "Sucesso",
+            description: "Desenho foi salvo para rascunho!",
+          }),
+        ]}
+        icon={<SaveIcon />}
+        index={4}
+        label="Salvar"
       ></MenuDefaultButton>
     </div>
   );
