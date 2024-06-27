@@ -6,10 +6,11 @@ import * as Menubar from "@radix-ui/react-menubar";
 import { MenuImage } from "./menu-image";
 import { MenuEdit } from "./menu-edit";
 import { MenuDefaultButton } from "./menu-default-button";
-import { DeleteIcon, TrashIcon } from "lucide-react";
+import { DeleteIcon, SaveIcon, TrashIcon } from "lucide-react";
 import { CanvasBoard } from "../canvas-board";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { NavigationMenu } from "@radix-ui/react-navigation-menu";
+import { Button } from "../ui/button";
 
 export interface MenuChildrenProps {
   activeButton?: number | null;
@@ -69,7 +70,7 @@ export const CanvasControlsMenu = () => {
   }, []);
 
   return (
-    <div className="flex gap-12 items-center justify-center p-2 relative z-30">
+    <div className="flex gap-6 items-center justify-center p-2 relative z-30">
       <MenuText
         label="Texto"
         activeButton={activeButton}
@@ -95,8 +96,15 @@ export const CanvasControlsMenu = () => {
       <MenuDefaultButton
         onClick={() => CanvasBoardService.FabricDeleteAllObjects()}
         icon={<TrashIcon />}
-        index={2}
-        label="Limpar Desenhos"
+        index={3}
+        label="Limpar"
+      ></MenuDefaultButton>
+
+      <MenuDefaultButton
+        onClick={() => CanvasBoardService.SaveCanvasSerialization()}
+        icon={<SaveIcon />}
+        index={4}
+        label="Salvar"
       ></MenuDefaultButton>
     </div>
   );

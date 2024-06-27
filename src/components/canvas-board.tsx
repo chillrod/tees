@@ -27,6 +27,12 @@ export const CanvasBoard = () => {
   useEffect(() => {
     CanvasBoardService.SetEditor(editor);
 
+    const canvasHasObjects = editor?.canvas.getObjects().length;
+
+    if (!canvasHasObjects) {
+      CanvasBoardService.LoadCanvasSerialization();
+    }
+
     editor?.canvas.setDimensions(
       {
         width: getResponsiveValue(),

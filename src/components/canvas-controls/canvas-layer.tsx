@@ -71,7 +71,7 @@ export const CanvasLayer = () => {
                 </Button>
               </Dialog.Close>
             </div>
-            {form && form.type === "text" && (
+            {form && form.type === "i-text" && (
               <CanvasLayerText
                 setFormOpen={setIsFormOpen}
                 formSubmit={formSubmit}

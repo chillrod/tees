@@ -41,6 +41,8 @@ export const CanvasBoardService = {
     addItem();
 
     item.center();
+
+    emitter.emit("resetDrawControls");
   },
 
   GetCanvasImage() {
@@ -76,6 +78,8 @@ export const CanvasBoardService = {
     this.editor?.canvas.clear();
 
     this.UpdateCanvasObjects();
+
+    this.ClearCanvasSerialization();
   },
 
   FabricItemCentralize(item?: ExtendedFabricObject) {
@@ -109,6 +113,27 @@ export const CanvasBoardService = {
     );
 
     this.FabricRerender();
+  },
+
+  SaveCanvasSerialization() {
+    window.localStorage.setItem(
+      "canvas",
+      JSON.stringify(this.editor?.canvas.toJSON())
+    );
+  },
+
+  ClearCanvasSerialization() {
+    window.localStorage.removeItem("canvas");
+  },
+
+  LoadCanvasSerialization() {
+    const canvas = window.localStorage.getItem("canvas");
+
+    if (!canvas) return;
+
+    this.editor?.canvas.loadFromJSON(JSON.parse(canvas), () => {
+      this.FabricRerender();
+    });
   },
 
   FabricRerender() {

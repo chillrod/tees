@@ -32,7 +32,7 @@ export const createTextBox = () => {
   const text = new fabric.Textbox("Novo Texto", {
     fontSize: responsiveValue(),
     lineHeight: 0.8,
-    type: "text",
+    type: "i-text",
   });
 
   return text as ExtendedFabricObject;
