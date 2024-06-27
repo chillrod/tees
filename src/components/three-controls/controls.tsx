@@ -97,7 +97,7 @@ export const ThreeControls = () => {
           value={currentColor}
           placeholder="Dinamico"
           type="color"
-          className="w-12 h-8 rounded-lg border-2 border-stone-200"
+          className="w-12 h-8 rounded-lg border-2 border-stone-200 cursor-pointer"
         />
       </div>
     </div>
