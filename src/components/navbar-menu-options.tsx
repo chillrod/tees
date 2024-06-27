@@ -32,7 +32,7 @@ export const NavBarMenuOptions = (props: Props) => {
   return (
     <NavigationMenu className="list-none relative">
       <NavigationMenuItem>
-        <NavigationMenuTrigger className="hover:bg-stone-200 ease-in-out duration-200 rounded-lg ">
+        <NavigationMenuTrigger className="hover:bg-stone-200 dark:hover:bg-stone-900 ease-in-out duration-200 rounded-lg ">
           <div className="flex gap-2 items-center">
             <img
               src={props?.user?.photoURL || ""}
@@ -41,9 +41,11 @@ export const NavBarMenuOptions = (props: Props) => {
               width={40}
               height={40}
             />
-            {props?.user?.displayName && props.user.displayName.length > 13
-              ? props.user.displayName?.slice(0, 13) + "..."
-              : props?.user?.displayName || ""}
+            <span className="dark:text-stone-200">
+              {props?.user?.displayName && props.user.displayName.length > 13
+                ? props.user.displayName?.slice(0, 13) + "..."
+                : props?.user?.displayName || ""}
+            </span>
           </div>
         </NavigationMenuTrigger>
         <NavigationMenuContent className="z-30 absolute">

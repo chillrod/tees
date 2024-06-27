@@ -131,7 +131,7 @@ export const AdminPedidos = () => {
   }, [userState.user]);
 
   return (
-    <div>
+    <div className="dark:text-stone-200">
       {loading ? (
         <div className="grid gap-2">
           <Skeleton className="h-[40px] w-full  bg-stone-200" />

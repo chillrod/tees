@@ -184,6 +184,7 @@ export const NavBarMenuForm = (props: Props) => {
         <DrawerFooter>
           <DrawerClose>
             <Button
+            className="dark:bg-stone-200"
               variant="outline"
               disabled={isLoading}
               onClick={() => [setOpenDrawer(false)]}

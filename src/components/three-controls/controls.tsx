@@ -51,7 +51,7 @@ export const ThreeControls = () => {
   return (
     <div className="max-w-[450px] overflow-auto grid gap-6 text-stone-950 dark:text-stone-200">
       <button
-        className="hover:bg-stone-200 flex flex-col justify-center p-3 w-24 rounded-lg cursor:pointer ease-in-out duration-200"
+        className="hover:bg-stone-200 dark:hover:bg-stone-950 flex flex-col justify-center p-3 w-24 rounded-lg cursor:pointer ease-in-out duration-200"
         onClick={() => emitter.emit("centerShirt")}
       >
         <img
@@ -65,7 +65,7 @@ export const ThreeControls = () => {
       </button>
       <div>
         <h2 className="font-bold text-lg">
-          Studio <span className="bg-yellow-300">Colors</span>
+          Studio <span className="bg-yellow-300 dark:text-stone-950">Colors</span>
         </h2>
         <span className="text-sm font-normal">
           Escolha a cor da sua camiseta

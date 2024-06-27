@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { NavBarMenuForm } from "./navbar-menu-orcamento-form";
 import { NavBarMenuOptions } from "./navbar-menu-options";
 import { InstagramIcon, MailIcon } from "lucide-react";
+import { ModeToggle } from "./ui/mode-toggle";
 
 interface Props {
   user?: UserRecord;
@@ -23,7 +24,7 @@ export const NavBarMenu = ({ user }: Props) => {
   return (
     <>
       {user ? (
-        <div className="gap-6 hidden md:flex items-center">
+        <div className="gap-6 hidden md:flex items-center dark:text-stone-200">
           <a
             href="mailto:contato@studioestampar.com.br?subject=Olá Studio Estampar&body=Gostaria de saber mais sobre o Studio Canvas"
             target="_blank"
@@ -49,6 +50,7 @@ export const NavBarMenu = ({ user }: Props) => {
           <div>
             <NavBarMenuOptions user={user}></NavBarMenuOptions>
           </div>
+          <ModeToggle />
         </div>
       ) : (
         <>
