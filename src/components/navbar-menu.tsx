@@ -29,13 +29,13 @@ export const NavBarMenu = ({ user }: Props) => {
             href="mailto:contato@studioestampar.com.br?subject=Olá Studio Estampar&body=Gostaria de saber mais sobre o Studio Canvas"
             target="_blank"
           >
-            <InstagramIcon />
+            <MailIcon />
           </a>
           <a href="https://www.tiktok.com/@studioestampar" target="_blank">
             <img src="tiktok.svg" width="25px" height="25px" alt="TikTok" />
           </a>
           <a href="https://www.instagram.com/studioestampar/" target="_blank">
-            <MailIcon />
+            <InstagramIcon />
           </a>
           <a
             className="ml-3"
