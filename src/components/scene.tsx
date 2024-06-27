@@ -6,21 +6,9 @@ import { emitter } from "@/services/mitt.ts";
 import StudioLogo from "./studio-logo.astro";
 import { Skeleton } from "./ui/skeleton.tsx";
 
-function Loader() {
-  const { progress } = useProgress();
-
-  return (
-    <Html center>
-      <span className="flex flex-col justify-center text-center">
-        <Skeleton className="aspect-square  bg-stone-200" />
-        {progress}% Carregando...
-      </span>
-    </Html>
-  );
-}
-
 export const Scene = () => {
   const orbitRef = useRef();
+  const { progress, active } = useProgress();
 
   const resetOrbit = () => {
     if (!orbitRef.current) return;
@@ -33,18 +21,31 @@ export const Scene = () => {
       resetOrbit();
     });
 
-    resetOrbit();
-
     return () => {
       emitter.off("centerShirt");
     };
   }, []);
 
+  useEffect(() => {
+    resetOrbit();
+  }, [active]);
+
   return (
     <div className="aspect-square rounded-lg">
       <Canvas>
         <Stage intensity={4}>
-          <Suspense fallback={<Loader />}>
+          <Suspense
+            fallback={
+              <>
+                <Html center>
+                  <span className="flex flex-col justify-center text-center">
+                    <Skeleton className="aspect-square  bg-stone-200" />
+                    {progress}% Carregando...
+                  </span>
+                </Html>
+              </>
+            }
+          >
             <Model />
           </Suspense>
         </Stage>

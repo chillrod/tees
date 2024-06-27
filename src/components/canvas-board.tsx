@@ -45,9 +45,27 @@ export const CanvasBoard = () => {
   }, [editor]);
 
   useEffect(() => {
-    editor?.canvas.on(FabricEvents.ObjectModified, () => {
+    editor?.canvas.on(FabricEvents.ObjectModified, (e) => {
       CanvasBoardService.UpdateTexture();
     });
+
+    const addToUndoStack = () => {
+      CanvasBoardService.canvasLastContext =
+        CanvasBoardService.GetCanvasSerialization();
+    };
+
+    console.log(CanvasBoardService.canvasLastContext);
+
+    editor?.canvas.on("moving", (event) => {
+      console.log(event);
+    });
+
+    // editor?.canvas.on("object:modified", addToUndoStack);
+    // editor?.canvas.on("object:added", addToUndoStack);
+    // editor?.canvas.on("object:removed", addToUndoStack);
+    // editor?.canvas.on("object:rotating", addToUndoStack);
+    // editor?.canvas.on("object:scaling", addToUndoStack);
+    // editor?.canvas.on("object:moving", addToUndoStack);
 
     editor?.canvas.on("selection:created", (event) => {
       emitter.emit(
@@ -67,6 +85,8 @@ export const CanvasBoard = () => {
     return () => {
       editor?.canvas.off(FabricEvents.ObjectModified);
       editor?.canvas.off("selection:created");
+      editor?.canvas.off("selection:cleared");
+      editor?.canvas.off("object:rotating");
     };
   });
 
@@ -86,7 +106,7 @@ export const CanvasBoard = () => {
   return (
     <>
       <div
-        className="flex h-[75vh] p-12"
+        className="flex aspect-square"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,

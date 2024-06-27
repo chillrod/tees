@@ -5,6 +5,7 @@ import { emitter } from "./mitt";
 
 export const CanvasBoardService = {
   editor: undefined as FabricJSEditor | undefined,
+  canvasLastContext: undefined as object | undefined,
 
   SetEditor(editor?: FabricJSEditor) {
     this.editor = editor;
@@ -98,14 +99,6 @@ export const CanvasBoardService = {
     this.UpdateTexture();
   },
 
-  HandleFabricItemModified(editor?: FabricJSEditor) {
-    editor?.canvas.on(FabricEvents.ObjectModified, () => {
-      this.UpdateTexture();
-
-      editor?.canvas.off(FabricEvents.ObjectModified);
-    });
-  },
-
   UpdateTexture() {
     emitter.emit(
       "updateTexture",
@@ -115,10 +108,22 @@ export const CanvasBoardService = {
     this.FabricRerender();
   },
 
+  CanvasRefazer() {
+    this.editor?.canvas.loadFromJSON(this.canvasLastContext, () => {
+      this.FabricRerender();
+
+      this.UpdateTexture();
+    });
+  },
+
+  GetCanvasSerialization() {
+    return this.editor?.canvas.toJSON();
+  },
+
   SaveCanvasSerialization() {
     window.localStorage.setItem(
       "canvas",
-      JSON.stringify(this.editor?.canvas.toJSON())
+      JSON.stringify(this.GetCanvasSerialization())
     );
   },
 

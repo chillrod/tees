@@ -5,7 +5,7 @@ import { MenuText } from "./menu-text";
 import { MenuImage } from "./menu-image";
 import { MenuEdit } from "./menu-edit";
 import { MenuDefaultButton } from "./menu-default-button";
-import { EraserIcon, SaveIcon } from "lucide-react";
+import { EraserIcon, SaveIcon, UndoIcon } from "lucide-react";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { useToast } from "../ui/use-toast";
 
@@ -90,6 +90,13 @@ export const CanvasControlsMenu = () => {
         activeButton={activeButton}
         index={2}
       />
+
+      <MenuDefaultButton
+        onClick={() => CanvasBoardService.FabricDeleteAllObjects()}
+        icon={<UndoIcon />}
+        index={3}
+        label="Refazer"
+      ></MenuDefaultButton>
 
       <MenuDefaultButton
         onClick={() => CanvasBoardService.FabricDeleteAllObjects()}

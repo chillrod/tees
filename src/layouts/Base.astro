@@ -3,7 +3,12 @@
 ---
 
 <main class="p-4">
-  <div class="relative bg-stone-100 h-full p-4 flex flex-col rounded-lg">
+  <div
+    class="relative w-full bg-stone-100 aspect-square p-4 flex flex-col rounded-lg overflow-auto"
+    style={{
+      maxHeight: "calc(100vh - 5rem)",
+    }}
+  >
     <slot name="content" />
   </div>
 </main>

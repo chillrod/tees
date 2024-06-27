@@ -49,7 +49,7 @@ export const ThreeControls = () => {
   };
 
   return (
-    <div className="max-w-[450px] overflow-auto grid py-6 gap-6 text-stone-950 dark:text-stone-200 m-6">
+    <div className="max-w-[450px] overflow-auto grid gap-6 text-stone-950 dark:text-stone-200">
       <button
         className="hover:bg-stone-200 flex flex-col justify-center p-3 w-24 rounded-lg cursor:pointer ease-in-out duration-200"
         onClick={() => emitter.emit("centerShirt")}
