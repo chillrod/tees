@@ -1,4 +1,4 @@
-import { userStore } from "@/stone/user";
+import { userStore } from "@/store/user";
 import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useState } from "react";
 

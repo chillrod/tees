@@ -52,7 +52,7 @@ export const CanvasLayer = () => {
         ref={divContainer}
         className={`${
           isFormOpen
-            ? "w-[300px] h-full bg-stone-100 rounded-lg p-4 shadow-2xl"
+            ? "w-[300px] h-full bg-stone-100 dark:bg-stone-800 rounded-lg p-4 shadow-2xl"
             : ""
         }`}
       ></div>
