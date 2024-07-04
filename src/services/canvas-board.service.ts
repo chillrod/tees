@@ -127,6 +127,8 @@ export const CanvasBoardService = {
 
     this.editor?.canvas.loadFromJSON(canvas, () => {
       this.FabricRerender();
+
+      this.UpdateTexture();
     });
   },
 
