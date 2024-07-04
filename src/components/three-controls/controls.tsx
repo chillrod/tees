@@ -2,7 +2,10 @@ import { emitter } from "@/services/mitt";
 import { TooltipUI } from "../tooltip";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PaintBucketIcon } from "lucide-react";
+import { ModeToggle } from "../ui/mode-toggle";
+import { teeStore } from "@/store/tee";
 
 export const colors = [
   {
@@ -39,66 +42,66 @@ export const colors = [
 
 export const ThreeControls = () => {
   const [currentColor, setCurrentColor] = useState(colors[1].color);
+  const tshirtStore = teeStore();
 
   const handleColorChange = (params: {
     taglessColor: string;
     color: string;
   }) => {
-    emitter.emit("teeColor", params);
+    tshirtStore.updateColor(params.color);
+
     setCurrentColor(params.color);
   };
 
+  useEffect(() => {
+    tshirtStore.updateColor(currentColor);
+  }, []);
+
   return (
-    <div className="max-w-[450px] overflow-auto grid gap-6 text-stone-950 dark:text-stone-200">
-      <button
-        className="hover:bg-stone-200 dark:hover:bg-stone-950 flex flex-col justify-center p-3 w-24 rounded-lg cursor:pointer ease-in-out duration-200"
+    <div className="max-w-[450px] overflow-auto grid gap-6 text-stone-950 dark:text-stone-200 justify-start items-start">
+      <ModeToggle />
+      <Button
+        className="justify-self-start"
+        variant="ghost"
+        size="icon"
         onClick={() => emitter.emit("centerShirt")}
       >
         <img
-          className="mx-auto"
+          className="mx-auto dark:invert"
           src="./icon-centralizar.svg"
           alt="Centralizar"
-          width={40}
-          height={40}
+          width={30}
+          height={30}
         />
-        <span className="text-center">Centralizar</span>
-      </button>
-      <div>
-        <h2 className="font-bold text-lg">
-          Studio <span className="bg-yellow-300 dark:text-stone-950">Colors</span>
-        </h2>
-        <span className="text-sm font-normal">
-          Escolha a cor da sua camiseta
-        </span>
-      </div>
-      <div className="flex gap-2 w-full h-full">
+      </Button>
+      <div className="flex flex-col gap-2 w-full h-full">
         {colors.map((color, index) => (
           <div key={index}>
-            <TooltipUI text={color.name}>
-              <div
-                onClick={() =>
-                  handleColorChange({
-                    taglessColor: color.taglessColor,
-                    color: color.color,
-                  })
-                }
-                className="w-8 h-8 rounded-lg border-2 border-stone-200"
-                style={{
-                  backgroundColor: color.color,
-                }}
-              ></div>
-            </TooltipUI>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() =>
+                handleColorChange({
+                  taglessColor: color.taglessColor,
+                  color: color.color,
+                })
+              }
+              // className="w-8 h-8 rounded-lg border-2 border-stone-200"
+              style={{
+                backgroundColor: color.color,
+              }}
+            ></Button>
           </div>
         ))}
-        <Input
+        {/* <Input
           onChange={(event) =>
             handleColorChange({ taglessColor: "", color: event.target.value })
           }
           value={currentColor}
           placeholder="Dinamico"
           type="color"
-          className="w-12 h-8 rounded-lg border-2 border-stone-200 cursor-pointer"
-        />
+          className="w-10 h-8 rounded-lg border-2 border-stone-200 cursor-pointer"
+        /> */}
       </div>
     </div>
   );

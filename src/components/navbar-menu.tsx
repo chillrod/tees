@@ -1,12 +1,11 @@
 import { Button } from "./ui/button";
 
-import { userStore } from "@/stone/user";
+import { userStore } from "@/store/user";
 import type { UserRecord } from "firebase-admin/auth";
 import { useEffect } from "react";
 import { NavBarMenuForm } from "./navbar-menu-orcamento-form";
 import { NavBarMenuOptions } from "./navbar-menu-options";
 import { InstagramIcon, MailIcon } from "lucide-react";
-import { ModeToggle } from "./ui/mode-toggle";
 
 interface Props {
   user?: UserRecord;
@@ -50,7 +49,6 @@ export const NavBarMenu = ({ user }: Props) => {
           <div>
             <NavBarMenuOptions user={user}></NavBarMenuOptions>
           </div>
-          <ModeToggle />
         </div>
       ) : (
         <>

@@ -32,8 +32,13 @@ import Base from "@/layouts/Base.astro";
       slot="content"
       class="relative grid grid-cols-2 items-center overflow-hidden h-full"
     >
-      <div class="w-full h-full">
-        <slot name="tee" />
+      <div class="w-full h-full flex items-center">
+        <div class="self-end mb-2">
+          <slot name="colors" />
+        </div>
+        <div class="w-full h-full">
+          <slot name="tee" />
+        </div>
       </div>
       <div class="w-full h-full relative">
         <slot name="canvas" />
@@ -41,11 +46,9 @@ import Base from "@/layouts/Base.astro";
       <div class="absolute right-0 top-0">
         <slot name="layer" />
       </div>
-      <div class="absolute z-40 bottom-0 w-full p-4">
+      <div class="absolute bottom-0 w-full rounded-lg">
         <div class="grid grid-cols-2 justify-between w-full">
-          <div>
-            <slot name="colors" />
-          </div>
+          <div></div>
           <div class="self-end bg-stone-100 dark:bg-stone-900">
             <slot name="controls" />
           </div>

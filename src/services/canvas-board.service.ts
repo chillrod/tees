@@ -79,8 +79,6 @@ export const CanvasBoardService = {
     this.editor?.canvas.clear();
 
     this.UpdateCanvasObjects();
-
-    this.ClearCanvasSerialization();
   },
 
   FabricItemCentralize(item?: ExtendedFabricObject) {
@@ -120,23 +118,14 @@ export const CanvasBoardService = {
     return this.editor?.canvas.toJSON();
   },
 
-  SaveCanvasSerialization() {
-    window.localStorage.setItem(
-      "canvas",
-      JSON.stringify(this.GetCanvasSerialization())
-    );
+  GetCanvasSmallImage() {
+    return this.editor?.canvas.toDataURL({ multiplier: 0.1 });
   },
 
-  ClearCanvasSerialization() {
-    window.localStorage.removeItem("canvas");
-  },
-
-  LoadCanvasSerialization() {
-    const canvas = window.localStorage.getItem("canvas");
-
+  LoadCanvasSerialization(canvas: object) {
     if (!canvas) return;
 
-    this.editor?.canvas.loadFromJSON(JSON.parse(canvas), () => {
+    this.editor?.canvas.loadFromJSON(canvas, () => {
       this.FabricRerender();
     });
   },

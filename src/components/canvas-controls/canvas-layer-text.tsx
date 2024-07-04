@@ -44,27 +44,29 @@ export const CanvasLayerText = (props: Props) => {
     {
       name: "left",
       icon: <AlignLeftIcon size={20} />,
-      className: `${formData.textAlign === "left" && "bg-stone-200"}`,
+      className: `${formData.textAlign === "left" && "bg-stone-200 dark:bg-stone-700"}`,
     },
     {
       name: "center",
       icon: <AlignCenterIcon size={20} />,
-      className: `${formData.textAlign === "center" && "bg-stone-200"}`,
+      className: `${formData.textAlign === "center" && "bg-stone-200 dark:bg-stone-700"}`,
     },
     {
       name: "right",
       icon: <AlignRightIcon size={20} />,
-      className: `${formData.textAlign === "right" && "bg-stone-200"}`,
+      className: `${formData.textAlign === "right" && "bg-stone-200 dark:bg-stone-700"}`,
     },
   ];
 
   return (
     <>
-      <Dialog.Title className="text-2xl">Texto</Dialog.Title>
-      <Dialog.Description className="text-stone-600 mb-2">
+      <Dialog.Title className="text-2xl dark:text-stone-200">
+        Texto
+      </Dialog.Title>
+      <Dialog.Description className="text-stone-600 dark:text-stone-400 mb-2">
         O espaço para você ser criativo e escrever o que quiser.
       </Dialog.Description>
-      <Form.Root className="flex flex-col gap-4">
+      <Form.Root className="flex flex-col gap-4 dark:text-stone-200">
         <Separator.Root className="border-b-2 my-2" />
         <Form.Field
           name="fill"
@@ -73,7 +75,7 @@ export const CanvasLayerText = (props: Props) => {
           <Form.Label>Cor</Form.Label>
           <Input
             type="color"
-            className="w-48"
+            className="w-48 dark:bg-stone-700"
             value={formData.fill}
             onChange={(e) =>
               setFormData({
@@ -97,7 +99,7 @@ export const CanvasLayerText = (props: Props) => {
               });
             }}
           >
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48 dark:bg-stone-700">
               <SelectValue placeholder="Times New Roman" />
             </SelectTrigger>
             <SelectContent>

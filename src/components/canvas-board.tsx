@@ -27,12 +27,6 @@ export const CanvasBoard = () => {
   useEffect(() => {
     CanvasBoardService.SetEditor(editor);
 
-    const canvasHasObjects = editor?.canvas.getObjects().length;
-
-    if (!canvasHasObjects) {
-      CanvasBoardService.LoadCanvasSerialization();
-    }
-
     editor?.canvas.setDimensions(
       {
         width: getResponsiveValue(),
@@ -59,13 +53,6 @@ export const CanvasBoard = () => {
     editor?.canvas.on("moving", (event) => {
       console.log(event);
     });
-
-    // editor?.canvas.on("object:modified", addToUndoStack);
-    // editor?.canvas.on("object:added", addToUndoStack);
-    // editor?.canvas.on("object:removed", addToUndoStack);
-    // editor?.canvas.on("object:rotating", addToUndoStack);
-    // editor?.canvas.on("object:scaling", addToUndoStack);
-    // editor?.canvas.on("object:moving", addToUndoStack);
 
     editor?.canvas.on("selection:created", (event) => {
       emitter.emit(

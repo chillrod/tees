@@ -7,6 +7,7 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import { emitter } from "@/services/mitt";
 import { colors } from "./three-controls/controls";
+import { teeStore } from "@/store/tee";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -26,6 +27,8 @@ type GLTFResult = GLTF & {
 
 export function Model() {
   const { nodes, materials } = useGLTF("/output2.glb") as GLTFResult;
+
+  const tshirtStore = teeStore();
 
   const [color, setColor] = useState({
     color: colors[1].color,
@@ -55,25 +58,27 @@ export function Model() {
   textureOnShirt.anisotropy = 16;
 
   useEffect(() => {
-    emitter.on("teeColor", (color) => {
-      setColor(color);
-    });
-
     emitter.on("updateTexture", (canvas) => {
       setTexture(canvas);
     });
 
     return () => {
       emitter.off("updateTexture");
-      emitter.off("teeColor");
     };
   }, []);
+
+  useEffect(() => {
+    setColor({
+      color: tshirtStore.tshirtColor,
+      taglessColor: tshirtStore.tshirtColor,
+    });
+  }, [tshirtStore.tshirtColor]);
 
   return (
     <group dispose={null}>
       <group
         name="T-shirt_base"
-        position={[0.004, 0.5, -0.023]}
+        position={[0.004, 0.2, -0.023]}
         rotation={[Math.PI / 1.9, 0, 0]}
         scale={2.2}
       >

@@ -1,9 +1,15 @@
-import { FoldersIcon, LayoutDashboardIcon, UserIcon } from "lucide-react";
+import {
+  BrushIcon,
+  FoldersIcon,
+  LayoutDashboardIcon,
+  UserIcon,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { AdminUsuarios } from "./usuarios";
 import { useState } from "react";
 import * as Separator from "@radix-ui/react-separator";
 import { AdminPedidos } from "./pedidos";
+import { AdminCriacoes } from "./criacoes";
 
 export const AdminSideBarNav = () => {
   const [componentToRender, setComponentToRender] = useState<React.ReactNode>(
@@ -23,6 +29,12 @@ export const AdminSideBarNav = () => {
       description: "Gerencie os usuários do sistema.",
       icon: <UserIcon />,
       component: <AdminUsuarios />,
+    },
+    {
+      name: "Criacoes",
+      description: "Gerencie os usuários do sistema.",
+      icon: <BrushIcon />,
+      component: <AdminCriacoes />,
     },
     {
       name: "Orçamentos",

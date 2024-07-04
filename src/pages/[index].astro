@@ -1,0 +1,47 @@
+---
+import UILayout from "@/components/ui-layout.astro";
+import Layout from "../layouts/Layout.astro";
+import { Scene } from "@/components/scene";
+import { CanvasBoard } from "@/components/canvas-board";
+import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
+import { CanvasLayer } from "@/components/canvas-controls/canvas-layer";
+import { ThreeControls } from "@/components/three-controls/controls";
+
+import { getAuth } from "firebase-admin/auth";
+import { app } from "@/firebase/server";
+
+const auth = getAuth(app);
+
+/* Check current session */
+if (!Astro.cookies.has("__session")) {
+  return Astro.redirect("/logar");
+}
+// @ts-ignore
+const sessionCookie = Astro.cookies.get("__session").value;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+  return Astro.redirect("/logar");
+}
+---
+
+<Layout title="Studio Estampar Canvas" user={user}>
+  <UILayout>
+    <div slot="tee" class="h-full">
+      <Scene client:load />
+    </div>
+    <div slot="colors">
+      <ThreeControls client:load />
+    </div>
+    <div slot="canvas">
+      <CanvasBoard client:load />
+    </div>
+    <div slot="layer">
+      <CanvasLayer client:load />
+    </div>
+    <div slot="controls" class="h-full">
+      <CanvasControlsMenu client:load />
+    </div>
+  </UILayout>
+</Layout>
