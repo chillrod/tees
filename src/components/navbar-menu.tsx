@@ -31,7 +31,7 @@ export const NavBarMenu = ({ user }: Props) => {
             <MailIcon />
           </a>
           <a href="https://www.tiktok.com/@studioestampar" target="_blank">
-            <img src="tiktok.svg" width="25px" height="25px" alt="TikTok" />
+            <img src="tiktok.svg" width="25px" height="25px" alt="TikTok" className="dark:invert" />
           </a>
           <a href="https://www.instagram.com/studioestampar/" target="_blank">
             <InstagramIcon />

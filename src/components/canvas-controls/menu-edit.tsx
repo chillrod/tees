@@ -19,7 +19,7 @@ export const MenuEdit = (props: Props) => {
 
   return (
     <MenuDefaultButton
-      icon={<PencilIcon />}
+      icon={<PencilIcon className="dark:invert" />}
       {...props}
       onClick={handleOpenMenu}
     ></MenuDefaultButton>
