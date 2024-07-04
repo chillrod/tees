@@ -38,7 +38,7 @@ export const AdminCriacoes = () => {
     if (value.length === 0) {
       return setCriacoesFiltradas(pedidosCadastrados);
     } else {
-      const keysToFilter = ["user"];
+      const keysToFilter = ["user", "id"];
 
       const criacoesFiltradas = pedidosCadastrados.filter((pedido) => {
         return keysToFilter.some((key) => {
