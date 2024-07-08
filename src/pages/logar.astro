@@ -1,20 +1,8 @@
 ---
-import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 import { Button } from "@/components/ui/button";
 import { gradient, size } from "@/components/canvas-board";
 import StudioLogo from "@/components/studio-logo.astro";
-import { AuthVerifier } from "../services/auth";
-
-/* Check if the user is authenticated */
-if (Astro.cookies.has("__session")) {
-  // @ts-ignore
-  const sessionCookie = Astro.cookies.get("__session").value;
-
-  await AuthVerifier(sessionCookie, Astro.cookies);
-
-  return Astro.redirect("/apresentacao");
-}
 ---
 
 <Layout title="Logar">
