@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
 
   const formData = await request.json();
 
-  const { nome, email, whatsapp, sobre } = formData;
+  const { nome, email, whatsapp, sobre, criacao } = formData;
 
   try {
     const uuid = shortUUID.generate();
@@ -28,6 +28,7 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
       whatsapp,
       sobre,
       imagePath: `/${email}/${uuid}`,
+      criacao: criacao,
     });
   } catch (error: any) {
     return new Response(error.message, {
@@ -37,4 +38,3 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
 
   return redirect("/");
 };
-

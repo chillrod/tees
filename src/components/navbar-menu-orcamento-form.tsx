@@ -2,7 +2,7 @@ import { CanvasBoardService } from "@/services/canvas-board.service";
 import type { PedidoForm } from "@/services/interfaces";
 import * as Form from "@radix-ui/react-form";
 import type { UserRecord } from "firebase-admin/auth";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Drawer,
@@ -30,6 +30,7 @@ export const NavBarMenuForm = (props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isCriacao, setIsCriacao] = useState<boolean>(false);
 
   const [form, setForm] = useState<PedidoForm>({
     nome: props?.user?.displayName || "",
@@ -89,6 +90,11 @@ export const NavBarMenuForm = (props: Props) => {
     try {
       setIsLoading(true);
 
+      const updatedForm = {
+        ...formData,
+        criacao: window.location.pathname.split("=")[1],
+      };
+
       const canvas = CanvasBoardService.GetCanvasImage();
 
       const res = await fetch("/api/orcamento/enviar", {
@@ -97,7 +103,7 @@ export const NavBarMenuForm = (props: Props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
+          ...updatedForm,
           canvas,
         }),
       });
@@ -118,7 +124,8 @@ export const NavBarMenuForm = (props: Props) => {
 
       toast({
         title: "Orçamento enviado!",
-        description: "Seu orçamento foi enviado com sucesso.",
+        description:
+          "Seu orçamento foi enviado com sucesso. Entraremos em contato com você em até 48 horas.",
       });
 
       setOpenDrawer(false);
@@ -126,6 +133,14 @@ export const NavBarMenuForm = (props: Props) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (window.location.pathname.includes("/criacao=")) {
+      setIsCriacao(true);
+    } else {
+      setIsCriacao(false);
+    }
+  }, [openDrawer]);
 
   return (
     <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
@@ -136,51 +151,63 @@ export const NavBarMenuForm = (props: Props) => {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="flex flex-col gap-4">
-          <div>
-            <DrawerTitle>Solicitar orçamento</DrawerTitle>
-            <DrawerDescription>
-              Preencha o formulário abaixo para solicitar um orçamento,
-              entraremos em contato com você o mais rápido possível.
-            </DrawerDescription>
-          </div>
-          <Form.Root
-            className="flex flex-col gap-6"
-            onSubmit={async (event) => formSubmit(event, form)}
-          >
-            <Form.Field name="whatsapp">
-              <Form.Label>Whatsapp *</Form.Label>
-              <Form.Control asChild>
-                <Input
-                  required
-                  ref={whatsappInput}
-                  placeholder="Whatsapp"
-                  value={form.whatsapp}
+          {isCriacao ? (
+            <div>
+              <DrawerTitle>Solicitar orçamento</DrawerTitle>
+              <DrawerDescription>
+                Preencha o formulário abaixo para solicitar um orçamento,
+                entraremos em contato com você em até 48 horas.
+              </DrawerDescription>
+            </div>
+          ) : (
+            <div>
+              <DrawerTitle>Ops...</DrawerTitle>
+              <DrawerDescription>
+                Para solicitar um orçamento, você precisa primeiro salvar a sua
+                criação.
+              </DrawerDescription>
+            </div>
+          )}
+          {isCriacao && (
+            <Form.Root
+              className="flex flex-col gap-6"
+              onSubmit={async (event) => formSubmit(event, form)}
+            >
+              <Form.Field name="whatsapp">
+                <Form.Label>Whatsapp *</Form.Label>
+                <Form.Control asChild>
+                  <Input
+                    required
+                    ref={whatsappInput}
+                    placeholder="Whatsapp"
+                    value={form.whatsapp}
+                    onChange={(event) =>
+                      setForm({ ...form, whatsapp: event.target.value })
+                    }
+                  />
+                </Form.Control>
+              </Form.Field>
+              <Form.Field name="about">
+                <Form.Label>Sobre o pedido</Form.Label>
+                <Textarea
+                  placeholder="Sobre a sua criação..."
+                  value={form.sobre}
                   onChange={(event) =>
-                    setForm({ ...form, whatsapp: event.target.value })
+                    setForm({
+                      ...form,
+                      sobre: event.target.value,
+                    })
                   }
                 />
-              </Form.Control>
-            </Form.Field>
-            <Form.Field name="about">
-              <Form.Label>Sobre o pedido</Form.Label>
-              <Textarea
-                placeholder="Sobre a sua criação..."
-                value={form.sobre}
-                onChange={(event) =>
-                  setForm({
-                    ...form,
-                    sobre: event.target.value,
-                  })
-                }
-              />
-            </Form.Field>
+              </Form.Field>
 
-            <Form.Submit className="grid w-full col-span-2">
-              <Button className="w-full" disabled={isLoading}>
-                Enviar
-              </Button>
-            </Form.Submit>
-          </Form.Root>
+              <Form.Submit className="grid w-full col-span-2">
+                <Button className="w-full" disabled={isLoading}>
+                  Enviar
+                </Button>
+              </Form.Submit>
+            </Form.Root>
+          )}
         </DrawerHeader>
         <DrawerFooter>
           <DrawerClose>
@@ -190,7 +217,7 @@ export const NavBarMenuForm = (props: Props) => {
               disabled={isLoading}
               onClick={() => [setOpenDrawer(false)]}
             >
-              Cancelar
+              Fechar
             </Button>
           </DrawerClose>
         </DrawerFooter>

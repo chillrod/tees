@@ -5,4 +5,5 @@ export interface PedidoForm {
   canvas?: string;
   sobre: string;
   imagePath?: string;
+  criacao?: string;
 }

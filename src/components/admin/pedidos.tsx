@@ -157,7 +157,8 @@ export const AdminPedidos = () => {
                 <TableHead className="w-[100px]">Nome</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead className="text-center">Whatsapp</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
+                <TableHead className="text-right">Desenho</TableHead>
+                <TableHead className="text-right">Canvas</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -199,6 +200,11 @@ export const AdminPedidos = () => {
                     >
                       Visualizar Desenho
                     </Button>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <a href={`/criacao=${pedido.criacao}`} target="_blank">
+                      <Button>Abrir no Canvas</Button>
+                    </a>
                   </TableCell>
                 </TableRow>
               ))}

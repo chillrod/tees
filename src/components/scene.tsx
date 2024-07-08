@@ -1,13 +1,18 @@
 import { Html, OrbitControls, Stage, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Model } from "./tee.tsx";
+import { SimpleModel } from "./simple-tee.tsx";
 import { Suspense, useEffect, useRef } from "react";
 import { emitter } from "@/services/mitt.ts";
 import StudioLogo from "./studio-logo.astro";
 import { Skeleton } from "./ui/skeleton.tsx";
 import { CanvasBoardService } from "@/services/canvas-board.service.ts";
 
-export const Scene = () => {
+interface Props {
+  isSimple?: boolean;
+  cor?: string;
+}
+export const Scene = ({ isSimple, cor }: Props) => {
   const orbitRef = useRef();
   const { progress, active } = useProgress();
 
@@ -43,7 +48,7 @@ export const Scene = () => {
               </>
             }
           >
-            <Model />
+            {isSimple ? <SimpleModel cor={cor} /> : <Model />}
           </Suspense>
         </Stage>
         {/* @ts-ignore */}
