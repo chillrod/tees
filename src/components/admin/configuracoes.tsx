@@ -118,7 +118,6 @@ export const AdminConfiguracoes = () => {
           value={corAtual}
           onChange={(event) => setCorAtual(event.target.value)}
         />
-        {/* <Input type="number" className="w-48" placeholder="Quantidade" /> */}
         <Button onClick={() => cadastrarCor(corAtual)}>Cadastrar</Button>
       </div>
       <h2 className="text-sm">Cores Cadastradas</h2>
@@ -129,7 +128,11 @@ export const AdminConfiguracoes = () => {
           {cores.map((cor) => {
             return (
               <li className="flex gap-6 items-center">
-                <div className="w-12 h-12" style={{ backgroundColor: cor.cor }} />
+                <div
+                  className="w-12 h-12 cursor-pointer"
+                  style={{ backgroundColor: cor.cor }}
+                  onClick={() => setCorAtual(cor.cor)}
+                />
                 <Button onClick={() => deletarCor(cor.id)}>Deletar</Button>
               </li>
             );
