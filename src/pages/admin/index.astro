@@ -5,6 +5,7 @@ import { AdminSideBarNav } from "@/components/admin/sidebar-nav";
 
 import { getAuth } from "firebase-admin/auth";
 import { app } from "@/firebase/server";
+import { AuthVerifier } from "../../services/auth";
 
 const auth = getAuth(app);
 
@@ -14,8 +15,10 @@ if (!Astro.cookies.has("__session")) {
 }
 // @ts-ignore
 const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
+
+const decodedCookie = await AuthVerifier(sessionCookie, Astro.cookies);
+
+const user = await auth.getUser(decodedCookie);
 
 if (!user) {
   return Astro.redirect("/logar");

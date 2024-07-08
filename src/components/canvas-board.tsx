@@ -12,25 +12,13 @@ export const size = "40px 40px";
 export const CanvasBoard = () => {
   const { editor, onReady } = useFabricJSEditor();
 
-  const getResponsiveValue = () => {
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth >= 1536) {
-      return 2080;
-    } else if (windowWidth >= 1280) {
-      return 1680;
-    } else {
-      return 1080;
-    }
-  };
-
   useEffect(() => {
     CanvasBoardService.SetEditor(editor);
 
     editor?.canvas.setDimensions(
       {
-        width: getResponsiveValue(),
-        height: getResponsiveValue(),
+        width: 1080,
+        height: 1080,
       },
       {
         backstoreOnly: true,
@@ -42,13 +30,6 @@ export const CanvasBoard = () => {
     editor?.canvas.on(FabricEvents.ObjectModified, (e) => {
       CanvasBoardService.UpdateTexture();
     });
-
-    const addToUndoStack = () => {
-      CanvasBoardService.canvasLastContext =
-        CanvasBoardService.GetCanvasSerialization();
-    };
-
-    console.log(CanvasBoardService.canvasLastContext);
 
     editor?.canvas.on("moving", (event) => {
       console.log(event);
@@ -93,19 +74,19 @@ export const CanvasBoard = () => {
   return (
     <>
       <div
-        className="flex aspect-square"
+        className="w-full h-[90vh]"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,
         }}
       >
         <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: "url('/t-shirt-canvas.svg')",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          className="w-full h-full "
+          // style={{
+          //   backgroundImage: "url('/t-shirt-canvas.svg')",
+          //   backgroundPosition: "center",
+          //   backgroundRepeat: "no-repeat",
+          // }}
         >
           <FabricJSCanvas onReady={onReady} className={`aspect-square`} />
         </div>

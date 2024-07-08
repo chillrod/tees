@@ -31,14 +31,14 @@ export const AdminCriacoes = () => {
     useState<Criacao[]>(pedidosCadastrados);
 
   useEffect(() => {
-    filtrarPedidos(criacoesFiltradasValue);
+    filtrarCriacoes(criacoesFiltradasValue);
   }, [criacoesFiltradasValue]);
 
-  const filtrarPedidos = (value: string) => {
+  const filtrarCriacoes = (value: string) => {
     if (value.length === 0) {
       return setCriacoesFiltradas(pedidosCadastrados);
     } else {
-      const keysToFilter = ["user"];
+      const keysToFilter = ["user", "id"];
 
       const criacoesFiltradas = pedidosCadastrados.filter((pedido) => {
         return keysToFilter.some((key) => {
@@ -50,6 +50,32 @@ export const AdminCriacoes = () => {
       });
 
       setCriacoesFiltradas(criacoesFiltradas);
+    }
+  };
+
+  const deletarCriacao = async (id: string) => {
+    const token = jsCookie.get("__session");
+
+    try {
+      setLoading(true);
+
+      await fetch(
+        `/api/criacoes/deletar?` +
+          new URLSearchParams({
+            id,
+          }).toString(),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      baixarCriacoes();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,10 +162,14 @@ export const AdminCriacoes = () => {
                       height={500}
                     ></img>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right flex gap-2 justify-end">
                     <a href={`/criacao=${criacao.id}`} target="_blank">
                       <Button>Abrir no Canvas</Button>
                     </a>
+
+                    <Button onClick={() => deletarCriacao(criacao.id)}>
+                      Deletar
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

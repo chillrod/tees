@@ -1,7 +1,6 @@
 import { PencilIcon } from "lucide-react";
 import { MenuDefaultButton } from "./menu-default-button";
 import type { MenuChildrenProps } from "./menu";
-import { createTextBox } from "@/services/canvas/text/fabric-text";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { CanvasLayersService } from "@/services/canvas-layers.service";
 import { emitter } from "@/services/mitt";

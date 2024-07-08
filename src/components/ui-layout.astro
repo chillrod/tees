@@ -1,22 +1,6 @@
 ---
-import StudioLogo from "./studio-logo.astro";
-import { Button } from "./ui/button";
-import { ShirtIcon, BrushIcon } from "lucide-react";
-import { Toaster } from "./ui/toaster";
 import Base from "@/layouts/Base.astro";
 ---
-
-<Toaster client:load />
-<!-- <div class="absolute bottom-0 flex gap-2 w-full pt-5 z-30 md:hidden p-2">
-  <Button className="flex w-full gap-2" variant="default" id="teeButton">
-    <ShirtIcon size="20" />
-    Camiseta
-  </Button>
-  <Button className="flex gap-2 w-full" variant="default" id="canvasButton">
-    <BrushIcon size="20" />
-    Canvas
-  </Button>
-</div> -->
 
 <div
   class="md:hidden grid place-items-center h-[100vh] mx-auto text-center max-w-80"
@@ -26,51 +10,31 @@ import Base from "@/layouts/Base.astro";
     desativada na versão beta.
   </h2>
 </div>
-<div class="hidden md:grid">
+<div class="hidden md:block max-w-screen-2xl mx-auto">
   <Base>
     <div
       slot="content"
-      class="relative grid grid-cols-2 items-center overflow-hidden h-full"
+      class="grid grid-cols-2 items-center overflow-hidden h-full w-full"
     >
-      <div class="w-full h-full flex items-center">
-        <div class="self-end mb-2">
+      <div class="flex h-full items-center w-full">
+        <div class="self-end mb-10">
           <slot name="colors" />
         </div>
-        <div class="w-full h-full">
+        <div class="h-full w-full">
           <slot name="tee" />
         </div>
       </div>
-      <div class="w-full h-full relative">
-        <slot name="canvas" />
-      </div>
-      <div class="absolute right-0 top-0">
-        <slot name="layer" />
-      </div>
-      <div class="absolute bottom-0 w-full rounded-lg">
-        <div class="grid grid-cols-2 justify-between w-full">
-          <div></div>
-          <div class="self-end bg-stone-100 dark:bg-stone-900">
-            <slot name="controls" />
-          </div>
+      <div class="w-full h-full self-center flex flex-col relative">
+        <div>
+          <slot name="canvas" />
+        </div>
+        <div class="absolute bottom-6 w-full">
+          <slot name="controls" />
+        </div>
+        <div class="absolute right-0 top-0">
+          <slot name="layer" />
         </div>
       </div>
     </div>
   </Base>
 </div>
-
-<script>
-  const teeButton = document.getElementById("teeButton");
-  const canvasButton = document.getElementById("canvasButton");
-  const tee = document.querySelectorAll("#tee");
-  const canvas = document.getElementById("canvas");
-
-  teeButton?.addEventListener("click", () => {
-    tee?.forEach((tee: any) => tee.classList.remove("hidden"));
-    canvas?.classList.add("hidden");
-  });
-
-  canvasButton?.addEventListener("click", () => {
-    tee?.forEach((tee: any) => tee.classList.add("hidden"));
-    canvas?.classList.remove("hidden");
-  });
-</script>

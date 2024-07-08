@@ -9,18 +9,18 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
     return new Response("No token found", { status: 401 });
   }
 
-  const criacoes = firestore.collection("criacoes");
+  const configuracao = firestore.collection("cores");
 
   const formData = await request.json();
 
   try {
-    await criacoes.add({
+    await configuracao.add({
       ...formData,
     });
 
     return new Response(
       JSON.stringify({
-        message: "Criação salva com sucesso",
+        message: "Configuração atualizada com sucesso!",
         criacao: formData.id,
       })
     );
@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
   }
 };
 
-export const GET: APIRoute = async ({ request, params }) => {
+export const GET: APIRoute = async ({ request, cookies }) => {
   /* Get token from request headers */
   const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
 
@@ -40,24 +40,17 @@ export const GET: APIRoute = async ({ request, params }) => {
   }
 
   try {
-    const userQueryParams = request.url.split("?")[1].replace("user=", "");
+    const pedidos = (await firestore.collection("cores").get()).docs.map(
+      (doc) => doc.data()
+    );
 
-    const criacoes = await firestore
-      .collection("criacoes")
-      .where("userId", "==", userQueryParams)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        return data;
-      });
-
-    return new Response(JSON.stringify(criacoes), {
+    return new Response(JSON.stringify(pedidos), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } catch (error) {
-    return new Response("Erro ao listar criações", { status: 500 });
+    return new Response("Erro ao baixar usuários", { status: 401 });
   }
 };

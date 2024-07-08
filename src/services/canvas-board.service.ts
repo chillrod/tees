@@ -125,7 +125,7 @@ export const CanvasBoardService = {
   LoadCanvasSerialization(canvas: object) {
     if (!canvas) return;
 
-    this.editor?.canvas.loadFromJSON(canvas, () => {
+    this.editor?.canvas.loadFromJSON(canvas, async () => {
       this.FabricRerender();
 
       this.UpdateTexture();

@@ -1,5 +1,6 @@
 import {
   BrushIcon,
+  CogIcon,
   FoldersIcon,
   LayoutDashboardIcon,
   UserIcon,
@@ -10,20 +11,22 @@ import { useState } from "react";
 import * as Separator from "@radix-ui/react-separator";
 import { AdminPedidos } from "./pedidos";
 import { AdminCriacoes } from "./criacoes";
+import { AdminConfiguracoes } from "./configuracoes";
 
 export const AdminSideBarNav = () => {
   const [componentToRender, setComponentToRender] = useState<React.ReactNode>(
-    <AdminUsuarios />
+    <AdminConfiguracoes />
   );
 
   const [activeMenu, setActiveMenu] = useState(0);
 
   const sidebarNavs = [
-    // {
-    //   name: "Dashboard",
-    //   icon: <LayoutDashboardIcon />,
-    //   link: "/admin/dashboard",
-    //
+    {
+      name: "Configurações",
+      description: "Gerencie as configurações do sistema.",
+      icon: <CogIcon />,
+      component: <AdminConfiguracoes />,
+    },
     {
       name: "Usuários",
       description: "Gerencie os usuários do sistema.",

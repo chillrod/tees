@@ -1,60 +1,52 @@
 import { emitter } from "@/services/mitt";
-import { TooltipUI } from "../tooltip";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { useEffect, useState } from "react";
-import { PaintBucketIcon } from "lucide-react";
-import { ModeToggle } from "../ui/mode-toggle";
 import { teeStore } from "@/store/tee";
-
-export const colors = [
-  {
-    name: "Preto",
-    color: "#1c1c1c",
-    taglessColor: "#ffffff",
-  },
-  {
-    name: "Branco",
-    color: "#ffffff",
-    taglessColor: "#000000",
-  },
-  {
-    name: "Cinza",
-    color: "#bababa",
-    taglessColor: "#ffffff",
-  },
-  {
-    name: "Verde",
-    color: "#0f700f",
-    taglessColor: "#ffffff",
-  },
-  {
-    name: "Vermelho",
-    color: "#a71515",
-    taglessColor: "#000000",
-  },
-  {
-    name: "Azul",
-    color: "#121248",
-    taglessColor: "#ffffff",
-  },
-];
+import jsCookie from "js-cookie";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { ModeToggle } from "../ui/mode-toggle";
+import { useToast } from "../ui/use-toast";
 
 export const ThreeControls = () => {
-  const [currentColor, setCurrentColor] = useState(colors[1].color);
+  const [cores, setCores] = useState<{ cor: string; id: string }[]>([]);
+  const { toast } = useToast();
+
+  const [currentColor, setCurrentColor] = useState("");
+
   const tshirtStore = teeStore();
 
-  const handleColorChange = (params: {
-    taglessColor: string;
-    color: string;
-  }) => {
-    tshirtStore.updateColor(params.color);
+  const handleColorChange = (params: { cor: string }) => {
+    tshirtStore.updateColor(params.cor);
 
-    setCurrentColor(params.color);
+    setCurrentColor(params.cor);
+  };
+
+  const baixarCores = async () => {
+    const token = jsCookie.get("__session");
+
+    try {
+      const res = await fetch("/api/configuracoes/cores", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const cores = await res.json();
+
+      setCores(cores);
+
+      setCurrentColor(cores[0].cor);
+      tshirtStore.updateColor(cores[0].cor);
+    } catch (error) {
+      toast({
+        title: "Ops!",
+        description: "Ocorreu um erro ao baixar as cores.",
+      });
+    }
   };
 
   useEffect(() => {
-    tshirtStore.updateColor(currentColor);
+    baixarCores();
   }, []);
 
   return (
@@ -74,35 +66,28 @@ export const ThreeControls = () => {
           height={30}
         />
       </Button>
-      <div className="flex flex-col gap-2 w-full h-full">
-        {colors.map((color, index) => (
-          <div key={index}>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() =>
-                handleColorChange({
-                  taglessColor: color.taglessColor,
-                  color: color.color,
-                })
-              }
-              // className="w-8 h-8 rounded-lg border-2 border-stone-200"
-              style={{
-                backgroundColor: color.color,
-              }}
-            ></Button>
-          </div>
-        ))}
-        {/* <Input
-          onChange={(event) =>
-            handleColorChange({ taglessColor: "", color: event.target.value })
-          }
-          value={currentColor}
-          placeholder="Dinamico"
-          type="color"
-          className="w-10 h-8 rounded-lg border-2 border-stone-200 cursor-pointer"
-        /> */}
-      </div>
+      {cores.length > 0 ? (
+        <div className="flex flex-col gap-2 w-full h-full">
+          {cores.map((color, index) => (
+            <div key={index}>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() =>
+                  handleColorChange({
+                    cor: color.cor,
+                  })
+                }
+                style={{
+                  backgroundColor: color.cor,
+                }}
+              ></Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>Carregando cores...</>
+      )}
     </div>
   );
 };

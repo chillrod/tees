@@ -25,14 +25,12 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Model() {
+interface Props {
+  cor?: string;
+}
+
+export function SimpleModel({ cor }: Props) {
   const { nodes, materials } = useGLTF("/output2.glb") as GLTFResult;
-
-  const tshirtStore = teeStore();
-
-  const [color, setColor] = useState("");
-
-  const [texture, setTexture] = useState(defaultImageBackground);
 
   const baseTexture = useTexture(
     "./T-shirt_main_FRONT_2617_BaseColor.1001.png"
@@ -49,29 +47,6 @@ export function Model() {
   stoneWash.anisotropy = 16;
   stoneWash.generateMipmaps = false;
 
-  const textureOnShirt = useTexture(texture);
-  textureOnShirt.flipY = false;
-  textureOnShirt.offset.set(0.045, -0.17);
-  textureOnShirt.anisotropy = 16;
-
-  useEffect(() => {
-    emitter.on("updateTexture", (canvas) => {
-      setTexture(canvas);
-    });
-
-    return () => {
-      emitter.off("updateTexture");
-    };
-  }, []);
-
-  useEffect(() => {
-    CanvasBoardService.UpdateTexture();
-  }, []);
-
-  useEffect(() => {
-    setColor(tshirtStore.tshirtColor);
-  }, [tshirtStore.tshirtColor]);
-
   return (
     <group dispose={null}>
       <group
@@ -86,7 +61,7 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002"].geometry}
           material={materials["T-shirt_main_tex"]}
-          material-color={color}
+          material-color={cor}
         >
           <meshStandardMaterial
             attach="material"
@@ -101,30 +76,15 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002"].geometry}
           material={materials["T-shirt_main_tex"]}
-          material-color={color}
+          material-color={cor}
         >
           <meshStandardMaterial
             map={stoneWash}
             attach="material"
             opacity={1}
-            blendColor={color}
+            blendColor={cor}
             blending={2}
           ></meshStandardMaterial>
-        </mesh>
-
-        <mesh
-          name="T-shirt_base002"
-          castShadow
-          receiveShadow
-          geometry={nodes["T-shirt_base002"].geometry}
-          material={materials["T-shirt_main_tex"]}
-        >
-          <meshPhysicalMaterial
-            transparent
-            attach="material"
-            map={textureOnShirt}
-            side={THREE.DoubleSide}
-          ></meshPhysicalMaterial>
         </mesh>
 
         <mesh
@@ -133,7 +93,7 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002_1"].geometry}
           material={materials["T-shirt_collar_tex"]}
-          material-color={color}
+          material-color={cor}
         >
           <meshStandardMaterial
             attach="material"
@@ -148,7 +108,7 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002_1"].geometry}
           material={materials["T-shirt_collar_tex"]}
-          material-color={color}
+          material-color={cor}
         >
           <meshStandardMaterial
             map={stoneWash}
@@ -163,7 +123,7 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002_2"].geometry}
           material={materials["T-shirt_collar_color_line_inside"]}
-          material-color={color}
+          material-color={cor}
         />
         <mesh
           name="T-shirt_base002_3"
@@ -171,7 +131,7 @@ export function Model() {
           receiveShadow
           geometry={nodes["T-shirt_base002_3"].geometry}
           material={materials["T-shirt sew_1"]}
-          material-color={color}
+          material-color={cor}
         />
       </group>
     </group>
