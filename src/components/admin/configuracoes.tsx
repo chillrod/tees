@@ -127,7 +127,7 @@ export const AdminConfiguracoes = () => {
         <ul className="grid max-h-[500px] overflow-auto gap-6">
           {cores.map((cor) => {
             return (
-              <li className="flex gap-6 items-center">
+              <li className="flex gap-6 items-center" key={cor.id}>
                 <div
                   className="w-12 h-12 cursor-pointer"
                   style={{ backgroundColor: cor.cor }}
