@@ -29,6 +29,7 @@ export const CanvasControlsMenu = () => {
   const [activeButton, setActiveBtn] = useState<number | null>(null);
   const [editDisabled, setEditDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isCriacao, setIsCriacao] = useState<boolean>(false);
   const { toast } = useToast();
   const userState = userStore();
   const teeState = teeStore();
@@ -50,7 +51,48 @@ export const CanvasControlsMenu = () => {
     }
   };
 
-  const handleSalvarPedidos = async () => {
+  const handleAtualizarCriacao = async (id: string) => {
+    const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
+    const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
+
+    const token = jsCookie.get("__session");
+
+    try {
+      const params: Criacao = {
+        id,
+        canvas: canvasSerialization,
+        userId: userState.user?.uid,
+        user: userState.user?.displayName,
+        image: canvasSmallImage,
+        teeColor: teeState.tshirtColor,
+      };
+
+      setLoading(true);
+
+      await fetch("/api/criacoes/atualizar", {
+        method: "POST",
+        body: JSON.stringify(params),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toast({
+        title: "Sucesso",
+        description: "Desenho foi atualizado!",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao atualizar o desenho!",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSalvarCriacao = async () => {
     const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
     const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
     const token = jsCookie.get("__session");
@@ -66,6 +108,7 @@ export const CanvasControlsMenu = () => {
       };
 
       setLoading(true);
+
       await fetch("/api/criacoes/criar", {
         method: "POST",
         body: JSON.stringify(params),
@@ -79,6 +122,8 @@ export const CanvasControlsMenu = () => {
         title: "Sucesso",
         description: "Desenho foi salvo para rascunho!",
       });
+
+      window.location.href = `/criacao=${params.id}`;
     } catch (error) {
       toast({
         title: "Erro",
@@ -122,12 +167,13 @@ export const CanvasControlsMenu = () => {
   useEffect(() => {
     if (window.location.pathname.includes("/criacao=")) {
       const criacao = window.location.pathname.split("=")[1];
+      setIsCriacao(true);
 
       if (criacao) {
         loadCriacao(criacao);
       }
     }
-  }, []);
+  }, [isCriacao]);
 
   useEffect(() => {
     emitter.on("toggleEditButton", (selected) => {
@@ -185,11 +231,15 @@ export const CanvasControlsMenu = () => {
       ></MenuDefaultButton>
 
       <MenuDefaultButton
-        onClick={() => handleSalvarPedidos()}
+        onClick={() =>
+          isCriacao
+            ? handleAtualizarCriacao(window.location.pathname.split("=")[1])
+            : handleSalvarCriacao()
+        }
         icon={<SaveIcon />}
         disabled={loading}
         index={4}
-        label="Salvar"
+        label={isCriacao ? "Atualizar" : "Salvar"}
       ></MenuDefaultButton>
     </div>
   );

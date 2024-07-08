@@ -5,10 +5,11 @@ import { Suspense, useEffect, useRef } from "react";
 import { emitter } from "@/services/mitt.ts";
 import StudioLogo from "./studio-logo.astro";
 import { Skeleton } from "./ui/skeleton.tsx";
+import { CanvasBoardService } from "@/services/canvas-board.service.ts";
 
 export const Scene = () => {
   const orbitRef = useRef();
-  const { progress } = useProgress();
+  const { progress, active } = useProgress();
 
   const resetOrbit = () => {
     if (!orbitRef.current) return;
@@ -27,7 +28,7 @@ export const Scene = () => {
   }, []);
 
   return (
-    <div className="aspect-square rounded-lg">
+    <div className="rounded-lg h-[90vh] w-full">
       <Canvas>
         <Stage intensity={4}>
           <Suspense

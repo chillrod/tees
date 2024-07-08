@@ -8,7 +8,6 @@ import "@fontsource/fira-mono";
 import "@fontsource/dm-serif-text";
 import "@fontsource/anton";
 import "../styles/globals.css";
-import { ViewTransitions } from "astro:transitions";
 import StudioLogo from "@/components/studio-logo.astro";
 import { NavBarMenu } from "@/components/navbar-menu";
 import type { UserRecord } from "firebase-admin/auth";
@@ -55,7 +54,6 @@ const { pathname } = Astro.url;
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <ViewTransitions />
     <title>{title}</title>
   </head>
   <body class="bg-stone-100 dark:bg-stone-800">

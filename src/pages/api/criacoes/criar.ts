@@ -17,13 +17,18 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
     await criacoes.add({
       ...formData,
     });
+
+    return new Response(
+      JSON.stringify({
+        message: "Criação salva com sucesso",
+        criacao: formData.id,
+      })
+    );
   } catch (error: any) {
     return new Response(error.message, {
       status: 500,
     });
   }
-
-  return redirect("/");
 };
 
 export const GET: APIRoute = async ({ request, params }) => {

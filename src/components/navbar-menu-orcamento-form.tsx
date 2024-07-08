@@ -88,6 +88,7 @@ export const NavBarMenuForm = (props: Props) => {
 
     try {
       setIsLoading(true);
+
       const canvas = CanvasBoardService.GetCanvasImage();
 
       const res = await fetch("/api/orcamento/enviar", {
@@ -184,7 +185,7 @@ export const NavBarMenuForm = (props: Props) => {
         <DrawerFooter>
           <DrawerClose>
             <Button
-            className="dark:bg-stone-200"
+              className="dark:bg-stone-200"
               variant="outline"
               disabled={isLoading}
               onClick={() => [setOpenDrawer(false)]}

@@ -1,19 +1,21 @@
 import { userStore } from "@/store/user";
 
 import { Button } from "./ui/button";
+
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
+  DialogTrigger,
 } from "./ui/dialog";
-import { Suspense, useEffect, useState } from "react";
-import jsCookie from "js-cookie";
+
 import { CanvasBoardService } from "@/services/canvas-board.service";
-import { Skeleton } from "./ui/skeleton";
 import { teeStore } from "@/store/tee";
+import jsCookie from "js-cookie";
+import { useEffect, useState } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 interface Props {
   children: React.ReactNode;
@@ -22,43 +24,76 @@ interface Props {
 export const Creations = (props: Props) => {
   const userState = userStore();
   const [criacoesUsuario, setCriacoesUsuario] = useState([]);
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const teeState = teeStore();
 
-  useEffect(() => {
-    const fetchCriacoes = async () => {
-      const token = jsCookie.get("__session");
+  const deletarCriacao = async (id: string) => {
+    const token = jsCookie.get("__session");
 
-      try {
-        setLoading(true);
+    try {
+      setLoading(true);
 
-        const response = await fetch(
-          `/api/criacoes/criar?` +
-            new URLSearchParams({
-              user: userState.user?.uid || "",
-            }).toString(),
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      await fetch(
+        `/api/criacoes/deletar?` +
+          new URLSearchParams({
+            id,
+          }).toString(),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-        const data = await response.json();
+      const criacaoId = window.location.pathname.split("=")[1];
 
-        setCriacoesUsuario(data);
-      } finally {
-        setLoading(false);
+      if (criacaoId === id) {
+        window.location.href = "/";
       }
-    };
 
+      fetchCriacoes();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCriacoes = async () => {
+    const token = jsCookie.get("__session");
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `/api/criacoes/criar?` +
+          new URLSearchParams({
+            user: userState.user?.uid || "",
+          }).toString(),
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      setCriacoesUsuario(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchCriacoes();
-  }, []);
+  }, [open]);
 
   return (
-    <Dialog>
+    <Dialog open={open} modal onOpenChange={(event) => setOpen(event)}>
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:text-stone-200">
         {!criacoesUsuario.length && (
@@ -76,15 +111,13 @@ export const Creations = (props: Props) => {
                 Aqui você pode ver todas as suas criações.
               </DialogDescription>
             </DialogHeader>
-
-            <Suspense
-              fallback={
-                <>
-                  <Skeleton className="h-[40px] w-full  bg-stone-200" />
-                  <Skeleton className="h-[50px] w-full  bg-stone-200" />
-                </>
-              }
-            >
+            {loading ? (
+              <>
+                <Skeleton className="h-[100px] w-full  bg-stone-200" />
+                <Skeleton className="h-[100px] w-full  bg-stone-200" />
+                <Skeleton className="h-[100px] w-full  bg-stone-200" />
+              </>
+            ) : (
               <ul className="max-h-[400px] overflow-auto flex flex-col gap-2">
                 {criacoesUsuario.map((criacao: Criacao, id) => (
                   <li
@@ -99,22 +132,21 @@ export const Creations = (props: Props) => {
                       height={100}
                     />
                     <div className="flex flex-col gap-2">
+                      <a href={`/criacao=${criacao.id}`}>
+                        <Button disabled={loading}>Abrir no Canvas</Button>
+                      </a>
                       <Button
-                        variant="ghost"
-                        onClick={() => [
-                          CanvasBoardService.LoadCanvasSerialization(
-                            criacao.canvas
-                          ),
-                          teeState.updateColor(criacao.teeColor),
-                        ]}
+                        disabled={loading}
+                        variant="secondary"
+                        onClick={() => deletarCriacao(criacao.id)}
                       >
-                        Aplicar ao Canvas
+                        Deletar
                       </Button>
                     </div>
                   </li>
                 ))}
               </ul>
-            </Suspense>
+            )}
           </>
         )}
       </DialogContent>

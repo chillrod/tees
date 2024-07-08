@@ -6,23 +6,30 @@ import { CanvasBoard } from "@/components/canvas-board";
 import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
 import { CanvasLayer } from "@/components/canvas-controls/canvas-layer";
 import { ThreeControls } from "@/components/three-controls/controls";
+import { AuthVerifier } from "../services/auth";
 
 import { getAuth } from "firebase-admin/auth";
 import { app } from "@/firebase/server";
-
 const auth = getAuth(app);
 
 /* Check current session */
 if (!Astro.cookies.has("__session")) {
   return Astro.redirect("/logar");
 }
+
 // @ts-ignore
 const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
+
+const decodedCookie = await AuthVerifier(sessionCookie, Astro.cookies);
+
+const user = await auth.getUser(decodedCookie);
 
 if (!user) {
   return Astro.redirect("/logar");
+}
+
+if (!user.customClaims?.admin) {
+  return Astro.redirect("/");
 }
 ---
 
@@ -44,4 +51,4 @@ if (!user) {
       <CanvasControlsMenu client:load />
     </div>
   </UILayout>
-</Layout>
+</Layout>;

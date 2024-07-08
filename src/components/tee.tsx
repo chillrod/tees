@@ -8,6 +8,7 @@ import type { GLTF } from "three-stdlib";
 import { emitter } from "@/services/mitt";
 import { colors } from "./three-controls/controls";
 import { teeStore } from "@/store/tee";
+import { CanvasBoardService } from "@/services/canvas-board.service";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -66,6 +67,10 @@ export function Model() {
       emitter.off("updateTexture");
     };
   }, []);
+
+  useEffect(() => {
+    CanvasBoardService.UpdateTexture();
+  }, [])
 
   useEffect(() => {
     setColor({
@@ -179,5 +184,3 @@ export function Model() {
     </group>
   );
 }
-
-useGLTF.preload("/output2.glb");
