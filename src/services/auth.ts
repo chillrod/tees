@@ -6,13 +6,16 @@ import { getAuth } from "firebase-admin/auth";
 export const AuthVerifier = async (
   sessionCookie: string,
   AstroCookies: AstroCookies
-): Promise<string> => {
+): Promise<string | undefined> => {
   const auth = getAuth(app);
-  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  try {
+    const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 
-  if (!decodedCookie) {
+    if (!decodedCookie) {
+      AstroCookies.delete("__session");
+    }
+    return decodedCookie.uid;
+  } catch {
     AstroCookies.delete("__session");
   }
-
-  return decodedCookie.uid;
 };

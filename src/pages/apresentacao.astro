@@ -1,29 +1,13 @@
 ---
 import { PresentationScreen } from "@/components/presentation";
-import { app } from "@/firebase/server";
-import { getAuth } from "firebase-admin/auth";
-import type { APIRoute } from "astro";
 import Layout from "@/layouts/Layout.astro";
 
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/logar");
-}
-// @ts-ignore
-const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
-
-if (!user) {
-  return Astro.redirect("/logar");
-}
+const data = Astro.locals;
 ---
 
 <Layout title="Carregando...">
   <a href="/" id="link">
-    <PresentationScreen user={user} />
+    <PresentationScreen user={data.user} />
   </a>
 </Layout>
 

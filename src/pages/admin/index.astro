@@ -3,33 +3,10 @@ import Layout from "@/layouts/Layout.astro";
 import Base from "@/layouts/Base.astro";
 import { AdminSideBarNav } from "@/components/admin/sidebar-nav";
 
-import { getAuth } from "firebase-admin/auth";
-import { app } from "@/firebase/server";
-import { AuthVerifier } from "../../services/auth";
-
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/logar");
-}
-// @ts-ignore
-const sessionCookie = Astro.cookies.get("__session").value;
-
-const decodedCookie = await AuthVerifier(sessionCookie, Astro.cookies);
-
-const user = await auth.getUser(decodedCookie);
-
-if (!user) {
-  return Astro.redirect("/logar");
-}
-
-if (!user.customClaims?.admin) {
-  return Astro.redirect("/");
-}
+const data = Astro.locals;
 ---
 
-<Layout title="Administrador" user={user}>
+<Layout title="Administrador" user={data.user}>
   <Base>
     <div slot="content" class="grid gap-6 relative dark:text-stone-200">
       <div>
