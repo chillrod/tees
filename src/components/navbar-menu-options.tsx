@@ -12,7 +12,8 @@ import { MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useEffect } from "react";
-import { Creations } from "./creations";
+import { SuasCriacoes } from "./suas-criacoes";
+import { SuasCriacoesAssociadas } from "./suas-criacoes-associadas";
 
 interface Props {
   user?: UserRecord;
@@ -56,9 +57,12 @@ export const NavBarMenuOptions = (props: Props) => {
                 <Button variant="link">Administrador</Button>
               </Link>
             )}
-            <Creations>
+            <SuasCriacoes>
               <Button variant="link">Suas criações</Button>
-            </Creations>
+            </SuasCriacoes>
+            <SuasCriacoesAssociadas>
+              <Button variant="link">Criações</Button>
+            </SuasCriacoesAssociadas>
             <Button variant="link" onClick={() => handleDeslogar()}>
               Deslogar
             </Button>

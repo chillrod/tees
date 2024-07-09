@@ -108,6 +108,7 @@ export const CanvasControlsMenu = () => {
         user: userState.user?.displayName,
         image: canvasSmallImage,
         teeColor: teeState.tshirtColor,
+        usuariosAssociados: [],
       };
 
       setLoading(true);

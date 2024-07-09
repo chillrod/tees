@@ -18,6 +18,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { TrashIcon } from "lucide-react";
 import { WarningDialog } from "../warning-dialog";
+import { AssociarUsuariosDialog } from "../associate-users-dialog";
 
 export const AdminCriacoes = () => {
   const userState = userStore();
@@ -169,10 +170,13 @@ export const AdminCriacoes = () => {
                       <a href={`/criacao=${criacao.id}`} target="_blank">
                         <Button>Abrir no Canvas</Button>
                       </a>
+                      <AssociarUsuariosDialog
+                        criacaoId={criacao.id}
+                        usuariosAssociados={criacao.usuariosAssociados}
+                      >
+                        <Button>Associar Usuários</Button>
+                      </AssociarUsuariosDialog>
 
-                      <Button onClick={() => deletarCriacao(criacao.id)}>
-                        Associar Usuários
-                      </Button>
                       <WarningDialog
                         title="Deletar Criação"
                         description="Tem certeza que deseja deletar essa criação?"
