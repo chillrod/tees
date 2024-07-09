@@ -6,7 +6,7 @@ import { getAuth } from "firebase-admin/auth";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const isLogar = context.url.pathname.includes("/logar");
-  
+
   const isRoot =
     context.url.pathname === "/" || context.url.pathname.includes("criacao=");
 

@@ -152,7 +152,6 @@ export const CanvasControlsMenu = () => {
         });
 
         const criacao = await response.json();
-        console.log("🚀 ~ criacao:", criacao);
 
         CanvasBoardService.LoadCanvasSerialization(criacao[0].canvas);
         teeState.updateColor(criacao[0].teeColor);

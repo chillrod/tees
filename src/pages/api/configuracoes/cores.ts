@@ -1,5 +1,9 @@
 import type { APIRoute } from "astro";
 import { firestore } from "../../../firebase/server";
+import { CACHE_KEYS, SmallCacheService } from "@/services/cache";
+
+const cacheKey = CACHE_KEYS.CORES;
+const cacheValue = SmallCacheService.get(cacheKey);
 
 export const POST: APIRoute = async ({ params, redirect, request }) => {
   /* Get token from request headers */
@@ -40,17 +44,22 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
-    const pedidos = (await firestore.collection("cores").get()).docs.map(
-      (doc) => doc.data()
+    if (cacheValue)
+      return new Response(JSON.stringify(cacheValue), { status: 200 });
+
+    const cores = (await firestore.collection("cores").get()).docs.map((doc) =>
+      doc.data()
     );
 
-    return new Response(JSON.stringify(pedidos), {
+    SmallCacheService.set(cacheKey, cores);
+
+    return new Response(JSON.stringify(cores), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } catch (error) {
-    return new Response("Erro ao baixar usuários", { status: 401 });
+    return new Response("Erro ao baixar cores", { status: 401 });
   }
 };

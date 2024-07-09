@@ -16,6 +16,7 @@ import { teeStore } from "@/store/tee";
 import jsCookie from "js-cookie";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { WarningDialog } from "./warning-dialog";
 
 interface Props {
   children: React.ReactNode;
@@ -135,13 +136,15 @@ export const Creations = (props: Props) => {
                       <a href={`/criacao=${criacao.id}`}>
                         <Button disabled={loading}>Abrir no Canvas</Button>
                       </a>
-                      <Button
-                        disabled={loading}
-                        variant="secondary"
-                        onClick={() => deletarCriacao(criacao.id)}
+                      <WarningDialog
+                        title="Deletar Criação"
+                        description="Tem certeza que deseja deletar essa criação?"
+                        func={() => deletarCriacao(criacao.id)}
                       >
-                        Deletar
-                      </Button>
+                        <Button disabled={loading} variant="secondary">
+                          Deletar
+                        </Button>
+                      </WarningDialog>
                     </div>
                   </li>
                 ))}

@@ -3,10 +3,23 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
+import * as Separator from "@radix-ui/react-separator";
 
 import jsCookie from "js-cookie";
 import shortUUID from "short-uuid";
 import { Scene } from "../scene";
+import { WarningDialog } from "../warning-dialog";
+import { TrashIcon } from "lucide-react";
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const AdminConfiguracoes = () => {
   const [loading, setLoading] = useState(false);
@@ -106,41 +119,75 @@ export const AdminConfiguracoes = () => {
 
   useEffect(() => {
     baixarCores();
-  }, [cores]);
+  }, []);
 
   return (
-    <div className="flex flex-col gap-12 relative">
-      <div className="flex gap-12 items-center">
-        <h2 className="text-sm">Adicionar nova Cor</h2>
-        <Input
-          type="color"
-          className="w-48"
-          value={corAtual}
-          onChange={(event) => setCorAtual(event.target.value)}
-        />
-        <Button onClick={() => cadastrarCor(corAtual)}>Cadastrar</Button>
-      </div>
-      <h2 className="text-sm">Cores Cadastradas</h2>
-      {loading ? (
-        <></>
-      ) : (
-        <ul className="grid max-h-[500px] overflow-auto gap-6">
-          {cores.map((cor) => {
-            return (
-              <li className="flex gap-6 items-center" key={cor.id}>
-                <div
-                  className="w-12 h-12 cursor-pointer"
-                  style={{ backgroundColor: cor.cor }}
-                  onClick={() => setCorAtual(cor.cor)}
-                />
-                <Button onClick={() => deletarCor(cor.id)}>Deletar</Button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      <div className="absolute right-0 top-0 w-64">
-        <Scene isSimple cor={corAtual} />
+    <div>
+      <div className="flex flex-col gap-3">
+        <div className="relative grid grid-cols-2 items-center">
+          <div className="sticky top-0">
+            <h2 className="text-xl font-bold tracking-tight">Cores:</h2>
+            <p className="text-sm text-stone-500">
+              Gerencie as cores disponíveis para os usuários.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-center">Preview</h2>
+            <div className="w-full h-full">
+              <Scene isSimple cor={corAtual} />
+            </div>
+          </div>
+        </div>
+        <Separator.Root className="border-b-2 my-2" />
+
+        <div className="flex gap-12 items-center">
+          <h2 className="text-sm">Adicionar nova Cor</h2>
+          <Input
+            type="color"
+            className="w-48"
+            value={corAtual}
+            onChange={(event) => setCorAtual(event.target.value)}
+          />
+          <Button onClick={() => cadastrarCor(corAtual)}>Cadastrar</Button>
+        </div>
+        <h2 className="text-2xl">Cores Cadastradas</h2>
+
+        <Table>
+          <TableCaption>Lista de cores cadastradas</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Cor</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {cores.map((cor) => (
+              <TableRow key={cor.id}>
+                <TableCell>
+                  <div
+                    onClick={() => setCorAtual(cor.cor)}
+                    className="h-8 w-8 cursor-pointer"
+                    style={{
+                      backgroundColor: cor.cor,
+                    }}
+                  ></div>
+                </TableCell>
+
+                <TableCell className="text-right flex gap-2 justify-end">
+                  <WarningDialog
+                    title="Deletar Criação"
+                    description="Tem certeza que deseja deletar essa criação?"
+                    func={() => deletarCor(cor.id)}
+                  >
+                    <Button size="icon">
+                      <TrashIcon />
+                    </Button>
+                  </WarningDialog>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
