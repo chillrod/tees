@@ -43,8 +43,8 @@ export const AdminCriacoes = () => {
       const criacoesFiltradas = pedidosCadastrados.filter((pedido) => {
         return keysToFilter.some((key) => {
           // @ts-ignore
-          return pedido[key]
-            .toLocaleLowerCase()
+          return pedido?.[key]
+            ?.toLocaleLowerCase()
             .includes(value.toLocaleLowerCase());
         });
       });
