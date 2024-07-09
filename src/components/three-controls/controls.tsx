@@ -1,22 +1,23 @@
 import { emitter } from "@/services/mitt";
 import { teeStore } from "@/store/tee";
 import jsCookie from "js-cookie";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import { useToast } from "../ui/use-toast";
+import { coresStore } from "@/store/cores";
 
 export const ThreeControls = () => {
-  const [cores, setCores] = useState<{ cor: string; id: string }[]>([]);
   const { toast } = useToast();
 
   const tshirtStore = teeStore();
+  const coresState = coresStore();
 
   const handleColorChange = (params: { cor: string }) => {
     tshirtStore.updateColor(params.cor);
   };
 
-  const baixarCores = async () => {
+  const baixarCores = useCallback(async () => {
     const token = jsCookie.get("__session");
 
     try {
@@ -29,7 +30,7 @@ export const ThreeControls = () => {
 
       const cores = await res.json();
 
-      setCores(cores);
+      coresState.updateColors(cores);
 
       tshirtStore.updateColor(cores[0].cor);
     } catch (error) {
@@ -38,10 +39,12 @@ export const ThreeControls = () => {
         description: "Ocorreu um erro ao baixar as cores.",
       });
     }
-  };
+  }, []);
 
   useEffect(() => {
-    baixarCores();
+    if (coresState.cores.length === 0) {
+      baixarCores();
+    }
   }, []);
 
   return (
@@ -61,9 +64,9 @@ export const ThreeControls = () => {
           height={30}
         />
       </Button>
-      {cores.length > 0 ? (
-        <div className="flex flex-col gap-2 w-full h-full">
-          {cores.map((color, index) => (
+      {coresState.cores.length > 0 ? (
+        <div className="flex flex-col gap-2 w-full h-full max-h-[400px] overflow-auto">
+          {coresState.cores.map((color, index) => (
             <div key={index}>
               <Button
                 size="icon"

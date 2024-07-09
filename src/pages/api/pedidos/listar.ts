@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
-import { auth } from "../../../firebase/server";
 import { firestore } from "../../../firebase/server";
+
+import { CACHE_KEYS, CacheService } from "@/services/cache";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
   /* Get token from request headers */
@@ -11,9 +12,18 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
+    const cacheKey = CACHE_KEYS.PEDIDOS;
+    const cacheValue = CacheService.get(cacheKey);
+
+    if (cacheValue && CacheService.getRemainingTTL(cacheKey) > 0) {
+      return new Response(JSON.stringify(cacheValue), { status: 200 });
+    }
+
     const pedidos = (await firestore.collection("pedidos").get()).docs.map(
       (doc) => doc.data()
     );
+
+    CacheService.set(cacheKey, pedidos);
 
     return new Response(JSON.stringify(pedidos), {
       status: 200,

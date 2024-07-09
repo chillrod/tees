@@ -1,4 +1,4 @@
-export interface PedidoForm {
+interface PedidoForm {
   nome: string;
   email: string;
   whatsapp?: string;

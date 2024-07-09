@@ -33,7 +33,7 @@ export const Scene = ({ isSimple, cor }: Props) => {
   }, []);
 
   return (
-    <div className="rounded-lg h-[90vh] w-full">
+    <div className={`rounded-lg ${isSimple ? "" : "h-[90vh]"} w-full`}>
       <Canvas>
         <Stage intensity={4}>
           <Suspense
