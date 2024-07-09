@@ -1,5 +1,5 @@
 import { emitter } from "@/services/mitt";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MenuText } from "./menu-text";
 
 import { CanvasBoardService } from "@/services/canvas-board.service";
@@ -51,48 +51,51 @@ export const CanvasControlsMenu = () => {
     }
   };
 
-  const handleAtualizarCriacao = async (id: string) => {
-    const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
-    const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
+  const handleAtualizarCriacao = useCallback(
+    async (id: string) => {
+      const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
+      const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
 
-    const token = jsCookie.get("__session");
+      const token = jsCookie.get("__session");
 
-    try {
-      const params: Criacao = {
-        id,
-        canvas: canvasSerialization,
-        userId: userState.user?.uid,
-        user: userState.user?.displayName,
-        image: canvasSmallImage,
-        teeColor: teeState.tshirtColor,
-      };
+      try {
+        const params: Criacao = {
+          id,
+          canvas: canvasSerialization,
+          userId: userState.user?.uid,
+          user: userState.user?.displayName,
+          image: canvasSmallImage,
+          teeColor: teeState.tshirtColor,
+        };
 
-      setLoading(true);
+        setLoading(true);
 
-      await fetch("/api/criacoes/atualizar", {
-        method: "POST",
-        body: JSON.stringify(params),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        await fetch("/api/criacoes/atualizar", {
+          method: "POST",
+          body: JSON.stringify(params),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      toast({
-        title: "Sucesso",
-        description: "Desenho foi atualizado!",
-      });
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao atualizar o desenho!",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+        toast({
+          title: "Sucesso",
+          description: "Desenho foi atualizado!",
+        });
+      } catch (error) {
+        toast({
+          title: "Erro",
+          description: "Ocorreu um erro ao atualizar o desenho!",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [isCriacao, teeState.tshirtColor]
+  );
 
-  const handleSalvarCriacao = async () => {
+  const handleSalvarCriacao = useCallback(async () => {
     const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
     const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
     const token = jsCookie.get("__session");
@@ -132,44 +135,44 @@ export const CanvasControlsMenu = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isCriacao, teeState.tshirtColor]);
 
-  const loadCriacao = async (criacaoId: string) => {
-    try {
-      const token = jsCookie.get("__session");
+  const loadCriacao = useCallback(
+    async (criacaoId: string) => {
+      try {
+        const token = jsCookie.get("__session");
 
-      const response = await fetch(
-        `/api/criacoes/admin-carregar?` +
-          new URLSearchParams({
-            criacao: criacaoId,
-          }).toString(),
-        {
-          method: "GET",
+        const response = await fetch(`/api/criacoes/carregar`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+          body: JSON.stringify({ id: criacaoId }),
+        });
 
-      const criacao = await response.json();
+        const criacao = await response.json();
+        console.log("🚀 ~ criacao:", criacao);
 
-      CanvasBoardService.LoadCanvasSerialization(criacao[0].canvas);
-      teeState.updateColor(criacao[0].teeColor);
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao carregar a criação!",
-      });
-    }
-  };
+        CanvasBoardService.LoadCanvasSerialization(criacao[0].canvas);
+        teeState.updateColor(criacao[0].teeColor);
+      } catch (error) {
+        toast({
+          title: "Erro",
+          description: "Ocorreu um erro ao carregar a criação!",
+        });
+      }
+    },
+    [isCriacao, teeState.tshirtColor]
+  );
 
   useEffect(() => {
     if (window.location.pathname.includes("/criacao=")) {
       const criacao = window.location.pathname.split("=")[1];
+
       setIsCriacao(true);
 
-      if (criacao) {
+      if (isCriacao) {
         loadCriacao(criacao);
       }
     }

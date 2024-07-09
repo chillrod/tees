@@ -10,14 +10,10 @@ export const ThreeControls = () => {
   const [cores, setCores] = useState<{ cor: string; id: string }[]>([]);
   const { toast } = useToast();
 
-  const [currentColor, setCurrentColor] = useState("");
-
   const tshirtStore = teeStore();
 
   const handleColorChange = (params: { cor: string }) => {
     tshirtStore.updateColor(params.cor);
-
-    setCurrentColor(params.cor);
   };
 
   const baixarCores = async () => {
@@ -35,7 +31,6 @@ export const ThreeControls = () => {
 
       setCores(cores);
 
-      setCurrentColor(cores[0].cor);
       tshirtStore.updateColor(cores[0].cor);
     } catch (error) {
       toast({

@@ -1,7 +1,7 @@
 import { firestore } from "@/firebase/server";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ request, params }) => {
+export const POST: APIRoute = async ({ request, params }) => {
   /* Get token from request headers */
   const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
 
@@ -9,17 +9,16 @@ export const GET: APIRoute = async ({ request, params }) => {
     return new Response("No token found", { status: 401 });
   }
 
-  try {
-    const criacaoQueryParams = request.url
-      .split("?")[1]
-      .replace("criacao=", "");
+  const formData = await request.json();
 
+  try {
     const criacoes = await firestore
       .collection("criacoes")
-      .where("id", "==", criacaoQueryParams)
+      .where("id", "==", formData.id)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
+        
         return data;
       });
 
