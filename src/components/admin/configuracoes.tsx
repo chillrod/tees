@@ -74,7 +74,8 @@ export const AdminConfiguracoes = () => {
 
       toast({
         title: "Sucesso!",
-        description: "Cor deletada com sucesso.",
+        description:
+          "Cor deletada com sucesso. Pode demorar até 5 minutos para se atualizar.",
       });
 
       baixarCores();
@@ -108,7 +109,8 @@ export const AdminConfiguracoes = () => {
 
       toast({
         title: "Sucesso!",
-        description: "Cor cadastrada com sucesso.",
+        description:
+          "Cor cadastrada com sucesso. Pode demorar até 5 minutos para se atualizar.",
       });
 
       baixarCores();
