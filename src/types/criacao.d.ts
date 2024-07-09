@@ -11,5 +11,4 @@ interface Criacao {
   usuariosAssociados?: string[];
   image?: string;
   teeColor: string;
-  status: keyof typeof Status;
 }
