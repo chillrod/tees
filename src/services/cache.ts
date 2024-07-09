@@ -1,16 +1,16 @@
 import { LRUCache } from "lru-cache";
 
 export const CacheService = new LRUCache({
-  max: 5000,
-  //  10 minutes
-  ttl: 1000 * 60 * 10,
+  //  5 minutes
+  ttl: 1000 * 60 * 5,
+  ttlAutopurge: true,
   allowStale: false,
 });
 
 export const SmallCacheService = new LRUCache({
-  max: 1000,
   // 1 minute
   ttl: 1000 * 60,
+  ttlAutopurge: true,
   allowStale: false,
 });
 

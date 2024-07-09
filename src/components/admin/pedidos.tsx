@@ -124,10 +124,8 @@ export const AdminPedidos = () => {
   };
 
   useEffect(() => {
-    if (userState.user) {
-      baixarPedidos();
-    }
-  }, [userState.user]);
+    baixarPedidos();
+  }, []);
 
   return (
     <div className="dark:text-stone-200">

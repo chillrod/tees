@@ -15,8 +15,9 @@ export const GET: APIRoute = async ({ request, params }) => {
   }
 
   try {
-    if (cacheValue)
+    if (cacheValue && CacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
+    }
 
     const criacoes = await firestore
       .collection("criacoes")

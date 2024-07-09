@@ -107,10 +107,8 @@ export const AdminCriacoes = () => {
   };
 
   useEffect(() => {
-    if (userState.user) {
-      baixarCriacoes();
-    }
-  }, [userState.user]);
+    baixarCriacoes();
+  }, []);
 
   return (
     <>

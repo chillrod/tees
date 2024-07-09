@@ -45,8 +45,9 @@ export const GET: APIRoute = async ({ request, params }) => {
   }
 
   try {
-    if (cacheValue)
+    if (cacheValue && SmallCacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
+    }
 
     const userQueryParams = request.url.split("?")[1].replace("user=", "");
 

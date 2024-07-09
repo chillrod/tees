@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request, params }) => {
   const formData = await request.json();
 
   try {
-    if (cacheValue) {
+    if (cacheValue && SmallCacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
     }
 

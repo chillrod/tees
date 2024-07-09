@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "../ui/skeleton";
 
 export const AdminConfiguracoes = () => {
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,8 @@ export const AdminConfiguracoes = () => {
 
   const baixarCores = async () => {
     const token = jsCookie.get("__session");
+
+    setLoading(true);
 
     try {
       const res = await fetch("/api/configuracoes/cores", {
@@ -47,6 +50,8 @@ export const AdminConfiguracoes = () => {
         title: "Ops!",
         description: "Ocorreu um erro ao baixar as configurações.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,42 +157,53 @@ export const AdminConfiguracoes = () => {
         </div>
         <h2 className="text-2xl">Cores Cadastradas</h2>
 
-        <Table>
-          <TableCaption>Lista de cores cadastradas</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Cor</TableHead>
-              <TableHead className="text-right">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {cores.map((cor) => (
-              <TableRow key={cor.id}>
-                <TableCell>
-                  <div
-                    onClick={() => setCorAtual(cor.cor)}
-                    className="h-8 w-8 cursor-pointer"
-                    style={{
-                      backgroundColor: cor.cor,
-                    }}
-                  ></div>
-                </TableCell>
-
-                <TableCell className="text-right flex gap-2 justify-end">
-                  <WarningDialog
-                    title="Deletar Criação"
-                    description="Tem certeza que deseja deletar essa criação?"
-                    func={() => deletarCor(cor.id)}
-                  >
-                    <Button size="icon">
-                      <TrashIcon />
-                    </Button>
-                  </WarningDialog>
-                </TableCell>
+        {loading ? (
+          <div className="grid gap-2">
+            <Skeleton className="h-[40px] w-full  bg-stone-200" />
+            <Skeleton className="h-[50px] w-full  bg-stone-200" />
+            <Skeleton className="h-[50px] w-full  bg-stone-200" />
+            <Skeleton className="h-[50px] w-full  bg-stone-200" />
+            <Skeleton className="h-[50px] w-full  bg-stone-200" />
+            <Skeleton className="h-[50px] w-full  bg-stone-200" />
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Lista de cores cadastradas</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Cor</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {cores.map((cor) => (
+                <TableRow key={cor.id}>
+                  <TableCell>
+                    <div
+                      onClick={() => setCorAtual(cor.cor)}
+                      className="h-8 w-8 cursor-pointer"
+                      style={{
+                        backgroundColor: cor.cor,
+                      }}
+                    ></div>
+                  </TableCell>
+
+                  <TableCell className="text-right flex gap-2 justify-end">
+                    <WarningDialog
+                      title="Deletar Criação"
+                      description="Tem certeza que deseja deletar essa criação?"
+                      func={() => deletarCor(cor.id)}
+                    >
+                      <Button size="icon">
+                        <TrashIcon />
+                      </Button>
+                    </WarningDialog>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
     </div>
   );

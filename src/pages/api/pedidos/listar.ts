@@ -15,8 +15,9 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
-    if (cacheValue)
+    if (cacheValue && CacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
+    }
 
     const pedidos = (await firestore.collection("pedidos").get()).docs.map(
       (doc) => doc.data()

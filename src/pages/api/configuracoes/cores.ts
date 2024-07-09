@@ -44,8 +44,9 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
-    if (cacheValue)
+    if (cacheValue && SmallCacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
+    }
 
     const cores = (await firestore.collection("cores").get()).docs.map((doc) =>
       doc.data()

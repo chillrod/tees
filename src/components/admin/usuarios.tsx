@@ -78,10 +78,8 @@ export const AdminUsuarios = () => {
   };
 
   useEffect(() => {
-    if (userState.user) {
-      baixarUsuarios();
-    }
-  }, [userState.user]);
+    baixarUsuarios();
+  }, []);
 
   return (
     <div className="dark:text-stone-200">
