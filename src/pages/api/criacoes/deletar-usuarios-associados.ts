@@ -18,16 +18,22 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
       .where("id", "==", formData.id)
       .get()
       .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.update({
-            ...formData,
+        querySnapshot.forEach(async (doc) => {
+          const usuariosAssociados = doc.data().usuariosAssociados;
+
+          const updatedUsuariosAssociados = usuariosAssociados.filter(
+            (usuarioId: string) => usuarioId !== formData.userId
+          );
+
+          await criacoes.doc(doc.id).update({
+            usuariosAssociados: updatedUsuariosAssociados,
           });
         });
       });
 
     return new Response(
       JSON.stringify({
-        message: "Criação atualiza com sucesso",
+        message: "Usuário associado com sucesso",
       })
     );
   } catch (error: any) {

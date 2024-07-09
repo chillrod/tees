@@ -21,7 +21,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const Creations = (props: Props) => {
+export const SuasCriacoes = (props: Props) => {
   const userState = userStore();
   const [criacoesUsuario, setCriacoesUsuario] = useState([]);
   const [open, setOpen] = useState(false);
@@ -89,7 +89,9 @@ export const Creations = (props: Props) => {
   };
 
   useEffect(() => {
-    fetchCriacoes();
+    if (open) {
+      fetchCriacoes();
+    }
   }, [open]);
 
   return (

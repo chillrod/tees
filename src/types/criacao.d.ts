@@ -1,9 +1,14 @@
+enum Status {
+  PENDENTE = "pending",
+  APROVADO = "approved",
+  REPROVADO = "rejected",
+}
 interface Criacao {
   id: string;
   canvas: any;
   userId?: string;
   user?: string;
-  associatedUserIds?: string[];
+  usuariosAssociados?: string[];
   image?: string;
   teeColor: string;
 }

@@ -11,13 +11,14 @@ const { left } = Astro.props;
   id="studiologo"
 >
   <img src="./studio.svg" alt="Studio Logo" width="50px" height="50px" />
-  <div class=`flex flex-col w-full ${left ? '' : 'text-center'}`>
-    <h2 class="font-black text-4xl uppercase -tracking-wide leading-7">
+  <div class=`flex flex-col w-full ${left ? '' : ''}`>
+    <h2 class="font-black text-xl uppercase -tracking-wide leading-7">
       Canvas
     </h2>
-    <span class=`uppercase ${left ? 'text-md' : ''}`>Studio Estampar</span>
+    <span class=`uppercase ${left ? 'text-md' : 'text-xs'}`
+      >Studio Estampar</span
+    >
   </div>
-  <span class="font-bold bg-yellow-400 dark:text-stone-900">Beta</span>
 </div>
 
 <script>

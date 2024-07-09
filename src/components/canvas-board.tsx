@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { emitter } from "@/services/mitt";
 import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
+import * as Separator from "@radix-ui/react-separator";
 
 export const gradient =
   "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
@@ -73,15 +74,24 @@ export const CanvasBoard = () => {
 
   return (
     <>
+      <div className="absolute grid grid-cols-2 justify-around w-full text-center text-stone-700 dark:text-stone-500 text-sm">
+        <h2>Frente</h2>
+        <h2>Costas</h2>
+      </div>
       <div
-        className="w-full h-[90vh]"
+        className="w-full h-[90vh] relative"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,
         }}
       >
+        <Separator.Root
+          orientation="vertical"
+          className="w-0.5 h-full bg-stone-200 dark:bg-stone-800 absolute right-1/2"
+          decorative
+        />
         <div
-          className="w-full h-full "
+          className="w-full h-full absolute"
           // style={{
           //   backgroundImage: "url('/t-shirt-canvas.svg')",
           //   backgroundPosition: "center",
