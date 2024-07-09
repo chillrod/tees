@@ -2,9 +2,6 @@ import type { APIRoute } from "astro";
 import { firestore } from "../../../firebase/server";
 import { CACHE_KEYS, SmallCacheService } from "@/services/cache";
 
-const cacheKey = CACHE_KEYS.CORES;
-const cacheValue = SmallCacheService.get(cacheKey);
-
 export const POST: APIRoute = async ({ params, redirect, request }) => {
   /* Get token from request headers */
   const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
@@ -44,6 +41,9 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   }
 
   try {
+    const cacheKey = CACHE_KEYS.CORES;
+    const cacheValue = SmallCacheService.get(cacheKey);
+
     if (cacheValue && SmallCacheService.getRemainingTTL(cacheKey) > 0) {
       return new Response(JSON.stringify(cacheValue), { status: 200 });
     }
