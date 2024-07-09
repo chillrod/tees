@@ -14,8 +14,16 @@ export const SmallCacheService = new LRUCache({
   allowStale: false,
 });
 
+export const HomeCacheService = new LRUCache({
+  // 1 hour
+  ttl: 1000 * 60 * 60,
+  ttlAutopurge: true,
+  allowStale: false,
+});
+
 export enum CACHE_KEYS {
   CORES = "cores",
+  CORES_CRIACAO = "cores_criacao",
   PEDIDOS = "pedidos",
   CRIACOES = "criacoes",
   CRIACAO = "criacao",

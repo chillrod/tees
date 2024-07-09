@@ -21,7 +21,7 @@ export const ThreeControls = () => {
     const token = jsCookie.get("__session");
 
     try {
-      const res = await fetch("/api/configuracoes/cores", {
+      const res = await fetch("/api/configuracoes/cores-criacao", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
