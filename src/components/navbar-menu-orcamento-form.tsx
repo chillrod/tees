@@ -1,5 +1,4 @@
 import { CanvasBoardService } from "@/services/canvas-board.service";
-import type { PedidoForm } from "@/services/interfaces";
 import * as Form from "@radix-ui/react-form";
 import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useRef, useState } from "react";

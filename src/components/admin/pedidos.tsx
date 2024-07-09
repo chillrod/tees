@@ -16,7 +16,6 @@ import {
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import { useToast } from "../ui/use-toast";
-import type { PedidoForm } from "@/services/interfaces";
 import { PhoneIcon } from "lucide-react";
 import { Input } from "../ui/input";
 
