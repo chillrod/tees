@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-import { CanvasBoardService } from "@/services/canvas-board.service";
 import { teeStore } from "@/store/tee";
 import jsCookie from "js-cookie";
 import { useEffect, useState } from "react";
@@ -68,7 +67,7 @@ export const Creations = (props: Props) => {
       setLoading(true);
 
       const response = await fetch(
-        `/api/criacoes/criar?` +
+        `/api/criacoes/criacoes-user?` +
           new URLSearchParams({
             user: userState.user?.uid || "",
           }).toString(),
