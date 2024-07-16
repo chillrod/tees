@@ -1,8 +1,6 @@
 import { userStore } from "@/store/user";
 import { useEffect, useState } from "react";
 
-import jsCookie from "js-cookie";
-
 import {
   Table,
   TableBody,
@@ -22,6 +20,7 @@ import { AssociarUsuariosDialog } from "../associate-users-dialog";
 
 export const AdminCriacoes = () => {
   const userState = userStore();
+
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -57,8 +56,6 @@ export const AdminCriacoes = () => {
   };
 
   const deletarCriacao = async (id: string) => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -71,7 +68,6 @@ export const AdminCriacoes = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -86,12 +82,7 @@ export const AdminCriacoes = () => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
-      const response = await fetch("/api/criacoes/admin", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/criacoes/admin");
 
       const criacoes = await response.json();
 

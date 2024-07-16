@@ -12,7 +12,6 @@ import {
 } from "./ui/dialog";
 
 import { teeStore } from "@/store/tee";
-import jsCookie from "js-cookie";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { WarningDialog } from "./warning-dialog";
@@ -29,8 +28,6 @@ export const SuasCriacoes = (props: Props) => {
   const teeState = teeStore();
 
   const deletarCriacao = async (id: string) => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -43,7 +40,6 @@ export const SuasCriacoes = (props: Props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -61,8 +57,6 @@ export const SuasCriacoes = (props: Props) => {
   };
 
   const fetchCriacoes = async () => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -75,7 +69,6 @@ export const SuasCriacoes = (props: Props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );

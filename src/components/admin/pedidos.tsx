@@ -1,8 +1,5 @@
 import { userStore } from "@/store/user";
-import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useRef, useState } from "react";
-
-import jsCookie from "js-cookie";
 
 import {
   Table,
@@ -48,13 +45,10 @@ export const AdminPedidos = () => {
     imagePath?: string
   ) => {
     try {
-      const token = jsCookie.get("__session");
-
       const uuid = handleIdPedidoReplace(email, imagePath);
 
       const response = await fetch("/api/pedidos/baixar-arquivos", {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         method: "POST",
@@ -102,12 +96,7 @@ export const AdminPedidos = () => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
-      const response = await fetch("/api/pedidos/listar", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/pedidos/listar");
 
       const pedidos = await response.json();
 

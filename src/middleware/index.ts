@@ -28,23 +28,19 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (sessionCookie) {
       const auth = getAuth(app);
 
-      try {
-        const decodedCookie = await auth
-          .verifySessionCookie(sessionCookie.value)
-          .then((decodedToken) => decodedToken)
-          .catch(() => {
-            throw new Error("Invalid session cookie");
-          });
+      const decodedCookie = await auth
+        .verifySessionCookie(sessionCookie.value)
+        .then((decodedToken) => decodedToken)
+        .catch(() => {
+          throw new Error("Invalid session cookie");
+        });
 
-        const user = await auth.getUser(decodedCookie.uid);
+      const user = await auth.getUser(decodedCookie.uid);
 
-        context.locals.user = user;
+      context.locals.user = user;
 
-        if (isAdmin && !user?.customClaims?.admin) {
-          return Response.redirect(new URL("/", context.url), 302);
-        }
-      } catch {
-        throw new Error("Invalid session cookie");
+      if (isAdmin && !user?.customClaims?.admin) {
+        return Response.redirect(new URL("/", context.url), 302);
       }
     }
 

@@ -2,8 +2,6 @@ import { userStore } from "@/store/user";
 import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useState } from "react";
 
-import jsCookie from "js-cookie";
-
 import {
   Table,
   TableBody,
@@ -27,12 +25,9 @@ export const AdminUsuarios = () => {
 
   const handleTornarAdministrador = async (usuario: UserRecord) => {
     try {
-      const token = jsCookie.get("__session");
-
       const response = await fetch("/api/user/tornar-administrador", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ uid: usuario.uid }),
@@ -57,12 +52,7 @@ export const AdminUsuarios = () => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
-      const response = await fetch("/api/user/usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/user/usuarios");
 
       const usuarios = await response.json();
 

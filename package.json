@@ -44,7 +44,6 @@
     "fabricjs-react": "^1.2.2",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
-    "js-cookie": "^3.0.5",
     "lru-cache": "^11.0.0",
     "lucide-react": "^0.390.0",
     "mitt": "^3.0.1",
