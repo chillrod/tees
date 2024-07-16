@@ -18,11 +18,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (isLogar && !sessionCookie) return next();
 
     if (isLogar && sessionCookie) {
-      return Response.redirect(new URL("/", context.url), 302);
+      return context.redirect("/");
     }
 
     if (!sessionCookie && isRoot) {
-      return Response.redirect(new URL("/logar", context.url), 302);
+      return context.redirect("/logar");
     }
 
     if (sessionCookie) {
@@ -40,19 +40,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
       context.locals.user = user;
 
       if (isAdmin && !user?.customClaims?.admin) {
-        return Response.redirect(new URL("/", context.url), 302);
+        return context.redirect("/");
       }
     }
 
     return next();
   } catch (error) {
-    console.log("🚀 ~ onRequest ~ error:", error);
     context.locals.user = null;
 
     context.cookies.delete("__session");
 
-    console.log(context.cookies.get("__session"));
-
-    return Response.redirect(new URL("/logar", context.url), 302);
+    return context.redirect("/logar");
   }
 });
