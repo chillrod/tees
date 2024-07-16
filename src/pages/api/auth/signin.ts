@@ -23,7 +23,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
   cookies.set("__session", sessionCookie, {
     path: "/",
-    maxAge: fiveMinInMiliseconds,
+    maxAge: oneWeekInMiliSeconds,
     secure: true,
     httpOnly: true,
     sameSite: "strict",
