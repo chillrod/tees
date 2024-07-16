@@ -11,12 +11,8 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-import { teeStore } from "@/store/tee";
-import jsCookie from "js-cookie";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
-import { WarningDialog } from "./warning-dialog";
-import { ThumbsUpIcon } from "lucide-react";
 
 interface Props {
   children: React.ReactNode;
@@ -29,8 +25,6 @@ export const SuasCriacoesAssociadas = (props: Props) => {
   const [loading, setLoading] = useState(false);
 
   const fetchCriacoes = async () => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -43,7 +37,6 @@ export const SuasCriacoesAssociadas = (props: Props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -57,8 +50,6 @@ export const SuasCriacoesAssociadas = (props: Props) => {
   };
 
   const aprovarCriacao = async (criacao: Criacao) => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -71,7 +62,6 @@ export const SuasCriacoesAssociadas = (props: Props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             criacaoId: criacao.id,

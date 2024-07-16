@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-import jsCookie from "js-cookie";
 import type { UserRecord } from "firebase-admin/auth";
 import { useToast } from "./ui/use-toast";
 import { Skeleton } from "./ui/skeleton";
@@ -32,12 +31,7 @@ export const AssociarUsuariosDialog = (props: Props) => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
-      const response = await fetch("/api/user/usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch("/api/user/usuarios");
 
       const usuarios = await response.json();
 
@@ -56,12 +50,10 @@ export const AssociarUsuariosDialog = (props: Props) => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
       await fetch("/api/criacoes/associar-usuarios", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: criacaoId,
@@ -87,12 +79,10 @@ export const AssociarUsuariosDialog = (props: Props) => {
     try {
       setLoading(true);
 
-      const token = jsCookie.get("__session");
       await fetch("/api/criacoes/deletar-usuarios-associados", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: criacaoId,

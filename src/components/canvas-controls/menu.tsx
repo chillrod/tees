@@ -5,7 +5,6 @@ import { MenuText } from "./menu-text";
 import { CanvasBoardService } from "@/services/canvas-board.service";
 import { teeStore } from "@/store/tee";
 import { userStore } from "@/store/user";
-import jsCookie from "js-cookie";
 import { EraserIcon, SaveIcon } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import { MenuDefaultButton } from "./menu-default-button";
@@ -56,8 +55,6 @@ export const CanvasControlsMenu = () => {
       const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
       const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
 
-      const token = jsCookie.get("__session");
-
       try {
         const params: Criacao = {
           id,
@@ -75,7 +72,6 @@ export const CanvasControlsMenu = () => {
           body: JSON.stringify(params),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -98,7 +94,6 @@ export const CanvasControlsMenu = () => {
   const handleSalvarCriacao = useCallback(async () => {
     const canvasSerialization = CanvasBoardService.GetCanvasSerialization();
     const canvasSmallImage = CanvasBoardService.GetCanvasSmallImage();
-    const token = jsCookie.get("__session");
 
     try {
       const params: Criacao = {
@@ -118,7 +113,6 @@ export const CanvasControlsMenu = () => {
         body: JSON.stringify(params),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -141,13 +135,10 @@ export const CanvasControlsMenu = () => {
   const loadCriacao = useCallback(
     async (criacaoId: string) => {
       try {
-        const token = jsCookie.get("__session");
-
         const response = await fetch(`/api/criacoes/carregar`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ id: criacaoId }),
         });

@@ -1,7 +1,6 @@
 import { emitter } from "@/services/mitt";
 import { teeStore } from "@/store/tee";
-import jsCookie from "js-cookie";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import { useToast } from "../ui/use-toast";
@@ -18,14 +17,9 @@ export const ThreeControls = () => {
   };
 
   const baixarCores = useCallback(async () => {
-    const token = jsCookie.get("__session");
-
     try {
       const res = await fetch("/api/configuracoes/cores-criacao", {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const cores = await res.json();

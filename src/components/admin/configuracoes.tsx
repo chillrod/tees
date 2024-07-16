@@ -1,11 +1,9 @@
-import { Label } from "@radix-ui/react-form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import * as Separator from "@radix-ui/react-separator";
 
-import jsCookie from "js-cookie";
 import shortUUID from "short-uuid";
 import { Scene } from "../scene";
 import { WarningDialog } from "../warning-dialog";
@@ -30,16 +28,11 @@ export const AdminConfiguracoes = () => {
   const [cores, setCores] = useState<{ cor: string; id: string }[]>([]);
 
   const baixarCores = async () => {
-    const token = jsCookie.get("__session");
-
     setLoading(true);
 
     try {
       const res = await fetch("/api/configuracoes/cores", {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const cores = await res.json();
@@ -56,8 +49,6 @@ export const AdminConfiguracoes = () => {
   };
 
   const deletarCor = async (id: string) => {
-    const token = jsCookie.get("__session");
-
     try {
       setLoading(true);
 
@@ -68,7 +59,6 @@ export const AdminConfiguracoes = () => {
         }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -92,8 +82,6 @@ export const AdminConfiguracoes = () => {
   const cadastrarCor = async (cor: string) => {
     setLoading(true);
 
-    const token = jsCookie.get("__session");
-
     try {
       await fetch("/api/configuracoes/cores", {
         method: "POST",
@@ -103,7 +91,6 @@ export const AdminConfiguracoes = () => {
         }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       });
 

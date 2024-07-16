@@ -3,14 +3,7 @@ import type { APIRoute } from "astro";
 
 import { CACHE_KEYS, CacheService } from "@/services/cache";
 
-export const GET: APIRoute = async ({ request, params }) => {
-  /* Get token from request headers */
-  const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
-
-  if (!idToken) {
-    return new Response("No token found", { status: 401 });
-  }
-
+export const GET: APIRoute = async () => {
   try {
     // const cacheKey = CACHE_KEYS.CRIACOES;
     // const cacheValue = CacheService.get(cacheKey);
