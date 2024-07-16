@@ -10,8 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.7.0",
-    "@astrojs/react": "^3.5.0",
+    "@astrojs/check": "0.8.1",
+    "@astrojs/react": "3.6.0",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^7.7.2",
     "@fontsource/anton": "^5.0.20",
@@ -38,7 +38,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/three": "^0.165.0",
-    "astro": "^4.10.0",
+    "astro": "4.11.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "fabric": "^5.3.0",
