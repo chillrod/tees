@@ -45,7 +45,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     return next();
-  } catch {
+  } catch (error) {
+    console.log("🚀 ~ onRequest ~ error:", error);
     context.locals.user = null;
 
     context.cookies.delete("__session");
