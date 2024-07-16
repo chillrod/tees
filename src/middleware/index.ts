@@ -51,6 +51,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     context.cookies.delete("__session");
 
+    console.log(context.cookies.get("__session"));
+
     return Response.redirect(new URL("/logar", context.url), 302);
   }
 });
