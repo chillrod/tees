@@ -16,13 +16,17 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   }
 
   /* Create and set session cookie */
-  const twoYears = 60 * 60 * 24 * 365 * 2;
+  const oneWeekInMiliSeconds = 60 * 60 * 24 * 7 * 1000;
   const sessionCookie = await auth.createSessionCookie(idToken, {
-    expiresIn: twoYears,
+    expiresIn: oneWeekInMiliSeconds,
   });
 
   cookies.set("__session", sessionCookie, {
     path: "/",
+    maxAge: fiveMinInMiliseconds,
+    secure: true,
+    httpOnly: true,
+    sameSite: "strict",
   });
 
   return redirect("/apresentacao");
