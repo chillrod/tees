@@ -4,9 +4,7 @@ import { Model } from "./tee.tsx";
 import { SimpleModel } from "./simple-tee.tsx";
 import { Suspense, useEffect, useRef } from "react";
 import { emitter } from "@/services/mitt.ts";
-import StudioLogo from "./studio-logo.astro";
 import { Skeleton } from "./ui/skeleton.tsx";
-import { CanvasBoardService } from "@/services/canvas-board.service.ts";
 
 interface Props {
   isSimple?: boolean;
@@ -14,7 +12,7 @@ interface Props {
 }
 export const Scene = ({ isSimple, cor }: Props) => {
   const orbitRef = useRef();
-  const { progress, active } = useProgress();
+  const { progress } = useProgress();
 
   const resetOrbit = () => {
     if (!orbitRef.current) return;

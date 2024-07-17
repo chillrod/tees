@@ -1,7 +1,7 @@
 import { firestore } from "@/firebase/server";
 import type { APIRoute } from "astro";
 
-export const POST: APIRoute = async ({ params, redirect, request }) => {
+export const POST: APIRoute = async ({ request }) => {
   const criacoes = firestore.collection("criacoes");
 
   const formData = await request.json();

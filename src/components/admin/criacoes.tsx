@@ -1,4 +1,3 @@
-import { userStore } from "@/store/user";
 import { useEffect, useState } from "react";
 
 import {
@@ -19,8 +18,6 @@ import { WarningDialog } from "../warning-dialog";
 import { AssociarUsuariosDialog } from "../associate-users-dialog";
 
 export const AdminCriacoes = () => {
-  const userState = userStore();
-
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);

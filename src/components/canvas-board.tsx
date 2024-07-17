@@ -28,7 +28,7 @@ export const CanvasBoard = () => {
   }, [editor]);
 
   useEffect(() => {
-    editor?.canvas.on(FabricEvents.ObjectModified, (e) => {
+    editor?.canvas.on(FabricEvents.ObjectModified, () => {
       CanvasBoardService.UpdateTexture();
     });
 

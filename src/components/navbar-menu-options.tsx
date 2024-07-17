@@ -1,17 +1,8 @@
-import {
-  Link,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-} from "@radix-ui/react-navigation-menu";
+import { Link, NavigationMenuContent, NavigationMenuItem, NavigationMenuTrigger } from "@radix-ui/react-navigation-menu";
 import { NavigationMenu } from "./ui/navigation-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import type { UserRecord } from "firebase-admin/auth";
-import { MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { useEffect } from "react";
 import { SuasCriacoes } from "./suas-criacoes";
 import { SuasCriacoesAssociadas } from "./suas-criacoes-associadas";
 

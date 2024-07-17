@@ -1,4 +1,3 @@
-import { userStore } from "@/store/user";
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -17,7 +16,6 @@ import { PhoneIcon } from "lucide-react";
 import { Input } from "../ui/input";
 
 export const AdminPedidos = () => {
-  const userState = userStore();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);

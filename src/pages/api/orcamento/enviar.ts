@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { firestore, storage } from "../../../firebase/server";
 import shortUUID from "short-uuid";
 
-export const POST: APIRoute = async ({ params, redirect, request }) => {
+export const POST: APIRoute = async ({ redirect, request }) => {
   const pedidos = firestore.collection("pedidos");
 
   const formData = await request.json();

@@ -1,4 +1,3 @@
-import { userStore } from "@/store/user";
 import type { UserRecord } from "firebase-admin/auth";
 import { useEffect, useState } from "react";
 
@@ -16,7 +15,6 @@ import { Skeleton } from "../ui/skeleton";
 import { useToast } from "../ui/use-toast";
 
 export const AdminUsuarios = () => {
-  const userState = userStore();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);

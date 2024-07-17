@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { firestore, storage } from "../../../firebase/server";
+import { storage } from "../../../firebase/server";
 
-export const POST: APIRoute = async ({ params, redirect, request }) => {
+export const POST: APIRoute = async ({ request }) => {
   const formData = await request.json();
 
   const { email, uuid } = formData;
@@ -27,6 +27,4 @@ export const POST: APIRoute = async ({ params, redirect, request }) => {
       status: 500,
     });
   }
-
-  return redirect("/");
 };
