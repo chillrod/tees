@@ -1,10 +1,4 @@
-import {
-  BrushIcon,
-  CogIcon,
-  FoldersIcon,
-  LayoutDashboardIcon,
-  UserIcon,
-} from "lucide-react";
+import { BrushIcon, CogIcon, FoldersIcon, UserIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { AdminUsuarios } from "./usuarios";
 import { useState } from "react";

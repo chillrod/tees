@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-import { teeStore } from "@/store/tee";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import { WarningDialog } from "./warning-dialog";
@@ -25,7 +24,6 @@ export const SuasCriacoes = (props: Props) => {
   const [criacoesUsuario, setCriacoesUsuario] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const teeState = teeStore();
 
   const deletarCriacao = async (id: string) => {
     try {

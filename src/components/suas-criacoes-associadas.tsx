@@ -49,32 +49,6 @@ export const SuasCriacoesAssociadas = (props: Props) => {
     }
   };
 
-  const aprovarCriacao = async (criacao: Criacao) => {
-    try {
-      setLoading(true);
-
-      await fetch(
-        `/api/criacoes/aprovar-criacao?` +
-          new URLSearchParams({
-            user: userState.user?.uid || "",
-          }).toString(),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            criacaoId: criacao.id,
-          }),
-        }
-      );
-
-      fetchCriacoes();
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (open) {
       fetchCriacoes();

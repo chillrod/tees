@@ -3,7 +3,7 @@ import { firestore } from "../../../firebase/server";
 
 import { CACHE_KEYS, CacheService } from "@/services/cache";
 
-export const GET: APIRoute = async ({ request, cookies }) => {
+export const GET: APIRoute = async () => {
   try {
     const cacheKey = CACHE_KEYS.PEDIDOS;
     const cacheValue = CacheService.get(cacheKey);

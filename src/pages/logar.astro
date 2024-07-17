@@ -56,16 +56,18 @@ import StudioLogo from "@/components/studio-logo.astro";
   </div>
 </Layout>
 <script>
+  import { app } from "../firebase/client";
+
   import {
     getAuth,
-    inMemoryPersistence,
+    browserSessionPersistence,
     GoogleAuthProvider,
     signInWithPopup,
   } from "firebase/auth";
-  import { app } from "../firebase/client";
 
   const auth = getAuth(app);
-  auth.setPersistence(inMemoryPersistence);
+
+  auth.setPersistence(browserSessionPersistence);
 
   const googleSignin = document.querySelector("#google") as HTMLButtonElement;
   const icon = document.querySelector("#icon") as SVGSVGElement;

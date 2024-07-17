@@ -66,9 +66,11 @@ export const CanvasBoardService = {
   },
 
   FabricDeleteSelectedObjects() {
-    this.editor?.canvas.getActiveObjects().forEach((object) => {
-      this.editor?.canvas.remove(object);
-    });
+    this.editor?.canvas
+      .getActiveObjects()
+      .forEach((object: ExtendedFabricObject) => {
+        this.editor?.canvas.remove(object);
+      });
 
     this.CanvasDiscardActiveObject();
 
@@ -90,7 +92,7 @@ export const CanvasBoardService = {
   },
 
   FabricItemsCentralize() {
-    this.editor?.canvas.getObjects().forEach((item) => {
+    this.editor?.canvas.getObjects().forEach((item: ExtendedFabricObject) => {
       item.center();
     });
 

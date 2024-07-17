@@ -1,7 +1,6 @@
-import { ImagePlusIcon, ImageUpIcon } from "lucide-react";
+import { ImagePlusIcon } from "lucide-react";
 import { MenuDefaultButton } from "./menu-default-button";
 import type { MenuChildrenProps } from "./menu";
-import * as Menubar from "@radix-ui/react-menubar";
 import { createRef, type Dispatch, type SetStateAction } from "react";
 import { Input } from "../ui/input";
 import { createFabricImage } from "@/services/canvas/text/fabric-image";

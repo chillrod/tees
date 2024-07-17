@@ -1,7 +1,7 @@
 import { firestore } from "@/firebase/server";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ request, params }) => {
+export const GET: APIRoute = async ({ request }) => {
   try {
     const userQueryParams = request.url.split("?")[1].replace("user=", "");
 
