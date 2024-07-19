@@ -1,0 +1,18 @@
+---
+import { NavBarMenu } from "./navbar-menu";
+import StudioLogo from "./studio-logo.astro";
+
+const data = Astro.locals;
+const { pathname } = Astro.url;
+---
+
+<nav class="flex flex-wrap items-center gap-2 justify-between p-2 pb-0 m-0">
+  {
+    pathname !== "/logar" && pathname !== "/apresentacao" && (
+      <div class="contents">
+        <StudioLogo />
+        <NavBarMenu client:load user={data.user} />
+      </div>
+    )
+  }
+</nav>

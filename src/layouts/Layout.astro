@@ -7,18 +7,13 @@ const { title } = Astro.props;
 import "@fontsource/fira-mono";
 import "@fontsource/dm-serif-text";
 import "@fontsource/anton";
-import "../styles/globals.css";
-import StudioLogo from "@/components/studio-logo.astro";
-import { NavBarMenu } from "@/components/navbar-menu";
+import "@/styles/globals.css";
 import type { UserRecord } from "firebase-admin/auth";
 import { Toaster } from "../components/ui/toaster";
+import Nav from "@/components/nav.astro";
 interface Props {
   user?: UserRecord;
 }
-
-const { user } = Astro.props;
-
-const { pathname } = Astro.url;
 ---
 
 <script is:inline>
@@ -58,17 +53,7 @@ const { pathname } = Astro.url;
   </head>
   <body class="bg-stone-100 dark:bg-stone-800">
     <Toaster client:load />
-
-    <nav class="flex items-center justify-between p-4 pb-0 m-0 h-12">
-      {
-        pathname !== "/logar" && pathname !== "/apresentacao" && (
-          <div class="contents">
-            <StudioLogo />
-            <NavBarMenu client:load user={user} />
-          </div>
-        )
-      }
-    </nav>
+    <Nav />
     <slot />
     <style is:global>
       :root {
@@ -85,6 +70,7 @@ const { pathname } = Astro.url;
       html {
         font-family: system-ui, sans-serif;
         background-size: 224px;
+        height: 100vh;
       }
     </style>
   </body>

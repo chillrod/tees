@@ -2,12 +2,14 @@ import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import sentry from "@sentry/astro";
-
 import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
   output: "server",
+  devToolbar: {
+    enabled: false,
+  },
   integrations: [
     tailwind({
       applyBaseStyles: false,

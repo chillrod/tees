@@ -1,31 +1,10 @@
 ---
-import UILayout from "@/components/ui-layout.astro";
+import { Home } from "@/app/Home";
 import Layout from "../layouts/Layout.astro";
-import { Scene } from "@/components/scene";
-import { CanvasBoard } from "@/components/canvas-board";
-import { CanvasControlsMenu } from "@/components/canvas-controls/menu";
-import { CanvasLayer } from "@/components/canvas-controls/canvas-layer";
-import { ThreeControls } from "@/components/three-controls/controls";
-
-const data = Astro.locals;
 ---
 
-<Layout title="Studio Estampar Canvas" user={data.user}>
-  <UILayout>
-    <div slot="tee" class="h-full">
-      <Scene client:load />
-    </div>
-    <div slot="colors">
-      <ThreeControls client:load />
-    </div>
-    <div slot="canvas">
-      <CanvasBoard client:load />
-    </div>
-    <div slot="layer">
-      <CanvasLayer client:load />
-    </div>
-    <div slot="controls" class="h-full">
-      <CanvasControlsMenu client:load />
-    </div>
-  </UILayout>
-</Layout>;
+<Layout title="Studio Estampar Canvas">
+  <div class="mt-6">
+    <Home client:load />
+  </div>
+</Layout>

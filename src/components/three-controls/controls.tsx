@@ -43,26 +43,30 @@ export const ThreeControls = () => {
 
   return (
     <div className="max-w-[450px] overflow-auto grid gap-6 text-stone-950 dark:text-stone-200 justify-start items-start">
-      <ModeToggle />
-      <Button
-        className="justify-self-start"
-        variant="ghost"
-        size="icon"
-        onClick={() => emitter.emit("centerShirt")}
-      >
-        <img
-          className="mx-auto dark:invert"
-          src="./icon-centralizar.svg"
-          alt="Centralizar"
-          width={30}
-          height={30}
-        />
-      </Button>
+      <div className="lg:flex flex-col">
+        <ModeToggle />
+        <Button
+          className="justify-self-start"
+          variant="ghost"
+          size="icon"
+          onClick={() => emitter.emit("centerShirt")}
+        >
+          <img
+            className="mx-auto dark:invert"
+            src="./icon-centralizar.svg"
+            alt="Centralizar"
+            width={30}
+            height={30}
+          />
+        </Button>
+      </div>
+
       {coresState.cores.length > 0 ? (
-        <div className="flex flex-col gap-2 w-full h-full max-h-[400px] overflow-auto">
+        <div className="flex lg:flex-col gap-2 w-full h-full max-h-[300px] max-w-[300px] lg:max-w-[500px] overflow-auto">
           {coresState.cores.map((color, index) => (
             <div key={index}>
               <Button
+                className="border-2 border-stone-600"
                 size="icon"
                 variant="ghost"
                 onClick={() =>

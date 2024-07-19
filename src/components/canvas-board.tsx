@@ -7,7 +7,7 @@ import { FabricEvents, type ExtendedFabricObject } from "@/types/fabric";
 import * as Separator from "@radix-ui/react-separator";
 
 export const gradient =
-  "radial-gradient(circle, #515151 1px, rgba(0, 0, 0, 0) 1px)";
+  "radial-gradient(circle, #515151 0.5px, rgba(0, 0, 0, 0) 1px)";
 export const size = "40px 40px";
 
 export const CanvasBoard = () => {
@@ -74,12 +74,12 @@ export const CanvasBoard = () => {
 
   return (
     <>
-      <div className="absolute grid grid-cols-2 justify-around w-full text-center text-stone-700 dark:text-stone-500 text-sm">
+      <div className="absolute grid grid-cols-2 justify-around w-full text-center text-stone-700 dark:text-stone-400 text-sm">
         <h2>Frente</h2>
         <h2>Costas</h2>
       </div>
       <div
-        className="w-full h-[90vh] relative"
+        className="w-full h-full relative"
         style={{
           backgroundImage: gradient,
           backgroundSize: size,
@@ -87,7 +87,7 @@ export const CanvasBoard = () => {
       >
         <Separator.Root
           orientation="vertical"
-          className="w-0.5 h-full bg-stone-200 dark:bg-stone-800 absolute right-1/2"
+          className="w-0.5 h-full bg-stone-200 dark:bg-stone-700 absolute right-1/2"
           decorative
         />
         <div
@@ -98,7 +98,7 @@ export const CanvasBoard = () => {
           //   backgroundRepeat: "no-repeat",
           // }}
         >
-          <FabricJSCanvas onReady={onReady} className={`aspect-square`} />
+          <FabricJSCanvas onReady={onReady} className="h-full" />
         </div>
       </div>
     </>

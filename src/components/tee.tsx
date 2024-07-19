@@ -56,7 +56,9 @@ export function Model() {
 
   useEffect(() => {
     emitter.on("updateTexture", (canvas) => {
-      setTexture(canvas);
+      if (canvas) {
+        setTexture(canvas);
+      }
     });
 
     return () => {
