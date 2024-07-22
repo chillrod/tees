@@ -62,7 +62,7 @@ export const ThreeControls = () => {
       </div>
 
       {coresState.cores.length > 0 ? (
-        <div className="flex lg:flex-col gap-2 w-full h-full max-h-[300px] max-w-[300px] lg:max-w-none overflow-auto">
+        <div className="flex lg:flex-col gap-2 w-full h-full max-h-[300px] max-w-[300px] lg:max-h-none lg:max-w-none overflow-auto">
           {coresState.cores.map((color, index) => (
             <div key={index}>
               <Button
